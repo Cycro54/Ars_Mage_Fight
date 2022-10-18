@@ -1,0 +1,20 @@
+{
+  "name": "Life Tap",
+  "icon": "ars_nouveau:glyph_life_tap",
+  "category": "ars_mage_fight",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "ars_nouveau.glyph_desc.life_tap"
+    },
+    {
+      "type": "glyph_recipe",
+      "recipe": "ars_nouveau:glyph_life_tap",
+      "tier": "ONE",
+      "mana_cost": "None",
+      "clay_type": "ars_nouveau:magic_clay",
+      "reagent": "ars_nouveau:ring_of_potential"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Metabolic Rush",
+  "icon": "ars_nouveau:glyph_metabolic_rush",
+  "category": "ars_mage_fight",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "ars_nouveau.glyph_desc.metabolic_rush"
+    },
+    {
+      "type": "glyph_recipe",
+      "recipe": "ars_nouveau:glyph_metabolic_rush",
+      "tier": "ONE",
+      "mana_cost": "None",
+      "clay_type": "ars_nouveau:magic_clay",
+      "reagent": "minecraft:cooked_beef"
+    }
+  ]
+}

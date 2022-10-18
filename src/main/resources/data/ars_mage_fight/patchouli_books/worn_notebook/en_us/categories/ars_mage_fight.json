@@ -1,0 +1,6 @@
+{
+	"name": "Ars: Mage Fight!",
+	"description": "Combat addon for Ars Nouveau",
+	"icon": "ars_mage_fight:combat_block_item",
+	"sortnum":0
+}

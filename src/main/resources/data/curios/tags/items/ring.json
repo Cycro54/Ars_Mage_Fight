@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "ars_mage_fight:soul_siphon_ring",
+    "ars_mage_fight:ring_of_permanence",
+    "ars_mage_fight:mana_strike_ring"
+  ]
+}

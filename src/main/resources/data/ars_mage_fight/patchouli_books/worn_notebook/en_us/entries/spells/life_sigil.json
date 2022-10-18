@@ -1,0 +1,20 @@
+{
+  "name": "Life Sigil",
+  "icon": "ars_nouveau:glyph_life_sigil",
+  "category": "ars_mage_fight",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "ars_nouveau.glyph_desc.life_sigil"
+    },
+    {
+      "type": "glyph_recipe",
+      "recipe": "ars_nouveau:glyph_life_sigil",
+      "tier": "ONE",
+      "mana_cost": "Medium",
+      "clay_type": "ars_nouveau:marvelous_clay",
+      "reagent": "minecraft:glistering_melon_slice"
+    }
+  ]
+}

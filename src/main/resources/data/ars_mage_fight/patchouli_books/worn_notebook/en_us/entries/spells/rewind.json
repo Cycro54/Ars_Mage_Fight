@@ -1,0 +1,20 @@
+{
+  "name": "Rewind",
+  "icon": "ars_nouveau:glyph_rewind",
+  "category": "ars_mage_fight",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "ars_nouveau.glyph_desc.rewind"
+    },
+    {
+      "type": "glyph_recipe",
+      "recipe": "ars_nouveau:glyph_rewind",
+      "tier": "ONE",
+      "mana_cost": "Medium",
+      "clay_type": "ars_nouveau:magic_clay",
+      "reagent": "minecraft:clock"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Fatal Bond",
+  "icon": "ars_nouveau:glyph_fatal_bond",
+  "category": "ars_mage_fight",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "ars_nouveau.glyph_desc.fatal_bond"
+    },
+    {
+      "type": "glyph_recipe",
+      "recipe": "ars_nouveau:glyph_fatal_bond",
+      "tier": "ONE",
+      "mana_cost": "Low",
+      "clay_type": "ars_nouveau:magic_clay",
+      "reagent": "minecraft:chain"
+    }
+  ]
+}

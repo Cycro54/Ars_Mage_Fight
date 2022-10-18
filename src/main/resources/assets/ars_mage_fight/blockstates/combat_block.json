@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": {"model":  "ars_mage_fight:block/combat_block" }
+  }
+}

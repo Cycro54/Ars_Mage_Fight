@@ -1,0 +1,20 @@
+{
+  "name": "Stalwart",
+  "icon": "ars_nouveau:glyph_stalwart",
+  "category": "ars_mage_fight",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "ars_nouveau.glyph_desc.stalwart"
+    },
+    {
+      "type": "glyph_recipe",
+      "recipe": "ars_nouveau:glyph_stalwart",
+      "tier": "TWO",
+      "mana_cost": "High",
+      "clay_type": "ars_nouveau:marvelous_clay",
+      "reagent": "ars_nouveau:enchanters_shield"
+    }
+  ]
+}

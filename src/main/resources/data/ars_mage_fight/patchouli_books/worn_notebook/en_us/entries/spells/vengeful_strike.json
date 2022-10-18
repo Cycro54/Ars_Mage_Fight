@@ -1,0 +1,20 @@
+{
+  "name": "Vengeful Strike",
+  "icon": "ars_nouveau:glyph_vengeful_strike",
+  "category": "ars_mage_fight",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "ars_nouveau.glyph_desc.vengeful_strike"
+    },
+    {
+      "type": "glyph_recipe",
+      "recipe": "ars_nouveau:glyph_vengeful_strike",
+      "tier": "ONE",
+      "mana_cost": "Medium",
+      "clay_type": "ars_nouveau:magic_clay",
+      "reagent": "minecraft:golden_sword"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Blood Slime",
+  "icon": "ars_nouveau:glyph_blood_slime",
+  "category": "ars_mage_fight",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "ars_nouveau.glyph_desc.blood_slime"
+    },
+    {
+      "type": "glyph_recipe",
+      "recipe": "ars_nouveau:glyph_blood_slime",
+      "tier": "TWO",
+      "mana_cost": "Medium",
+      "clay_type": "ars_nouveau:marvelous_clay",
+      "reagent": "minecraft:magma_cream"
+    }
+  ]
+}

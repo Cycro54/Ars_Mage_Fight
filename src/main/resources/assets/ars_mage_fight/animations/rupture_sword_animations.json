@@ -1,0 +1,21 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"Idle": {
+			"loop": true,
+			"bones": {
+				"SwordRoot": {
+					"rotation": {
+						"vector": [90, -12.5, 72.5]
+					},
+					"position": {
+						"vector": [0, 23, 22]
+					},
+					"scale": {
+						"vector": [1.4, 1.4, 1.4]
+					}
+				}
+			}
+		}
+	}
+}

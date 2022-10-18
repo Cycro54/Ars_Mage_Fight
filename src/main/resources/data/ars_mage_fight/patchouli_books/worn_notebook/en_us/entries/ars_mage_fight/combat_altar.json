@@ -1,0 +1,21 @@
+{
+  "name": "Combat GEAR",
+  "icon": "ars_mage_fight:combat_block_item",
+  "sortnum":0,
+  "category": "ars_mage_fight",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Combat Alter is where you'll unlock locked glyphs. To unlock glyphs you need experience. The price will increase for each glyph you have as well as their tier."
+    },
+    {
+      "type":"crafting",
+      "recipe":"ars_gears:combat_gear",
+      "recipe2":"ars_gears:combat_rune_1"
+    },
+    {
+      "type": "apparatus_recipe",
+      "recipe": "ars_gears:combat_rune_4"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "type": "ars_nouveau:glyph_recipe",
+  "tier": "THREE",
+  "input": "minecraft:soul_sand",
+  "output": "ars_nouveau:glyph_death_grip"
+}
