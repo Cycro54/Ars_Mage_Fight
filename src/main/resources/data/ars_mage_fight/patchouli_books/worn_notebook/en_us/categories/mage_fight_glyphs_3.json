@@ -1,0 +1,7 @@
+{
+	"name": "Tier 3 Glyphs",
+	"description": "Tier 3 glyphs",
+	"icon": "ars_nouveau:glyph_death_grip",
+	"sortnum":0,
+	"parent": "ars_mage_fight"
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Blood Charm",
+  "icon": "ars_mage_fight:blood_charm",
+  "category": "mage_fight_items",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "item.ars_mage_fight.blood_charm.desc"
+    }
+  ]
+}

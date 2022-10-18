@@ -1,0 +1,12 @@
+{
+  "name": "Creeper Trinket",
+  "icon": "ars_mage_fight:creeper_trinket",
+  "category": "mage_fight_items",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "item.ars_mage_fight.creeper_trinket.desc"
+    }
+  ]
+}

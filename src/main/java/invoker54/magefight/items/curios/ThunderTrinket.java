@@ -61,8 +61,8 @@ public class ThunderTrinket extends Item implements ICurioItem {
 
                         //This is for the attacker
                         amp = 0;
-                        if (attacker.hasEffect(EffectInit.SHOCK_EFFECT)) amp += attacker.getEffect(EffectInit.SHOCK_EFFECT).getAmplifier() + 1;
-                        amp = Math.min(2, amp);
+//                        if (attacker.hasEffect(EffectInit.SHOCK_EFFECT)) amp += attacker.getEffect(EffectInit.SHOCK_EFFECT).getAmplifier() + 1;
+//                        amp = Math.min(2, amp);
                         attacker.addEffect(new EffectInstance(EffectInit.SHOCK_EFFECT, (20 * 6), amp));
                     }
                 }

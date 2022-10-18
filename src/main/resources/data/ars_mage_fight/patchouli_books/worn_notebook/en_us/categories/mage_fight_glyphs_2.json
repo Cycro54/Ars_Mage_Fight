@@ -1,0 +1,7 @@
+{
+	"name": "Tier 2 Glyphs",
+	"description": "Tier 2 glyphs",
+	"icon": "ars_nouveau:glyph_black_hole",
+	"sortnum":0,
+	"parent": "ars_mage_fight"
+}

@@ -1,0 +1,7 @@
+{
+	"name": "Tier 1 Glyphs",
+	"description": "Tier 1 glyphs",
+	"icon": "ars_nouveau:glyph_life_tap",
+	"sortnum":0,
+	"parent": "ars_mage_fight"
+}

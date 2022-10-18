@@ -1,0 +1,12 @@
+{
+  "name": "Ring of Permanence",
+  "icon": "ars_mage_fight:ring_of_permanence",
+  "category": "mage_fight_items",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "item.ars_mage_fight.ring_of_permanence.desc"
+    }
+  ]
+}

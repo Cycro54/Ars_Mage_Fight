@@ -1,7 +1,7 @@
 {
   "name": "Life Tap",
   "icon": "ars_nouveau:glyph_life_tap",
-  "category": "ars_mage_fight",
+  "category": "mage_fight_glyphs_1",
   "sortnum": 1,
   "pages": [
     {

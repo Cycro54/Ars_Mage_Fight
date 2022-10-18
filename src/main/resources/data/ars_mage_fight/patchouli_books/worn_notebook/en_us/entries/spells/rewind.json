@@ -1,7 +1,7 @@
 {
   "name": "Rewind",
   "icon": "ars_nouveau:glyph_rewind",
-  "category": "ars_mage_fight",
+  "category": "mage_fight_glyphs_1",
   "sortnum": 1,
   "pages": [
     {

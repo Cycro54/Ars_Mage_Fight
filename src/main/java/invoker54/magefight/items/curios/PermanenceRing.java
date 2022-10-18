@@ -46,7 +46,7 @@ public class PermanenceRing extends Item implements ICurioItem {
                     if (item instanceof PermanenceRing){
                         //if it's smaller or equal to 10%
                         LOGGER.debug("I AM CHECKING YOUR CHANCE");
-                        if (Math.random() <= 0.1F){
+                        if (Math.random() <= 0.25F){
                             ArrayList<ItemStack> repairableItems = new ArrayList<>();
                             for (ItemStack stack: player.inventory.items){
                                 if (stack.isDamageableItem() && stack.isDamaged()){

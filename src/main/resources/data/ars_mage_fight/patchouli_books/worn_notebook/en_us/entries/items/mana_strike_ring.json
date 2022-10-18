@@ -1,0 +1,12 @@
+{
+  "name": "Mana Strike Ring",
+  "icon": "ars_mage_fight:mana_strike_ring",
+  "category": "mage_fight_items",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "item.ars_mage_fight.mana_strike_ring.desc"
+    }
+  ]
+}

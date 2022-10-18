@@ -1,7 +1,7 @@
 {
   "name": "Death Grip",
   "icon": "ars_nouveau:glyph_death_grip",
-  "category": "ars_mage_fight",
+  "category": "mage_fight_glyphs_3",
   "sortnum": 3,
   "pages": [
     {

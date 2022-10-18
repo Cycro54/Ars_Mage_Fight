@@ -1,0 +1,12 @@
+{
+  "name": "Vital Reserve Charm",
+  "icon": "ars_mage_fight:vital_reserve_charm",
+  "category": "mage_fight_items",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "item.ars_mage_fight.vital_reserve_charm.desc"
+    }
+  ]
+}

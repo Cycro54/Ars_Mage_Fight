@@ -1,0 +1,7 @@
+{
+	"name": "Trinkets & Charms",
+	"description": "Info for each trinket and charm",
+	"icon": "ars_mage_fight:creeper_trinket",
+	"sortnum":0,
+	"parent": "ars_mage_fight"
+}
