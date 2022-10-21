@@ -183,7 +183,8 @@ public class FatalBondPotionEffect extends Effect {
         @SubscribeEvent
         public static void onExpire(PotionEvent.PotionExpiryEvent event){
             if (event.isCanceled()) return;
-            if (event.getPotionEffect().getEffect() != EffectInit.FATAL_BOND_EFFECT) return;
+            if (event.getPotionEffect() == null) return;
+            if (!event.getPotionEffect().getEffect().equals(EffectInit.FATAL_BOND_EFFECT)) return;
             resetEffects(event.getEntityLiving());
         }
         @SubscribeEvent

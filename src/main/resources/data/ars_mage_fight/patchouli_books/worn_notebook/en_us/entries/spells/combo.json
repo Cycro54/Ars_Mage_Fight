@@ -11,10 +11,10 @@
     {
       "type": "glyph_recipe",
       "recipe": "ars_nouveau:glyph_combo",
-      "tier": "THREE",
-      "mana_cost": "High",
-      "clay_type": "ars_nouveau:mythical_clay",
-      "reagent": "minecraft:diamond_sword"
+      "tier": "TWO",
+      "mana_cost": "LOW",
+      "clay_type": "ars_nouveau:marvelous_clay",
+      "reagent": "minecraft:iron_sword"
     }
   ]
 }

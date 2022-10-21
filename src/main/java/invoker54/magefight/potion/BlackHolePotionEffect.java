@@ -154,6 +154,8 @@ public class BlackHolePotionEffect extends Effect {
         }
         protected static void resetEffects(PotionEvent event){
             if (event.getEntityLiving().level.isClientSide) return;
+            if (event.getPotionEffect() == null) return;
+            if (!event.getPotionEffect().getEffect().equals(EffectInit.BLACK_HOLE_EFFECT)) return;
             MagicDataCap cap = MagicDataCap.getCap(event.getEntityLiving());
             cap.removeTag(ATTRACT_STRING);
             MagicDataCap.syncToClient(event.getEntityLiving());

@@ -83,7 +83,8 @@ public class VengeancePotionEffect extends Effect {
         
         @SubscribeEvent
         public static void onExpire(PotionEvent.PotionExpiryEvent event){
-            if (event.getPotionEffect().getEffect() != EffectInit.VENGEANCE_EFFECT) return;
+            if (event.getPotionEffect() == null) return;
+            if (!event.getPotionEffect().getEffect().equals(EffectInit.VENGEANCE_EFFECT)) return;
             causeDamage(event.getEntityLiving(), event.getPotionEffect().getAmplifier());
         }
 

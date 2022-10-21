@@ -19,6 +19,11 @@ public class FollowerEntity extends BasicEntity {
     }
 
     @Override
+    public void stopRiding() {
+        if (!this.isAlive()) super.stopRiding();
+    }
+
+    @Override
     public double getMyRidingOffset() {
         return -this.getVehicle().getPassengersRidingOffset();
     }
@@ -55,21 +60,29 @@ public class FollowerEntity extends BasicEntity {
         return true;
     }
 
+    public void turn(LivingEntity trackedEntity){
+        this.setYBodyRot(trackedEntity.yBodyRot);
+        this.setYHeadRot(trackedEntity.getYHeadRot());
+    }
+
     @Override
     public void tick() {
         super.tick();
 
         LivingEntity trackedEntity = (LivingEntity) this.getVehicle();
-        if (trackedEntity == null || !trackedEntity.isAlive() || (!hasTrackEffect(trackedEntity) && !this.level.isClientSide)){
+        POGGER.debug("IS NULL: " + (trackedEntity == null));
+        POGGER.debug("IS ALIVE: " + (trackedEntity.isAlive()));
+        POGGER.debug("IS CLIENTSIDE: " + (this.level.isClientSide));
+        POGGER.debug("HAS TRACK EFFECT: " + (hasTrackEffect(trackedEntity)));
+        if (trackedEntity == null || !trackedEntity.isAlive() || (!this.level.isClientSide && !hasTrackEffect(trackedEntity))){
             LOGGER.debug("THE RUPTURE ENTITY IS NULL OR DEAD!");
-            if (!this.level.isClientSide) this.remove();
+            this.remove();
             return;
         }
         if (!trackedEntity.hasPassenger(this)){
             this.startRiding(trackedEntity,true);
         }
 
-        this.setYBodyRot(trackedEntity.yBodyRot);
-        this.setYHeadRot(trackedEntity.getYHeadRot());
+        this.turn(trackedEntity);
     }
 }

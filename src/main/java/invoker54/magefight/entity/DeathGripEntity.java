@@ -139,13 +139,13 @@ public class DeathGripEntity extends BasicEntity{
         this.entityData.set(TIME_LEFT, tag.getInt("TIME_LEFT"));
     }
 
-    public DeathGripEntity(FMLPlayMessages.SpawnEntity packet, World world) {
-        super(EntityInit.DEATH_GRIP_ENTITY, world);
-    }
-
     static {
         OWNER_ID = EntityDataManager.defineId(DeathGripEntity.class, DataSerializers.INT);
         TIME_LEFT = EntityDataManager.defineId(DeathGripEntity.class, DataSerializers.INT);
+    }
+
+    public DeathGripEntity(FMLPlayMessages.SpawnEntity packet, World world) {
+        super(EntityInit.DEATH_GRIP_ENTITY, world);
     }
 
     @Override

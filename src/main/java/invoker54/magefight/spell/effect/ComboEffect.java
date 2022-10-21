@@ -2,6 +2,7 @@ package invoker54.magefight.spell.effect;
 
 import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
 import com.hollingsworth.arsnouveau.api.spell.*;
+import com.hollingsworth.arsnouveau.common.spell.augment.AugmentAmplify;
 import com.hollingsworth.arsnouveau.common.spell.method.MethodProjectile;
 import invoker54.magefight.potion.ComboPotionEffect;
 import net.minecraft.entity.LivingEntity;
@@ -15,9 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ComboEffect extends AbstractEffect {
 
@@ -34,40 +33,66 @@ public class ComboEffect extends AbstractEffect {
         return rayTraceResult instanceof EntityRayTraceResult;
     }
 
+    //Old way of doing Combo
+//    @Override
+//    public void onResolveEntity(EntityRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
+//        LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
+//        spellContext.setCanceled(true);
+//        if(spellContext.getCurrentIndex() >= spellContext.getSpell().recipe.size()) return;
+//        while (rayTraceResult.getEntity() instanceof PartEntity) {
+//            rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
+//        }
+//        if (!(rayTraceResult.getEntity() instanceof LivingEntity)) return;
+//
+//        //This was the LivingEntity hit.
+//        LivingEntity hitEntity = (LivingEntity) rayTraceResult.getEntity();
+//
+//        List<AbstractSpellPart> spellParts = spellContext.getSpell().recipe.subList(spellContext.getCurrentIndex(), spellContext.getSpell().recipe.size());
+//
+//        //Each extra combo glyph adds 3 seconds, and 2 extra hits
+//        //Base combo is 3
+//        int extraCombo = (int) spellParts.stream().filter((spellPart -> spellPart instanceof ComboEffect)).count();
+//        //Remove all of those combo effects
+//        spellParts.removeIf(spellPart -> spellPart instanceof ComboEffect);
+//
+//        //Make the new spell
+//        Spell newSpell =  new Spell(new ArrayList<>(spellParts));
+//        SpellContext newContext = new SpellContext(newSpell, shooter).withColors(spellContext.colors);
+//        SpellResolver resolver = new SpellResolver(newContext);
+////        hitEntity.addEffect(new EffectInstance(EffectInit.COMBO_EFFECT, 30 * 20, 0));
+//        //Save the combo for later use
+//        ComboPotionEffect.startCombo(hitEntity, resolver, extraCombo);
+////        //Then finally cast the combo
+////        ComboPotionEffect.castCombo(hitEntity, extraCombo);
+//    }
+    //New way
     @Override
     public void onResolveEntity(EntityRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
         LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
-        spellContext.setCanceled(true);
-        if(spellContext.getCurrentIndex() >= spellContext.getSpell().recipe.size()) return;
         while (rayTraceResult.getEntity() instanceof PartEntity) {
             rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
         }
         if (!(rayTraceResult.getEntity() instanceof LivingEntity)) return;
+        if (shooter == null) return;
 
         //This was the LivingEntity hit.
         LivingEntity hitEntity = (LivingEntity) rayTraceResult.getEntity();
 
-        Spell newSpell =  new Spell(new ArrayList<>(spellContext.getSpell().recipe.subList(spellContext.getCurrentIndex(), spellContext.getSpell().recipe.size())));
-        SpellContext newContext = new SpellContext(newSpell, shooter).withColors(spellContext.colors);
-
-        SpellResolver resolver = new SpellResolver(newContext);
-//        hitEntity.addEffect(new EffectInstance(EffectInit.COMBO_EFFECT, 30 * 20, 0));
-        //Save the combo for later use
-        ComboPotionEffect.saveCombo(hitEntity, resolver);
-        //Then finally cast the combo
-        ComboPotionEffect.castCombo(hitEntity);
+        if (hitEntity.getId() == shooter.getId()) {
+            ComboPotionEffect.startCombo(hitEntity, spellStats);
+        }
     }
 
     //Make sure to change the mana cost
     @Override
     public int getManaCost() {
-        return 250;
+        return 80;
     }
 
     //Change the tier
     @Override
     public Tier getTier() {
-        return Tier.THREE;
+        return Tier.TWO;
     }
 
     //Get a book description (I don't think this is actually used.)
@@ -85,9 +110,23 @@ public class ComboEffect extends AbstractEffect {
 
 
     //The augments that will work with this glyph
+//    @Nonnull
+//    @Override
+//    public Set<AbstractAugment> getCompatibleAugments() {
+//        List<AbstractAugment> augments = new ArrayList<>();
+//        ArsNouveauAPI.getInstance().getSpell_map().values().forEach((part) -> {
+//            if (part instanceof AbstractAugment){
+////                LOGGER.debug("IT MATCHED: " + part.getName());
+//                augments.add((AbstractAugment) part);
+//            }
+//        });
+////        LOGGER.debug(augments);
+//        return Collections.unmodifiableSet(new HashSet(augments));
+//
+//    }
     @Nonnull
     @Override
     public Set<AbstractAugment> getCompatibleAugments() {
-        return augmentSetOf();
+        return augmentSetOf(AugmentAmplify.INSTANCE);
     }
 }

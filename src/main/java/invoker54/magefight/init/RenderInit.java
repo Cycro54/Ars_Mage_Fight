@@ -29,6 +29,7 @@ public class RenderInit {
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.MANA_SLIME_ENTITY, ManaSlimeRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.SPELL_SHIELD_ENTITY, SpellShieldRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.RUPTURE_SWORD_ENTITY, RuptureSwordRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.COMBO_ENTITY, ComboEntityRenderer::new);
 
         //For tiles
         ClientRegistry.bindTileEntityRenderer(TileInit.COMBAT_BLOCK_TILE, CombatBlockRenderer::new);

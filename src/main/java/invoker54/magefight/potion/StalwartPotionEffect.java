@@ -121,7 +121,8 @@ public class StalwartPotionEffect extends Effect {
         @SubscribeEvent
         public static void onExpire(PotionEvent.PotionExpiryEvent event){
             if (event.isCanceled()) return;
-            if (event.getPotionEffect().getEffect() != EffectInit.STALWART_EFFECT) return;
+            if (event.getPotionEffect() == null) return;
+            if (!event.getPotionEffect().getEffect().equals(EffectInit.STALWART_EFFECT)) return;
             removeEffect(event.getEntityLiving());
         }
         @SubscribeEvent

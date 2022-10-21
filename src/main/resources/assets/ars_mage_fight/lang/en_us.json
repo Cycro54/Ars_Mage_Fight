@@ -17,6 +17,10 @@
   "item.ars_mage_fight.vital_reserve_charm": "Vital Reserve Charm",
   "item.ars_mage_fight.vital_reserve_charm.desc": "Increases max mana by 400. Once your mana is less than 400, you will begin to take damage depending on how much you use.",
 
+  "__comment": "This is for damage sources",
+  "spell.chilled": "Chilled to the bone",
+  "spell.combo": "Combo Breaker",
+
   "__comment": "This is for block names",
   "block.ars_mage_fight.combat_block": "Combat Altar",
 

@@ -68,7 +68,8 @@ public class RewindPotionEffect extends Effect {
         @SubscribeEvent
         public static void onExpire(PotionEvent.PotionExpiryEvent event){
             if (event.isCanceled()) return;
-            if (event.getPotionEffect().getEffect() != EffectInit.REWIND_EFFECT) return;
+            if (event.getPotionEffect() == null) return;
+            if (!event.getPotionEffect().getEffect().equals(EffectInit.REWIND_EFFECT)) return;
 
             RewindEffect.moveToAnchor(event.getEntityLiving());
         }

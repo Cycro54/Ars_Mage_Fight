@@ -52,6 +52,10 @@ public class EntityInit {
                     of(RuptureSwordEntity::new, EntityClassification.MISC).noSave().fireImmune().setCustomClientFactory(RuptureSwordEntity::new).sized(1,1)
             .setTrackingRange(10), "rupture_sword");
 
+    public static final EntityType<ComboEntity> COMBO_ENTITY = addEntity(EntityType.Builder.<ComboEntity>
+                    of(ComboEntity::new, EntityClassification.MISC).noSave().fireImmune().setCustomClientFactory(ComboEntity::new).sized(1,1)
+            .setTrackingRange(10), "combo_entity");
+
     public static final EntityType<LifeSigilEntity> LIFE_SIGIL_ENTITY = addEntity(EntityType.Builder.<LifeSigilEntity>
                     of(LifeSigilEntity::new, EntityClassification.MISC).noSave().fireImmune().setCustomClientFactory(LifeSigilEntity::new).sized(1,1)
             .setTrackingRange(10), "life_sigil");
@@ -80,6 +84,7 @@ public class EntityInit {
         event.put(TIME_ANCHOR_ENTITY, LivingEntity.createLivingAttributes().build());
         event.put(SPELL_SHIELD_ENTITY, LivingEntity.createLivingAttributes().build());
         event.put(RUPTURE_SWORD_ENTITY, LivingEntity.createLivingAttributes().build());
+        event.put(COMBO_ENTITY, LivingEntity.createLivingAttributes().build());
         event.put(LIFE_SIGIL_ENTITY, LivingEntity.createLivingAttributes().build());
         event.put(BLOOD_SLIME_ENTITY, MonsterEntity.createMonsterAttributes().build());
         event.put(MANA_SLIME_ENTITY, MonsterEntity.createMonsterAttributes().build());

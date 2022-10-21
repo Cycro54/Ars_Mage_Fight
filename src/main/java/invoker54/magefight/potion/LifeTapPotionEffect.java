@@ -64,11 +64,6 @@ public class LifeTapPotionEffect extends Effect {
         super.addAttributeModifiers(entityIn, manager, amp);
     }
 
-    @Override
-    public double getAttributeModifierValue(int p_111183_1_, AttributeModifier p_111183_2_) {
-        return super.getAttributeModifierValue(p_111183_1_, p_111183_2_);
-    }
-
     @Mod.EventBusSubscriber(modid = ArsMageFight.MOD_ID)
     public static class PotionEvents{
 
