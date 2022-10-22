@@ -1,6 +1,6 @@
 {
   "type": "ars_nouveau:glyph_recipe",
-  "tier": "TWO",
+  "tier": "THREE",
   "input": "minecraft:obsidian",
   "output": "ars_nouveau:glyph_black_hole"
 }

@@ -1,7 +1,7 @@
 {
   "name": "Black Hole",
   "icon": "ars_nouveau:glyph_black_hole",
-  "category": "mage_fight_glyphs_2",
+  "category": "mage_fight_glyphs_3",
   "sortnum": 2,
   "pages": [
     {
@@ -11,9 +11,9 @@
     {
       "type": "glyph_recipe",
       "recipe": "ars_nouveau:glyph_black_hole",
-      "tier": "TWO",
+      "tier": "THREE",
       "mana_cost": "Medium",
-      "clay_type": "ars_nouveau:marvelous_clay",
+      "clay_type": "ars_nouveau:mythical_clay",
       "reagent": "minecraft:obsidian"
     }
   ]

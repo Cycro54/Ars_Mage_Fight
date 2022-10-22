@@ -43,7 +43,7 @@
   "ars_nouveau.glyph_desc.chilling_touch": "Cause entity hit to have decreased healing. base is 25%, amp is +25% (Max: 200%). if the percentage goes above 100%, it will begin to deal damage.",
   "ars_nouveau.glyph_name.combo": "Combo",
   "item.ars_nouveau.glyph_combo": "Glyph of Combo",
-  "ars_nouveau.glyph_desc.combo": "Cause entity hit to gain the combo effect, each time they kill something the spell will be recast unto them.",
+  "ars_nouveau.glyph_desc.combo": "Gain the Combo effect. Each attack will store damage (dmg reduced by 75%) and increase attack/move speed. Every 3 attacks extends the duration by 5 seconds. Sneak attacking will cause the stored damage to be unleashed on all attacked entities after 1 second. Can not hit the same entity twice.",
   "ars_nouveau.glyph_name.death_grip": "Death's Grip",
   "item.ars_nouveau.glyph_death_grip": "Glyph of Death's Grip",
   "ars_nouveau.glyph_desc.death_grip": "Cause entity hit to be locked in place depending on how low their health is.",

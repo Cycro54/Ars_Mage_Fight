@@ -1,6 +1,6 @@
 {
   "type": "ars_nouveau:glyph_recipe",
-  "tier": "THREE",
-  "input": "minecraft:diamond_sword",
+  "tier": "TWO",
+  "input": "minecraft:iron_sword",
   "output": "ars_nouveau:glyph_combo"
 }
