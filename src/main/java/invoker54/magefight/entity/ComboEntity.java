@@ -5,6 +5,7 @@ import invoker54.magefight.client.ClientUtil;
 import invoker54.magefight.init.EffectInit;
 import invoker54.magefight.init.EntityInit;
 import invoker54.magefight.network.NetworkHandler;
+import invoker54.magefight.network.message.SyncRequestMsg;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -33,6 +34,15 @@ import static invoker54.magefight.potion.ComboPotionEffect.*;
 public class ComboEntity extends FollowerEntity{
 
     int deathTime = 5 * 20;
+
+    @Override
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
+        if (this.level.isClientSide) {
+            NetworkHandler.INSTANCE.sendToServer(new SyncRequestMsg(this.level.dimension().getRegistryName(), this.getId()));
+            return;
+        }
+    }
 
     public ComboEntity(World world, Vector3d position, LivingEntity trackedEntity, LivingEntity casterEntity) {
         super(EntityInit.COMBO_ENTITY, world, position, trackedEntity);
@@ -101,6 +111,9 @@ public class ComboEntity extends FollowerEntity{
     }
     @Override
     protected boolean hasTrackEffect(LivingEntity trackedEntity) {
+        //This should always have the combo string, if it doesn't then we have to wait a little.
+        if (!MagicDataCap.getCap(this).hasTag(comboString)) return true;
+
         CompoundNBT myTag = MagicDataCap.getCap(this).getTag(comboString);
         int casterID = myTag.getInt(casterString);
         LivingEntity caster = (LivingEntity) this.level.getEntity(casterID);

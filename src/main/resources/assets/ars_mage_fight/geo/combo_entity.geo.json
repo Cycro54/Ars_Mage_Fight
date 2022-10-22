@@ -1,0 +1,68 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 4,
+				"visible_bounds_offset": [0, 1, 0]
+			},
+			"bones": [
+				{
+					"name": "Root",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "Group1",
+					"parent": "Root",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "OutRot_SIDE",
+					"parent": "Group1",
+					"pivot": [0, 0, 0],
+					"rotation": [-90, 0, 90]
+				},
+				{
+					"name": "InRot_SIDE",
+					"parent": "OutRot_SIDE",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-10, -1, -10], "size": [20, 2, 20], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "OutRot_RIGHT",
+					"parent": "Group1",
+					"pivot": [0, 0, 0],
+					"rotation": [0, 0, 45]
+				},
+				{
+					"name": "InRot_RIGHT",
+					"parent": "OutRot_RIGHT",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-10, -1, -10], "size": [20, 2, 20], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "OutRot_LEFT",
+					"parent": "Group1",
+					"pivot": [0, 0, 0],
+					"rotation": [0, 0, 135]
+				},
+				{
+					"name": "InRot_LEFT",
+					"parent": "OutRot_LEFT",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-10, -1, -10], "size": [20, 2, 20], "uv": [0, 0]}
+					]
+				}
+			]
+		}
+	]
+}

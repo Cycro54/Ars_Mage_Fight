@@ -79,7 +79,7 @@ public class ComboEffect extends AbstractEffect {
         LivingEntity hitEntity = (LivingEntity) rayTraceResult.getEntity();
 
         if (hitEntity.getId() == shooter.getId()) {
-            ComboPotionEffect.startCombo(hitEntity, spellStats);
+            ComboPotionEffect.startCombo(hitEntity);
         }
     }
 
