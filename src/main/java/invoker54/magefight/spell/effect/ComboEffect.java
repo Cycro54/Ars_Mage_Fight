@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.entity.PartEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +23,10 @@ public class ComboEffect extends AbstractEffect {
 
     public static ComboEffect INSTANCE = new ComboEffect();
     private static final Logger LOGGER = LogManager.getLogger();
-
+    @Nullable
+    public ForgeConfigSpec.DoubleValue MANA_LOSS_PER_ENTITY;
+    @Nullable
+    public ForgeConfigSpec.DoubleValue MANA_GAIN_PER_EXTRA_DAMAGE;
     private ComboEffect() {
         super("combo", "Combo");
     }
@@ -86,7 +90,7 @@ public class ComboEffect extends AbstractEffect {
     //Make sure to change the mana cost
     @Override
     public int getManaCost() {
-        return 80;
+        return 75;
     }
 
     //Change the tier
@@ -108,6 +112,13 @@ public class ComboEffect extends AbstractEffect {
         return ArsNouveauAPI.getInstance().getGlyphItem(MethodProjectile.INSTANCE);
     }
 
+    @Override
+    public void buildConfig(ForgeConfigSpec.Builder builder) {
+        super.buildConfig(builder);
+        INSTANCE.MANA_LOSS_PER_ENTITY = (builder.comment("Mana loss per hit entity").defineInRange("Mana_Loss", 45F, 0, Integer.MAX_VALUE));
+        INSTANCE.MANA_GAIN_PER_EXTRA_DAMAGE = (builder.comment("Mana gained per extra damage point unused (won't exceed mana loss per entity)").defineInRange("Mana_Gain_Per_DMG", 4F, 0, Integer.MAX_VALUE));
+//        LOGGER.debug("THIS IS WHAT THE MULTIPLIER VALUE IS: " + INSTANCE.MULTIPLIER.get());
+    }
 
     //The augments that will work with this glyph
 //    @Nonnull
@@ -127,6 +138,6 @@ public class ComboEffect extends AbstractEffect {
     @Nonnull
     @Override
     public Set<AbstractAugment> getCompatibleAugments() {
-        return augmentSetOf(AugmentAmplify.INSTANCE);
+        return augmentSetOf();
     }
 }

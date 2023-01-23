@@ -4,11 +4,15 @@ import com.hollingsworth.arsnouveau.api.event.EventQueue;
 import com.hollingsworth.arsnouveau.api.event.ITimedEvent;
 import com.hollingsworth.arsnouveau.api.event.ManaRegenCalcEvent;
 import com.hollingsworth.arsnouveau.api.spell.*;
+import com.hollingsworth.arsnouveau.common.capability.Mana;
+import com.hollingsworth.arsnouveau.common.capability.ManaCapability;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.capability.player.MagicDataCap;
 import invoker54.magefight.client.ClientUtil;
 import invoker54.magefight.entity.ComboEntity;
 import invoker54.magefight.init.EffectInit;
+import invoker54.magefight.spell.effect.ComboEffect;
+import jdk.nashorn.internal.runtime.ECMAErrors;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -93,6 +97,8 @@ public class ComboPotionEffect extends Effect {
     public static void startCombo(LivingEntity hitEntity){
         MagicDataCap cap = MagicDataCap.getCap(hitEntity);
         cap.removeTag(comboString);
+        cap.getTag(comboString);
+        MagicDataCap.syncToClient(hitEntity);
         LOGGER.debug("WHOS THE ENTITY " + hitEntity.getName().getString());
 
         //Now give them the combo effect
@@ -102,7 +108,7 @@ public class ComboPotionEffect extends Effect {
     public static void addComboTime(LivingEntity hitEntity){
         //Increase the amount of amps there are if the max hasn't been reached already
         EffectInstance instance = hitEntity.getEffect(EffectInit.COMBO_EFFECT);
-        int ticks = instance.getDuration() + (4 * 20);
+        int ticks = instance.getDuration() + (3 * 20);
 
         hitEntity.addEffect(new EffectInstance(EffectInit.COMBO_EFFECT, ticks, 0));
     }
@@ -120,34 +126,34 @@ public class ComboPotionEffect extends Effect {
         LOGGER.debug("ENTITY HAS COMBO RIGHT? " + attacker.hasEffect(EffectInit.COMBO_EFFECT));
         if (!attacker.hasEffect(EffectInit.COMBO_EFFECT)) return;
 
-        //Entities attacked
-        List<Integer> hitList = Arrays.stream(tag.getIntArray(hitListString)).boxed().collect(Collectors.toList());
+        //Only if the sneak click the last enemy may it end correctly
+        if (shiftClicked) {
+            //Entities attacked
+            List<Integer> hitList = Arrays.stream(tag.getIntArray(hitListString)).boxed().collect(Collectors.toList());
 
-        int amp = 1;
-        if (hitList.size() >= 3) amp += 1;
-        if (shiftClicked) amp += 1;
+            LOGGER.debug("GRABBING POTENTIAL VICTIMS");
+            ArrayList<LivingEntity> victims = new ArrayList<>();
 
-        LOGGER.debug("GRABBING POTENTIAL VICTIMS");
-        ArrayList<LivingEntity> victims = new ArrayList<>();
+            for (int mobID : hitList) {
+                LivingEntity comboEntity = (LivingEntity) attacker.level.getEntity(mobID);
+                if (comboEntity == null || !comboEntity.isAlive()) continue;
+                victims.add(comboEntity);
+            }
 
-        for (int mobID : hitList) {
-            LivingEntity comboEntity = (LivingEntity) attacker.level.getEntity(mobID);
-            if (comboEntity == null || !comboEntity.isAlive()) continue;
-            victims.add(comboEntity);
+
+            LOGGER.debug("CREATING COMBO EVENT");
+            LOGGER.debug("STORED DAMAGE: " + storedDmg);
+            LOGGER.debug("AMOUNT OF VICTIMS: " + victims.size());
+
+            attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.FIREWORK_ROCKET_LAUNCH, attacker.getSoundSource(), 1.0F, 1.0F);
+            attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, attacker.getSoundSource(), 1.0F, 1.0F);
+            EventQueue.getServerInstance().addEvent(new ComboEvent(victims, attacker, storedDmg));
         }
-        LOGGER.debug("CREATING COMBO EVENT");
-        LOGGER.debug("STORED DAMAGE: " + storedDmg);
-        LOGGER.debug("AMOUNT OF VICTIMS: " + victims.size());
-        LOGGER.debug("AMPLIFIER: " + amp);
-
-        attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.FIREWORK_ROCKET_LAUNCH, attacker.getSoundSource(), 1.0F, 1.0F);
-        attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, attacker.getSoundSource(), 1.0F, 1.0F);
-        EventQueue.getServerInstance().addEvent(new ComboEvent(victims, attacker, storedDmg * amp));
-
 
         LOGGER.debug("REMOVING COMBO TAG AND COMBO EFFECT");
         //Remove the tag
         cap.removeTag(comboString);
+        LOGGER.debug("HAVE COMBO TAG? " + cap.hasTag(comboString));
         MagicDataCap.syncToClient(attacker);
         //Then make sure to remove the Combo effect
         attacker.removeEffect(EffectInit.COMBO_EFFECT);
@@ -155,6 +161,27 @@ public class ComboPotionEffect extends Effect {
 
     @Mod.EventBusSubscriber(modid = ArsMageFight.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ComboEvents{
+
+        @SubscribeEvent
+        public static void onRegen(ManaRegenCalcEvent event){
+            if (!(event.getEntityLiving() instanceof PlayerEntity)) return;
+            if (event.isCanceled()) return;
+
+            PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+
+            //If they dont have combo effect, pass.
+            if (!player.hasEffect(EffectInit.COMBO_EFFECT)) return;
+
+            //Make sure they have the combo tag!
+            MagicDataCap cap = MagicDataCap.getCap(player);
+            if (!cap.hasTag(comboString)) return;
+
+            //If the Combo INSTANCE or MANA_LOSS_PER_ENTITY don't exist, pass.
+            if (ComboEffect.INSTANCE == null || ComboEffect.INSTANCE.MANA_LOSS_PER_ENTITY == null) return;
+
+            event.setRegen(0);
+        }
+
         //This will be for entities that aren't the caster
         @SubscribeEvent
         public static void onDamage(LivingDamageEvent event) {
@@ -171,6 +198,7 @@ public class ComboPotionEffect extends Effect {
             MagicDataCap cap = MagicDataCap.getCap(attacker);
             CompoundNBT tag = cap.getTag(comboString);
             List<Integer> hitList = Arrays.stream(tag.getIntArray(hitListString)).boxed().collect(Collectors.toList());
+            Mana manaCap = (Mana) ManaCapability.getMana(attacker).resolve().get();
 
             if (!hitList.contains(hitEntity.getId())) {
                 //Now add their id to the list
@@ -188,12 +216,14 @@ public class ComboPotionEffect extends Effect {
 
                 //Reduce the damage & store it for later
                 LOGGER.debug("DAMAGE BEFORE REDUCTION: " + event.getAmount());
-                event.setAmount(event.getAmount() * 0.20F);
+                event.setAmount(event.getAmount() * 0.5F);
                 LOGGER.debug("DAMAGE AFTER REDUCTION: " + event.getAmount());
                 tag.putFloat(storedDamageString, tag.getFloat(storedDamageString) + event.getAmount());
 
+                if (manaCap != null) manaCap.removeMana(ComboEffect.INSTANCE.MANA_LOSS_PER_ENTITY.get());
+
                 //Increase effect duration
-                if (hitList.size() % 3 == 0) {
+                if (hitList.size() % 2 == 0) {
                     LOGGER.debug("TALLYING");
                     //Increase the tally
                     addComboTime(attacker);
@@ -201,11 +231,27 @@ public class ComboPotionEffect extends Effect {
             }
             else {
                 event.setCanceled(true);
+                return;
             }
 
-            if (attacker.isCrouching()){
+            if (attacker.isCrouching() || (manaCap != null && manaCap.getCurrentMana() == 0)){
                 castCombo(attacker, true);
             }
+        }
+
+        @SubscribeEvent
+        public static void onFinalDamage(LivingDamageEvent event){
+            if (event.getSource() == null) return;
+            if (!Objects.equals(event.getSource().msgId, "spell.combo")) return;
+            if (!(event.getSource().getEntity() instanceof PlayerEntity)) return;
+
+            //If the damage isn't greater than health, pass.
+            if (event.getAmount() <= event.getEntityLiving().getHealth()) return;
+
+            float leftover = (event.getAmount() - event.getEntityLiving().getHealth());
+            ManaCapability.getMana((LivingEntity) event.getSource().getEntity()).ifPresent((mana) ->{
+                mana.addMana(Math.min(ComboEffect.INSTANCE.MANA_GAIN_PER_EXTRA_DAMAGE.get() * leftover, ComboEffect.INSTANCE.MANA_LOSS_PER_ENTITY.get()));
+            });
         }
 
         @SubscribeEvent
@@ -214,7 +260,7 @@ public class ComboPotionEffect extends Effect {
             if (!event.getPotionEffect().getEffect().equals(EffectInit.COMBO_EFFECT)) return;
             LivingEntity expireEntity = event.getEntityLiving();
 
-            castCombo(expireEntity, expireEntity.isCrouching());
+            castCombo(expireEntity, false);
         }
 
         @SubscribeEvent
@@ -223,7 +269,7 @@ public class ComboPotionEffect extends Effect {
             if (!event.getPotionEffect().getEffect().equals(EffectInit.COMBO_EFFECT)) return;
             LivingEntity removeEntity = event.getEntityLiving();
 
-            castCombo(removeEntity, removeEntity.isCrouching());
+            castCombo(removeEntity, false);
         }
     }
 

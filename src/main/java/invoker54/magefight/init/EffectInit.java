@@ -38,6 +38,8 @@ public class EffectInit {
     public static final Effect REWIND_EFFECT = addEffect(new RewindPotionEffect(EffectType.BENEFICIAL), "rewind_effect");
     public static final Effect METABOLIC_RUSH_EFFECT = addEffect(new MetabolicRushPotionEffect(EffectType.NEUTRAL), "metabolic_rush_effect");
     public static final Effect LIFE_TAP_EFFECT = addEffect(new LifeTapPotionEffect(EffectType.NEUTRAL), "life_tap_effect");
+    public static final Effect ENRAGED_EFFECT = addEffect(new EnragedPotionEffect(EffectType.HARMFUL), "enraged_effect");
+    public static final Effect MANA_DROUGHT_EFFECT = addEffect(new ManaDroughtPotionEffect(EffectType.HARMFUL), "mana_drought_effect");
 
     @SubscribeEvent
     public static void registerEffects(final RegistryEvent.Register<Effect> event) {

@@ -14,9 +14,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.capabilities.Capability;
@@ -51,6 +53,10 @@ public class MagicDataCap implements IMagicCap {
     protected static final HashMap<LivingEntity, MagicDataCap> caps = new HashMap<>();
     private static final String spellString = "UNLOCKED_BATTLE_SPELLS_STRING";
     private final ArrayList<AbstractSpellPart> unlockedSpells = new ArrayList<>();
+    private static final String seenSpellString = "SEEN_SPELLS_STRING";
+    private final ArrayList<AbstractSpellPart> seenSpells = new ArrayList<>();
+    private static final String tempSpellString = "TEMP_SPELLS_STRING";
+    private final ArrayList<AbstractSpellPart> tempSpells = new ArrayList<>();
 
     private final HashMap<String, CompoundNBT> magicTags = new HashMap<>();
 
@@ -66,9 +72,16 @@ public class MagicDataCap implements IMagicCap {
 //        LOGGER.debug("IS PRESENT? " + entity.getCapability(MagicDataProvider.CAP_MAGIC_DATA).isPresent());
             if (!caps.containsKey(entity)){
 //                LOGGER.info("GRABBING CAP DATA");
-                MagicDataCap cap = entity.getCapability(MagicDataProvider.CAP_MAGIC_DATA).orElseThrow(NullPointerException::new);
-                if (!cap.isEmpty()) caps.put(entity, cap);
-                return cap;
+                try {
+                    MagicDataCap cap = entity.getCapability(MagicDataProvider.CAP_MAGIC_DATA).orElseThrow(NullPointerException::new);
+                    if (!cap.isEmpty()) caps.put(entity, cap);
+                    return cap;
+                }
+                catch (Exception e){
+                    LOGGER.error(e);
+                    LOGGER.info("WHOS THE CULPRIT? " + entity.getName().getString());
+                    return CapSaveDelayEvent.grabTempCap(entity);
+                }
             }
             return caps.get(entity);
     }
@@ -91,10 +104,8 @@ public class MagicDataCap implements IMagicCap {
         }
         LOGGER.debug("ENTITY NAME: " + (entity.getName().getString()));
         LOGGER.debug("ENTITY ID: " + (entity.getUUID()));
-        CompoundNBT newNBT = new CompoundNBT();
-        entity.save(newNBT);
         NetworkHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
-                new SyncMagicDataMsg(getCap(entity).serializeNBT(), entity.getId(), newNBT));
+                new SyncMagicDataMsg(getCap(entity).serializeNBT(), entity.getId()));
 //        if (entity instanceof PlayerEntity){
 //            NetworkHandler.sendToPlayer((PlayerEntity) entity, new SyncMagicDataMsg(getCap(entity).serializeNBT(), entity.getId()));
 //        }
@@ -105,6 +116,20 @@ public class MagicDataCap implements IMagicCap {
         return this.unlockedSpells;
     }
 
+    public boolean checkSeenSpell(AbstractSpellPart spellPart){
+        return this.seenSpells.contains(spellPart);
+    }
+    public void saveTempSpells(List<AbstractSpellPart> spellPartList){
+        this.tempSpells.clear();
+        this.tempSpells.addAll(spellPartList);
+    }
+    public void removeTempSpells(){
+        this.tempSpells.clear();
+    }
+    public List<AbstractSpellPart> getTempSpells(){
+        return this.tempSpells;
+    }
+
     @Override
     public void removeSpell(AbstractSpellPart spellPart){
         this.unlockedSpells.remove(spellPart);
@@ -113,6 +138,7 @@ public class MagicDataCap implements IMagicCap {
     @Override
     public void addSpell(AbstractSpellPart spellPart){
         this.unlockedSpells.add(spellPart);
+        if (!this.seenSpells.contains(spellPart)) this.seenSpells.add(spellPart);
     }
 
     @Override
@@ -151,7 +177,7 @@ public class MagicDataCap implements IMagicCap {
 //                LOGGER.debug("INDEX " + index);
 //                LOGGER.debug("NAME " + name);
 //                LOGGER.debug("WHATS BEING RETURNED " + magicTags.get(name));
-                if (!magicTags.containsKey(name) || getTag(name) == null || getTag(name).isEmpty()) continue;
+                if (!magicTags.containsKey(name) || getTag(name) == null) continue;
                 nameNBT.putString(("" + index), name);
                 compoundNBT.put(("" + index), magicTags.get(name));
                 index++;
@@ -162,12 +188,26 @@ public class MagicDataCap implements IMagicCap {
             mainNBT.put(tagCompounds, compoundNBT);
         }
 
+        //All the spells you've unlocked
         String unlockSpells = "";
         for (AbstractSpellPart spellPart: this.unlockedSpells){
             unlockSpells = unlockSpells.concat(spellPart.getTag() + ",");
         }
-
         mainNBT.putString(spellString, unlockSpells);
+
+        //All the spells you've seen
+        String seenSpells = "";
+        for (AbstractSpellPart spellPart: this.seenSpells){
+            seenSpells = seenSpells.concat(spellPart.getTag() + ",");
+        }
+        mainNBT.putString(seenSpellString, seenSpells);
+
+        //Your spell choices
+        String tempSpells = "";
+        for (AbstractSpellPart spellPart: this.tempSpells){
+            tempSpells = tempSpells.concat(spellPart.getTag() + ",");
+        }
+        mainNBT.putString(tempSpellString, tempSpells);
 
         return mainNBT;
     }
@@ -175,7 +215,6 @@ public class MagicDataCap implements IMagicCap {
     @Override
     public void deserializeNBT(CompoundNBT mainNBT) {
         this.magicTags.clear();
-        this.unlockedSpells.clear();
 
         CompoundNBT nameNBT = mainNBT.getCompound(tagNames);
         CompoundNBT compoundNBT = mainNBT.getCompound(tagCompounds);
@@ -185,7 +224,8 @@ public class MagicDataCap implements IMagicCap {
                     (CompoundNBT) compoundNBT.get(("" + index)));
         }
 
-//        LOGGER.debug("DOES MAIN NBT CONTAIN A SPELL STRING? " + (mainNBT.contains(spellString)));
+        //This is for unlocked spells
+        this.unlockedSpells.clear();
         String[] stringSpells = mainNBT.getString(spellString).split(",");
         if (stringSpells.length != 0 && !Objects.equals(stringSpells[0], "")) {
             Map<String, AbstractSpellPart> spellMap = ArsNouveauAPI.getInstance().getSpell_map();
@@ -195,7 +235,30 @@ public class MagicDataCap implements IMagicCap {
                 }
             }
         }
-//        LOGGER.debug("HOW MANY SPELLS DO I HAVE? " + (this.unlockedSpells.size()));
+
+        //This is for all the spells you've seen
+        this.seenSpells.clear();
+        stringSpells = mainNBT.getString(seenSpellString).split(",");
+        if (stringSpells.length != 0 && !Objects.equals(stringSpells[0], "")) {
+            Map<String, AbstractSpellPart> spellMap = ArsNouveauAPI.getInstance().getSpell_map();
+            for (String spellPart : stringSpells){
+                if (spellMap.containsKey(spellPart)){
+                    this.seenSpells.add(spellMap.get(spellPart));
+                }
+            }
+        }
+
+        //This is for all the spell choices you have
+        this.tempSpells.clear();
+        stringSpells = mainNBT.getString(tempSpellString).split(",");
+        if (stringSpells.length != 0 && !Objects.equals(stringSpells[0], "")) {
+            Map<String, AbstractSpellPart> spellMap = ArsNouveauAPI.getInstance().getSpell_map();
+            for (String spellPart : stringSpells){
+                if (spellMap.containsKey(spellPart)){
+                    this.tempSpells.add(spellMap.get(spellPart));
+                }
+            }
+        }
     }
 
     public static class MagicDataStorage implements Capability.IStorage<MagicDataCap>{

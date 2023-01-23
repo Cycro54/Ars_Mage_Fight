@@ -38,20 +38,19 @@ public class ComboEntity extends FollowerEntity{
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-        if (this.level.isClientSide) {
-            NetworkHandler.INSTANCE.sendToServer(new SyncRequestMsg(this.level.dimension().getRegistryName(), this.getId()));
-            return;
-        }
+//        if (this.level.isClientSide) {
+//            NetworkHandler.INSTANCE.sendToServer(new SyncRequestMsg(this.level.dimension().getRegistryName(), this.getId()));
+//            return;
+//        }
     }
-
     public ComboEntity(World world, Vector3d position, LivingEntity trackedEntity, LivingEntity casterEntity) {
         super(EntityInit.COMBO_ENTITY, world, position, trackedEntity);
 
         //This is for if the caster loses the COMBO effect
         MagicDataCap.getCap(this).getTag(comboString).putInt(casterString, casterEntity.getId());
 
-        POGGER.debug("IS CASTER NULL " + (this.level.getEntity(casterEntity.getId())));
-        POGGER.debug("MY ID IS: " + (this.getId()));
+//        POGGER.debug("IS CASTER NULL " + (this.level.getEntity(casterEntity.getId())));
+//        POGGER.debug("MY ID IS: " + (this.getId()));
     }
 
     public ComboEntity(EntityType<? extends LivingEntity> entityType, World world) {
@@ -72,6 +71,14 @@ public class ComboEntity extends FollowerEntity{
         return offset;
     }
 
+    public LivingEntity getCaster(){
+        if (!MagicDataCap.getCap(this).hasTag(comboString)) return null;
+
+        CompoundNBT myTag = MagicDataCap.getCap(this).getTag(comboString);
+        int casterID = myTag.getInt(casterString);
+        return (LivingEntity) this.level.getEntity(casterID);
+    }
+
     @Override
     public void turn(LivingEntity trackedEntity) {
         this.lookAt(EntityAnchorArgument.Type.EYES, ClientUtil.mC.player.getEyePosition(0));
@@ -81,27 +88,29 @@ public class ComboEntity extends FollowerEntity{
     @Override
     public void registerControllers(AnimationData data) {
         super.registerControllers(data);
-        data.addAnimationController(new AnimationController(this, "startController", 0, this::startController));
+//        data.addAnimationController(new AnimationController(this, "startController", 0, this::startController));
         data.addAnimationController(new AnimationController(this, "rotateController", 0, this::rotateController));
         data.addAnimationController(new AnimationController(this, "lifeController", 0, this::lifeController));
     }
     private PlayState lifeController(AnimationEvent<RuptureSwordEntity> event){
         AnimationController control = event.getController();
+        LivingEntity caster = getCaster();
+
         if (control.getCurrentAnimation() == null) {
             control.setAnimation(new AnimationBuilder().addAnimation("Spawn"));
         }
-        else if (deathTime != 5 * 20){
+        else if (caster != null && !MagicDataCap.getCap(caster).hasTag(comboString)){
             control.setAnimation(new AnimationBuilder().addAnimation("Death"));
         }
         return PlayState.CONTINUE;
     }
-    private PlayState startController(AnimationEvent<RuptureSwordEntity> event){
-        AnimationController control = event.getController();
-        if (control.getCurrentAnimation() == null) {
-            control.setAnimation(new AnimationBuilder().addAnimation("Spawn"));
-        }
-        return PlayState.CONTINUE;
-    }
+//    private PlayState startController(AnimationEvent<RuptureSwordEntity> event){
+//        AnimationController control = event.getController();
+//        if (control.getCurrentAnimation() == null) {
+//            control.setAnimation(new AnimationBuilder().addAnimation("Spawn"));
+//        }
+//        return PlayState.CONTINUE;
+//    }
     private PlayState rotateController(AnimationEvent<RuptureSwordEntity> event){
         AnimationController control = event.getController();
         if (control.getCurrentAnimation() == null) {
@@ -113,10 +122,7 @@ public class ComboEntity extends FollowerEntity{
     protected boolean hasTrackEffect(LivingEntity trackedEntity) {
         //This should always have the combo string, if it doesn't then we have to wait a little.
         if (!MagicDataCap.getCap(this).hasTag(comboString)) return true;
-
-        CompoundNBT myTag = MagicDataCap.getCap(this).getTag(comboString);
-        int casterID = myTag.getInt(casterString);
-        LivingEntity caster = (LivingEntity) this.level.getEntity(casterID);
+        LivingEntity caster = getCaster();
 
         if (caster == null) return false;
 
@@ -132,7 +138,7 @@ public class ComboEntity extends FollowerEntity{
 //        POGGER.debug("DOES CASTER HAVE COMBO " + (caster.hasEffect(EffectInit.COMBO_EFFECT)));
 //        POGGER.debug(hitList);
 //        POGGER.debug(trackedEntity.getId());
-
+        if (trackedEntity == null) return false;
         return hitList.contains(trackedEntity.getId()) && caster.hasEffect(EffectInit.COMBO_EFFECT);
     }
 }

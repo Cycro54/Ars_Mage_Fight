@@ -25,6 +25,7 @@ public class GlyphInit {
         register(RewindEffect.INSTANCE);
         register(MetabolicRushEffect.INSTANCE);
         register(LifeTapEffect.INSTANCE);
+        register(EnrageEffect.INSTANCE);
     }
 
     public static void register(AbstractSpellPart spellPart) {

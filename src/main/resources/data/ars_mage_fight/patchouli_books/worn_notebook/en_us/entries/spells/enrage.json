@@ -1,0 +1,20 @@
+{
+  "name": "Enrage",
+  "icon": "ars_nouveau:glyph_enrage",
+  "category": "mage_fight_glyphs_3",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "ars_nouveau.glyph_desc.enrage"
+    },
+    {
+      "type": "glyph_recipe",
+      "recipe": "ars_nouveau:glyph_enrage",
+      "tier": "THREE",
+      "mana_cost": "High",
+      "clay_type": "ars_nouveau:mythical_clay",
+      "reagent": "minecraft:fire_charge"
+    }
+  ]
+}

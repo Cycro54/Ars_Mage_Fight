@@ -68,6 +68,9 @@ public class BuyGlyphMsg {
                 player.addItem(stack);
             }
 
+            //Remove the temp spells
+            cap.removeTempSpells();
+
             //Make sure to sync their data right after
             MagicDataCap.syncToClient(player);
         });

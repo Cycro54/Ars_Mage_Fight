@@ -3,25 +3,28 @@ package invoker54.magefight.event;
 import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
 import com.hollingsworth.arsnouveau.api.event.SpellResolveEvent;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
+import com.hollingsworth.arsnouveau.common.capability.Mana;
+import com.hollingsworth.arsnouveau.common.capability.ManaCapability;
+import com.hollingsworth.arsnouveau.common.network.Networking;
+import com.hollingsworth.arsnouveau.common.network.PacketUpdateMana;
 import com.hollingsworth.arsnouveau.common.util.PortUtil;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.capability.player.MagicDataCap;
 import invoker54.magefight.config.MageFightConfig;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponent;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
 @Mod.EventBusSubscriber(modid = ArsMageFight.MOD_ID)
 public class UseSpellEvent {
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @SubscribeEvent
     public static void useSpell(SpellResolveEvent.Pre event){
@@ -30,13 +33,7 @@ public class UseSpellEvent {
         MagicDataCap cap = MagicDataCap.getCap(event.shooter);
 
         //Get the pool list
-        List<AbstractSpellPart> pool_list = new ArrayList<>();
-        Map<String, AbstractSpellPart> spellPartMap = ArsNouveauAPI.getInstance().getSpell_map();
-        for (String spellTag: MageFightConfig.randomGlyphPool){
-            if (!spellPartMap.containsKey(spellTag)) continue;
-
-            pool_list.add(spellPartMap.get(spellTag));
-        }
+        List<AbstractSpellPart> pool_list = MageFightConfig.getPoolList();
 
         //Get the spell parts list
         Set<AbstractSpellPart> set = new LinkedHashSet<>(event.spell.recipe);

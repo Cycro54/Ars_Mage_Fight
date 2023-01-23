@@ -1,15 +1,19 @@
 package invoker54.magefight.spell.effect;
 
 import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
-import com.hollingsworth.arsnouveau.api.spell.*;
-import com.hollingsworth.arsnouveau.common.spell.augment.*;
+import com.hollingsworth.arsnouveau.api.spell.AbstractAugment;
+import com.hollingsworth.arsnouveau.api.spell.AbstractEffect;
+import com.hollingsworth.arsnouveau.api.spell.SpellContext;
+import com.hollingsworth.arsnouveau.api.spell.SpellStats;
 import com.hollingsworth.arsnouveau.common.spell.method.MethodProjectile;
-import invoker54.magefight.entity.DeathGripEntity;
+import invoker54.magefight.capability.player.MagicDataCap;
+import invoker54.magefight.entity.LifeSigilEntity;
+import invoker54.magefight.potion.EnragedPotionEffect;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.item.Item;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.entity.PartEntity;
 import org.apache.logging.log4j.LogManager;
@@ -17,16 +21,16 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
-public class TemplateEffect extends AbstractEffect {
+public class EnrageEffect extends AbstractEffect {
 
-    public static TemplateEffect INSTANCE = new TemplateEffect();
+    public static EnrageEffect INSTANCE = new EnrageEffect();
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private TemplateEffect() {
-        super("template", "Template");
+    private EnrageEffect() {
+        super("enrage", "Enrage");
     }
 
     //This would make it so the effect only works on entities (might not need it though.)
@@ -38,6 +42,7 @@ public class TemplateEffect extends AbstractEffect {
     @Override
     public void onResolveEntity(EntityRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
         LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
+        if (shooter == null) return;
         while (rayTraceResult.getEntity() instanceof PartEntity) {
             rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
         }
@@ -45,20 +50,19 @@ public class TemplateEffect extends AbstractEffect {
 
         //This was the LivingEntity hit.
         LivingEntity hitEntity = (LivingEntity) rayTraceResult.getEntity();
-
-        //Then do the spell thing here
+        EnragedPotionEffect.startRage(shooter, hitEntity);
     }
 
     //Make sure to change the mana cost
     @Override
     public int getManaCost() {
-        return 120;
+        return 150;
     }
 
     //Change the tier
     @Override
-    public ISpellTier.Tier getTier() {
-        return ISpellTier.Tier.THREE;
+    public Tier getTier() {
+        return Tier.THREE;
     }
 
     //Get a book description (I don't think this is actually used.)

@@ -82,7 +82,7 @@ public class DeathGripEffect extends AbstractEffect{
 
     @Override
     public int getManaCost() {
-        return 300;
+        return 240;
     }
 
     @Override

@@ -30,6 +30,8 @@ public class StalwartEffect extends AbstractEffect {
     public static StalwartEffect INSTANCE = new StalwartEffect();
     private static final Logger LOGGER = LogManager.getLogger();
     @Nullable
+    public ForgeConfigSpec.DoubleValue STORED_MANA_AMP;
+    @Nullable
     public ForgeConfigSpec.DoubleValue MAX_MANA_MULTIPLIER;
     @Nullable
     public ForgeConfigSpec.DoubleValue REGEN_MULTIPLIER;
@@ -67,7 +69,7 @@ public class StalwartEffect extends AbstractEffect {
     //Make sure to change the mana cost
     @Override
     public int getManaCost() {
-        return 165;
+        return 120;
     }
 
     //Change the tier
@@ -92,8 +94,9 @@ public class StalwartEffect extends AbstractEffect {
     @Override
     public void buildConfig(ForgeConfigSpec.Builder builder) {
         super.buildConfig(builder);
+        INSTANCE.STORED_MANA_AMP = (builder.comment("How much mana is needed to amplify the effects of the slow and knockback").defineInRange("STORED_MANA_AMP", 80F, 1, Integer.MAX_VALUE));
         INSTANCE.MAX_MANA_MULTIPLIER = (builder.comment("Cost multiplier per 100 max mana (per 1 damage)").defineInRange("Max_Mana_Cost_Multiplier", 3F, 0, Integer.MAX_VALUE));
-        INSTANCE.REGEN_MULTIPLIER = (builder.comment("Cost multiplier for mana regen (per total damage)").defineInRange("Regen_Cost_Multiplier", 4F, 0, Integer.MAX_VALUE));
+        INSTANCE.REGEN_MULTIPLIER = (builder.comment("Cost multiplier for mana regen (per total damage)").defineInRange("Regen_Cost_Multiplier", 2F, 0, Integer.MAX_VALUE));
 //        LOGGER.debug("THIS IS WHAT THE MULTIPLIER VALUE IS: " + INSTANCE.MULTIPLIER.get());
     }
 
@@ -101,6 +104,6 @@ public class StalwartEffect extends AbstractEffect {
     @Nonnull
     @Override
     public Set<AbstractAugment> getCompatibleAugments() {
-        return augmentSetOf(AugmentAmplify.INSTANCE, AugmentExtendTime.INSTANCE);
+        return augmentSetOf(AugmentExtendTime.INSTANCE);
     }
 }

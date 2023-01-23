@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class ComboPotionEffectBackup extends Effect {
     private static final Logger LOGGER = LogManager.getLogger();
     //private static final HashMap<World, HashMap<UUID, SpellResolver>> comboSpells = new HashMap<>();

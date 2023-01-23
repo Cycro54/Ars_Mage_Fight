@@ -67,10 +67,13 @@ public class BasicEntity extends LivingEntity implements IAnimatable {
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-//        if (this.level.isClientSide){
-//            NetworkHandler.INSTANCE.sendToServer(new SyncRequestMsg(this.level.dimension().getRegistryName(), this.getId()));
-//            return;
-//        }
+
+        POGGER.debug("WHATS MY NAME? " + this.getName().getString());
+        POGGER.debug("WHATS MY ID? " + this.getId());
+        if (this.level.isClientSide){
+            NetworkHandler.INSTANCE.sendToServer(new SyncRequestMsg(this.level.dimension().getRegistryName(), this.getId()));
+            return;
+        }
 
         //This is for physics.
 //        this.setNoAi(true);

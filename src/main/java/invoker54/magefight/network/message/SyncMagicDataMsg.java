@@ -19,22 +19,19 @@ public class SyncMagicDataMsg {
 
     public CompoundNBT magicData;
     public int mobID;
-    public CompoundNBT entityData;
 
-    public SyncMagicDataMsg(CompoundNBT magicData, int mobID, CompoundNBT entityData){
+    public SyncMagicDataMsg(CompoundNBT magicData, int mobID){
         this.magicData = magicData;
         this.mobID = mobID;
-        this.entityData = entityData;
     }
 
     public static void encode(SyncMagicDataMsg msg, PacketBuffer buffer){
         buffer.writeNbt(msg.magicData);
         buffer.writeInt(msg.mobID);
-        buffer.writeNbt(msg.entityData);
     }
 
     public static SyncMagicDataMsg decode(PacketBuffer buffer){
-        return new SyncMagicDataMsg(buffer.readNbt(), buffer.readInt(), buffer.readNbt());
+        return new SyncMagicDataMsg(buffer.readNbt(), buffer.readInt());
     }
 
     //This is how the Network Handler will handle the message

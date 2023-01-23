@@ -427,6 +427,7 @@ public class GlyphStorageScreen extends BaseCombatScreen {
             }
             //Then add the base price at the end
             cost += MageFightConfig.baseGlyphPrice;
+            cost = Math.min(MageFightConfig.maxCost, cost);
 
             ITextComponent buyText = ITextComponent.nullToEmpty(" Purchase: " + (cost) + " ");
             buyButton = new ClientUtil.SimpleButton(0,0, font.width(buyText.getString()), 13, buyText, (button) -> {

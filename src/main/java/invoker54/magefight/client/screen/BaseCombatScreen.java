@@ -1,5 +1,6 @@
 package invoker54.magefight.client.screen;
 
+import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
 import com.hollingsworth.arsnouveau.api.util.SpellRecipeUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -14,6 +15,7 @@ import net.minecraft.util.text.ITextComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BaseCombatScreen extends Screen {
@@ -45,7 +47,8 @@ public class BaseCombatScreen extends Screen {
 
         //Now start to gather data
         //First grab all the glyphs from the glyph pool
-        poolSpells = SpellRecipeUtil.getSpellsFromString(MageFightConfig.serialize().getString("randomGlyphPool"));
+        poolSpells = new ArrayList<>(ArsNouveauAPI.getInstance().getSpell_map().values());
+        poolSpells.removeAll(SpellRecipeUtil.getSpellsFromString(MageFightConfig.serialize().getString("blacklistGlyphPool")));
         LOGGER.debug("WHATS THE PLAYER ID: " + (ClientUtil.mC.player.getId()));
         LOGGER.debug("WHATS THE POOL SIZE: " + poolSpells.size());
         //Now get all the spells the player has

@@ -4,11 +4,14 @@ import com.hollingsworth.arsnouveau.api.mana.IMana;
 import com.hollingsworth.arsnouveau.api.spell.SpellStats;
 import com.hollingsworth.arsnouveau.api.util.ManaUtil;
 import com.hollingsworth.arsnouveau.common.capability.ManaCapability;
+import com.hollingsworth.arsnouveau.common.spell.augment.AugmentAOE;
 import com.hollingsworth.arsnouveau.common.spell.augment.AugmentAmplify;
 import com.hollingsworth.arsnouveau.common.spell.augment.AugmentExtendTime;
+import com.hollingsworth.arsnouveau.common.spell.effect.EffectKnockback;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.capability.player.MagicDataCap;
 import invoker54.magefight.client.ClientUtil;
+import invoker54.magefight.entity.BlackHoleEntity;
 import invoker54.magefight.entity.SpellShieldEntity;
 import invoker54.magefight.init.EffectInit;
 import invoker54.magefight.spell.effect.StalwartEffect;
@@ -16,11 +19,17 @@ import jdk.nashorn.internal.ir.annotations.Ignore;
 import net.minecraft.block.TNTBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -28,10 +37,13 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.commons.lang3.concurrent.Computable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.openal.LOKIWAVEFormat;
 
 import java.awt.*;
+import java.util.UUID;
 
 public class StalwartPotionEffect extends Effect {
     public static final int effectColor = new Color(0, 31, 42,255).getRGB();
@@ -44,6 +56,7 @@ public class StalwartPotionEffect extends Effect {
     public static final String stalwartString = "STALWART_DATA";
     public static final String casterString = "CASTER";
     public static final String spellShieldString = "Spell_Shield_ID";
+    public static final String storedManaString = "STORED_MANA_FLOAT";
 
     public static void castStalwart(LivingEntity shooter, SpellStats stats, LivingEntity hitEntity){
         MagicDataCap cap = MagicDataCap.getCap(hitEntity);
@@ -52,11 +65,15 @@ public class StalwartPotionEffect extends Effect {
         stalwartNBT.putUUID(casterString, shooter.getUUID());
 
         //Do the basic calculations
-        int blockAmp = Math.min(3, stats.getBuffCount(AugmentAmplify.INSTANCE));
         int timeInTicks = (15 + (stats.getBuffCount(AugmentExtendTime.INSTANCE) * 5)) * 20;
 
-        //Then give the entity the effect
-        hitEntity.addEffect(new EffectInstance(EffectInit.STALWART_EFFECT, timeInTicks, blockAmp, false, false, true));
+        //Apply the mana drought effect to the caster (apply twice if the stalwart effect is applied to the caster)
+        if (hitEntity.getId() != shooter.getId())ManaDroughtPotionEffect.applyPotionEffect(shooter, 8 + (stats.getBuffCount(AugmentExtendTime.INSTANCE) * 4), 1, false, true);
+        else ManaDroughtPotionEffect.applyPotionEffect(shooter, 8 + (stats.getBuffCount(AugmentExtendTime.INSTANCE) * 4), 2,false, true);
+
+        //Then give the hitEntity the Stalwart effect
+        hitEntity.addEffect(new EffectInstance(EffectInit.STALWART_EFFECT, timeInTicks, 0,false, false, true));
+
     }
 
     @Override
@@ -95,10 +112,39 @@ public class StalwartPotionEffect extends Effect {
 
         public static void removeEffect(LivingEntity potionEntity){
             MagicDataCap cap = MagicDataCap.getCap(potionEntity);
+            CompoundNBT stalwartNBT = cap.getTag(stalwartString);
 
             //Before removing the tag, first remove the shield entity
-            Entity shieldEntity = potionEntity.level.getEntity(cap.getTag(stalwartString).getInt(spellShieldString));
+            Entity shieldEntity = potionEntity.level.getEntity(stalwartNBT.getInt(spellShieldString));
             if (shieldEntity instanceof SpellShieldEntity) shieldEntity.remove();
+
+            //Then let's begin setting up the slowness and knockback
+            LivingEntity casterEntity = (LivingEntity) ((ServerWorld)potionEntity.level).getEntity(stalwartNBT.getUUID(casterString));
+            UUID casterID = (casterEntity == null ? null : casterEntity.getUUID());
+            LOGGER.debug("WHATS MANA AMP CONFIG : " + StalwartEffect.INSTANCE.STORED_MANA_AMP.get());
+            float amp = (float) (stalwartNBT.getFloat(storedManaString)/StalwartEffect.INSTANCE.STORED_MANA_AMP.get());
+            LOGGER.debug("HOW MUCH MANA WAS STORED? " + stalwartNBT.getFloat(storedManaString));
+            LOGGER.debug("WHATS AMP AT: " + amp);
+
+            AxisAlignedBB bounds = potionEntity.getBoundingBox().inflate(amp);
+
+            //Grab all entities nearby
+            for (LivingEntity target : potionEntity.level.getEntitiesOfClass(LivingEntity.class, bounds)) {
+                if ((target.noPhysics || target.isInvulnerable() || !target.isPushable()))
+                    continue;
+                if (target == potionEntity) continue;
+                if (target.getUUID().equals(casterID)) continue;
+                if (target instanceof ArmorStandEntity && ((ArmorStandEntity) target).isMarker()) continue;
+
+                //First apply knockback
+                EffectKnockback.INSTANCE.knockback(target, potionEntity, amp);
+                target.hurtMarked = true;
+                //Then apply slowness
+                target.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, (int) (amp * 20), 0, false, false, true));
+            }
+            //Let's get some particle effects to show up and the explosion sound
+            potionEntity.level.playSound(null, potionEntity.blockPosition(), SoundEvents.GENERIC_EXPLODE,
+                    potionEntity.getSoundSource(), 4.0F, (1.0F + (potionEntity.level.random.nextFloat() - potionEntity.level.random.nextFloat()) * 0.2F) * 0.7F);
 
             //Finally remove the tag
             cap.removeTag(stalwartString);
@@ -153,13 +199,14 @@ public class StalwartPotionEffect extends Effect {
 
             IMana mana = ManaCapability.getMana(casterEntity).resolve().get();
             //This is how much damage we wish to block
-            float dmgToBlock = (event.getAmount() * (Math.min(0.8F, 0.20F + (effectInstance.getAmplifier() * 0.20F))));
+            float dmgToBlock = (event.getAmount() * ((0.50F * hurtEntity.getArmorCoverPercentage()) + 0.25F));
             LOGGER.debug("HOW MUCH DAMAGE DO I WISH TO BLOCK: " + dmgToBlock);
             //Make sure to take it out of the amount for now.
             event.setAmount(event.getAmount() - dmgToBlock);
             //This is the casters regen
             double manaRegen = ManaUtil.getManaRegen((PlayerEntity) casterEntity);
             StalwartEffect inst = StalwartEffect.INSTANCE;
+            LOGGER.debug("HOW MUCH MANA DO I HAVE IN TOTAL: " + mana.getMaxMana());
             LOGGER.debug("MANA REGEN: " + manaRegen);
             LOGGER.debug("MANA REGEN divided by dmgToBlock: " + (manaRegen/dmgToBlock));
             LOGGER.debug("Max Mana/100: " + (mana.getMaxMana()/100F));
@@ -181,8 +228,21 @@ public class StalwartPotionEffect extends Effect {
             //Add that damage back to the main amount
             event.setAmount(event.getAmount() + dmgToBlock);
             LOGGER.debug("WHATS THE TOTAL DAMAGE LEFT? " + event.getAmount());
-            //Then finally remove the spent mana
+            //Remove the spent mana
             mana.removeMana(manaToUse);
+            //And finally place it into the storeMana float
+            stalwartNBT.putFloat(storedManaString, (float) (manaToUse + stalwartNBT.getFloat(storedManaString)));
+
+
+            //If the caster has no more mana left, remove the stalwart effect
+            if (mana.getCurrentMana() == 0){
+                hurtEntity.removeEffect(EffectInit.STALWART_EFFECT);
+            }
+            //reduce the duration of the effect
+            else {
+                EffectInstance oldInstance = hurtEntity.removeEffectNoUpdate(EffectInit.STALWART_EFFECT);
+                hurtEntity.addEffect(new EffectInstance(EffectInit.STALWART_EFFECT, oldInstance.getDuration() - (2 * 20), 0,false, false, true));
+            }
         }
     }
 }

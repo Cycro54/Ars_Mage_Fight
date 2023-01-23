@@ -57,7 +57,7 @@ public class FollowerEntity extends BasicEntity {
         return super.shouldRender(p_145770_1_, p_145770_3_, p_145770_5_);
     }
     protected boolean hasTrackEffect(LivingEntity trackedEntity){
-        return true;
+        return trackedEntity != null && trackedEntity.isAlive();
     }
 
     public void turn(LivingEntity trackedEntity){
@@ -70,12 +70,12 @@ public class FollowerEntity extends BasicEntity {
         super.tick();
 
         LivingEntity trackedEntity = (LivingEntity) this.getVehicle();
-        POGGER.debug("IS NULL: " + (trackedEntity == null));
-        POGGER.debug("IS ALIVE: " + (trackedEntity.isAlive()));
-        POGGER.debug("IS CLIENTSIDE: " + (this.level.isClientSide));
-        POGGER.debug("HAS TRACK EFFECT: " + (hasTrackEffect(trackedEntity)));
-        if (trackedEntity == null || !trackedEntity.isAlive() || (!this.level.isClientSide && !hasTrackEffect(trackedEntity))){
-            LOGGER.debug("THE RUPTURE ENTITY IS NULL OR DEAD!");
+//        POGGER.debug("IS NULL: " + (trackedEntity == null));
+//        POGGER.debug("IS ALIVE: " + (trackedEntity.isAlive()));
+//        POGGER.debug("IS CLIENTSIDE: " + (this.level.isClientSide));
+//        POGGER.debug("HAS TRACK EFFECT: " + (hasTrackEffect(trackedEntity)));
+        if (!this.level.isClientSide && !hasTrackEffect(trackedEntity)){
+//            LOGGER.debug("THE RUPTURE ENTITY IS NULL OR DEAD!");
             this.remove();
             return;
         }

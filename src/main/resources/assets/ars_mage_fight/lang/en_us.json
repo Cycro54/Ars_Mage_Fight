@@ -20,6 +20,7 @@
   "__comment": "This is for damage sources",
   "spell.chilled": "Chilled to the bone",
   "spell.combo": "Combo Breaker",
+  "spell.enraged": "Deadly Infighting",
 
   "__comment": "This is for block names",
   "block.ars_mage_fight.combat_block": "Combat Altar",
@@ -43,7 +44,7 @@
   "ars_nouveau.glyph_desc.chilling_touch": "Cause entity hit to have decreased healing. base is 25%, amp is +25% (Max: 200%). if the percentage goes above 100%, it will begin to deal damage.",
   "ars_nouveau.glyph_name.combo": "Combo",
   "item.ars_nouveau.glyph_combo": "Glyph of Combo",
-  "ars_nouveau.glyph_desc.combo": "Gain the Combo effect. Each attack will store damage (dmg reduced by 75%) and increase attack/move speed. Every 3 attacks extends the duration by 5 seconds. Sneak attacking will cause the stored damage to be unleashed on all attacked entities after 1 second. Can not hit the same entity twice.",
+  "ars_nouveau.glyph_desc.combo": "Gain the Combo effect. Each attack will store damage (dmg reduced by 50%), expend mana, and increase attack/move speed. Every 2 attacks extends the duration by 3 seconds. Sneak attacking will cause the stored damage to be unleashed on all attacked entities after 1 second. Can not hit the same entity twice.",
   "ars_nouveau.glyph_name.death_grip": "Death's Grip",
   "item.ars_nouveau.glyph_death_grip": "Glyph of Death's Grip",
   "ars_nouveau.glyph_desc.death_grip": "Cause entity hit to be locked in place depending on how low their health is.",
@@ -70,29 +71,38 @@
   "ars_nouveau.glyph_desc.rupture": "Pierces entity hit with a blood sword causing health loss depending on how far they move. Will heal back to original health if entity doesn't move. Lasts for 9 seconds (+3 per extend)",
   "ars_nouveau.glyph_name.stalwart": "Stalwart",
   "item.ars_nouveau.glyph_stalwart": "Glyph of Stalwart",
-  "ars_nouveau.glyph_desc.stalwart": "Cause entity hit to be protected by a mana shield. if entity hit is not the caster, mana cost is reduced by half. Damage reduction is calculated before armor. Base block is 20% (+20% amp) (80% max). Lasts 15 seconds (+5 per extend).",
+  "ars_nouveau.glyph_desc.stalwart": "Cause entity hit to be protected by a mana shield. if entity hit is not the caster, mana cost is reduced by half. Damage reduction is calculated before armor. dmg blocked is affected by the amount of armor you wear, 75% with no armor, 25% with full armor. on spell end nearby entities will be pushed away and slowed. Applies Mana Drought (mana regen slow) on cast. Lasts 15 seconds (+5 per extend).",
   "ars_nouveau.glyph_name.vengeful_strike": "Vengeful Strike",
   "item.ars_nouveau.glyph_vengeful_strike": "Glyph of Vengeful Strike",
   "ars_nouveau.glyph_desc.vengeful_strike": "Cause entity hit to store a portion of the damage taken for 6 seconds, afterwards will cause the damage stored to be distributed evenly among all nearby entities EXCEPT the caster",
+  "ars_nouveau.glyph_name.enrage": "Enrage",
+  "item.ars_nouveau.glyph_enrage": "Glyph of Enrage",
+  "ars_nouveau.glyph_desc.enrage": "Entity hit and all entities in a 9 block radius will gain the ENRAGED effect. The entities nearby will attack the main entity, damaging themselves in the process. If the hit entity dies, they will target the caster for the remainder of the time. cannot be cast on already ENRAGED entities, lasts 20 seconds",
 
   "__comment": "This is for status effect names",
   "effect.ars_mage_fight.chilled_effect": "Chilled",
   "effect.ars_mage_fight.shocked_effect": "Shocked",
   "effect.ars_mage_fight.overcharge_effect": "Overcharge",
-  "effect.ars_mage_fight.combo_effect": "Combo!",
+  "effect.ars_mage_fight.combo_effect": "COMBO",
   "effect.ars_mage_fight.black_hole_effect": "Distortion",
   "effect.ars_mage_fight.fatal_bond_effect": "Fatal Bond",
   "effect.ars_mage_fight.vengeance_effect": "Vengeance",
   "effect.ars_mage_fight.stalwart_effect": "Stalwart",
   "effect.ars_mage_fight.rupture_effect": "Rupture",
   "effect.ars_mage_fight.rewind_effect": "Rewind",
+  "effect.ars_mage_fight.enraged_effect": "Enraged",
   "effect.ars_mage_fight.metabolic_rush_effect": "Food Rush",
   "effect.ars_mage_fight.life_tap_effect": "Life Tap",
+  "effect.ars_mage_fight.mana_drought_effect": "Mana Drought",
 
   "__comment": "This is for glyph buying requirements",
   "ars_mage_fight.buy_glyph.size": "§c - You have the max amount of glyphs allowed ",
   "ars_mage_fight.buy_glyph.no_more": "§c - There are no glyphs available right now.",
   "ars_mage_fight.buy_glyph.broke_1": "§c - You don't have enough experience, you have: ",
-  "ars_mage_fight.buy_glyph.broke_2": "§c , you need: "
+  "ars_mage_fight.buy_glyph.broke_2": "§c , you need: ",
+
+  "__comment": "This is for item tool tips",
+  "ars_mage_fight.tooltip.unlocked" : "UNLOCKED",
+  "ars_mage_fight.tooltip.locked" : "LOCKED"
 
 }

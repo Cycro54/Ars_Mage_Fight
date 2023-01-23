@@ -43,7 +43,7 @@ public class SyncRequestMsg {
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             Iterable<ServerWorld> worlds = server.getAllLevels();
             for(World world : worlds){
-                if (world.dimension().getRegistryName().equals(msg.level)){
+                if (world.dimension().getRegistryName().equals(msg.level) && world.getEntity(msg.mobID) != null){
                     Entity targetEntity = world.getEntity(msg.mobID);
                     if (targetEntity == null){
                         LOGGER.debug("WHAT IN THE WORLD, IT FAILED!! (THE MAGIC DATA REQUEST), Here's the ID: "
@@ -52,8 +52,11 @@ public class SyncRequestMsg {
                     }
 //                    MagicDataCap.refreshCap(targetEntity);
                     MagicDataCap.syncToClient((LivingEntity) targetEntity);
+                    return;
                 }
             }
+
+            LOGGER.debug("I COULDNT FIND THE MOB, WHAT ON EARTH IS HAPENING");
         });
         context.setPacketHandled(true);
     }

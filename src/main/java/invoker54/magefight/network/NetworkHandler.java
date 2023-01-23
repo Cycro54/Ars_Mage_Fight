@@ -41,6 +41,7 @@ public class NetworkHandler {
          INSTANCE.registerMessage(nextID(), SyncConfigMsg.class, SyncConfigMsg::encode, SyncConfigMsg::decode, SyncConfigMsg::handle);
          INSTANCE.registerMessage(nextID(), BuyGlyphMsg.class, BuyGlyphMsg::encode, BuyGlyphMsg::decode, BuyGlyphMsg::handle);
          INSTANCE.registerMessage(nextID(), SellGlyphMsg.class, SellGlyphMsg::encode, SellGlyphMsg::decode, SellGlyphMsg::handle);
+         INSTANCE.registerMessage(nextID(), SaveChoicesMsg.class, SaveChoicesMsg::encode, SaveChoicesMsg::decode, SaveChoicesMsg::handle);
     }
 
 
