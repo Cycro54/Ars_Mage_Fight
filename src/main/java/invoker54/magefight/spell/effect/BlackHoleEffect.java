@@ -5,10 +5,12 @@ import com.hollingsworth.arsnouveau.api.spell.AbstractAugment;
 import com.hollingsworth.arsnouveau.api.spell.AbstractEffect;
 import com.hollingsworth.arsnouveau.api.spell.SpellContext;
 import com.hollingsworth.arsnouveau.api.spell.SpellStats;
-import com.hollingsworth.arsnouveau.common.spell.augment.*;
+import com.hollingsworth.arsnouveau.common.spell.augment.AugmentAOE;
+import com.hollingsworth.arsnouveau.common.spell.augment.AugmentExtendTime;
+import com.hollingsworth.arsnouveau.common.spell.augment.AugmentSensitive;
 import com.hollingsworth.arsnouveau.common.spell.method.MethodProjectile;
-import invoker54.magefight.potion.BlackHolePotionEffect;
 import invoker54.magefight.entity.BlackHoleEntity;
+import invoker54.magefight.potion.BlackHolePotionEffect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Effect;
@@ -35,7 +37,7 @@ public class BlackHoleEffect extends AbstractEffect {
 
     @Override
     public void onResolveEntity(EntityRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
-        LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
+        // LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
         if (world.isClientSide) return;
         while (rayTraceResult.getEntity() instanceof PartEntity) {
             rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
@@ -67,7 +69,7 @@ public class BlackHoleEffect extends AbstractEffect {
     //Make sure to change the mana cost
     @Override
     public int getManaCost() {
-        return 80;
+        return 90;
     }
 
     //Change the tier

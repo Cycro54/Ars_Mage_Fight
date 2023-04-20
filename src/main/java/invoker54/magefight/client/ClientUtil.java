@@ -11,12 +11,11 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.*;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -188,9 +187,7 @@ public class ClientUtil {
 
     public static boolean inBounds (float xSpot, float ySpot, Bounds bounds){
         if (xSpot < bounds.x0 || xSpot > bounds.x1) return false;
-        if (ySpot < bounds.y0 || ySpot > bounds.y1) return false;
-
-        return  true;
+        return !(ySpot < bounds.y0) && !(ySpot > bounds.y1);
     }
     protected static final ArrayList<Bounds> cropBounds = new ArrayList<>();
     public static void beginCrop (double x, double width, double y, double height, boolean fresh){

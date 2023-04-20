@@ -94,7 +94,8 @@ public class TemplateEntity extends LivingEntity implements IAnimatable {
         super.tick();
 
         if (this.level.isClientSide) return;
-        if (!this.isAlive()) return;
+        if (!this.isAlive()) {
+        }
     }
 
     @Override

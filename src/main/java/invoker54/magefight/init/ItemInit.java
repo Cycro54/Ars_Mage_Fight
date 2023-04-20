@@ -1,7 +1,6 @@
 package invoker54.magefight.init;
 
 import com.hollingsworth.arsnouveau.ArsNouveau;
-
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.items.CombatBlockItem;
 import invoker54.magefight.items.curios.*;
@@ -35,6 +34,8 @@ public class ItemInit {
     public static final Item CREEPER_TRINKET = addItem(new CreeperTrinket(getDefault(true)), "creeper_trinket");
     public static final Item VITAL_RESERVE_CHARM = addItem(new VitalReserveCharm(getDefault(true)), "vital_reserve_charm");
     public static final Item MANA_STRIKE_RING = addItem(new ManaStrikeRing(getDefault(true)), "mana_strike_ring");
+    public static final Item EXPLOSIVE_BLOOD_CHARM = addItem(new ExplosiveBloodCharm(getDefault(true)), "explosive_blood_charm");
+    public static final Item DEATHS_BANE_TRINKET = addItem(new DeathsBaneTrinket(getDefault(true)), "deaths_bane_trinket");
 
     //This is for custom block items
     public static final Item COMBAT_BLOCK_ITEM = addItem(new CombatBlockItem(BlockInit.COMBAT_BLOCK, getDefault(true)), "combat_block_item");

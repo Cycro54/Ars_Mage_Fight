@@ -23,6 +23,6 @@ public class RuptureSwordEntity extends FollowerEntity {
 
     @Override
     protected boolean hasTrackEffect(LivingEntity trackedEntity) {
-        return trackedEntity.hasEffect(EffectInit.RUPTURE_EFFECT);
+        return trackedEntity.hasEffect(EffectInit.RUPTURE_EFFECT) && super.hasTrackEffect(trackedEntity);
     }
 }

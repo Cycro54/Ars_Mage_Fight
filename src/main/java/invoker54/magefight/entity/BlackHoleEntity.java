@@ -1,39 +1,22 @@
 package invoker54.magefight.entity;
 
-import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.capability.player.MagicDataCap;
-import invoker54.magefight.network.NetworkHandler;
-import invoker54.magefight.network.message.SyncRequestMsg;
-import invoker54.magefight.potion.BlackHolePotionEffect;
 import invoker54.magefight.init.EffectInit;
 import invoker54.magefight.init.EntityInit;
-import net.minecraft.entity.Entity;
+import invoker54.magefight.potion.BlackHolePotionEffect;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.PotionEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.FMLPlayMessages;
-import net.minecraftforge.fml.network.NetworkHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.core.AnimationState;
-import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.Objects;
 
@@ -62,7 +45,6 @@ public class BlackHoleEntity extends BasicEntity{
             if (deathTime > 3 * 20) {
                 POGGER.debug("I AM REMOVING THIS BLACK HOLE EFFECT.");
                 this.remove();
-                return;
             }
         }
     }

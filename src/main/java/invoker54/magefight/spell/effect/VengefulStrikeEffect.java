@@ -43,7 +43,7 @@ public class VengefulStrikeEffect extends AbstractEffect {
 
     @Override
     public void onResolveEntity(EntityRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
-        LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
+        // LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
         while (rayTraceResult.getEntity() instanceof PartEntity) {
             rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
         }
@@ -59,7 +59,7 @@ public class VengefulStrikeEffect extends AbstractEffect {
     //Make sure to change the mana cost
     @Override
     public int getManaCost() {
-        return 120;
+        return 45;
     }
 
     //Change the tier

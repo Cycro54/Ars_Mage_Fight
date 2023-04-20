@@ -30,23 +30,15 @@ public class RuptureEffect extends AbstractEffect {
     @Nullable
     public ForgeConfigSpec.DoubleValue HEAL_MULTIPLIER;
     @Nullable
-    public ForgeConfigSpec.BooleanValue CAN_KILL_PLAYER;
-    @Nullable
-    public ForgeConfigSpec.BooleanValue CAN_KILL_MOBS;
+    public ForgeConfigSpec.DoubleValue DAMAGE_MAX;
 
     private RuptureEffect() {
         super("rupture", "Rupture");
     }
 
-    //This would make it so the effect only works on entities (might not need it though.)
-//    @Override
-//    public boolean wouldSucceed(RayTraceResult rayTraceResult, World world, LivingEntity shooter, List<AbstractAugment> augments) {
-//        return rayTraceResult instanceof EntityRayTraceResult;
-//    }
-
     @Override
     public void onResolveEntity(EntityRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
-        LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
+        // LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
         while (rayTraceResult.getEntity() instanceof PartEntity) {
             rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
         }
@@ -64,7 +56,7 @@ public class RuptureEffect extends AbstractEffect {
     //Make sure to change the mana cost
     @Override
     public int getManaCost() {
-        return 200;
+        return 105;
     }
 
     //Change the tier
@@ -91,8 +83,7 @@ public class RuptureEffect extends AbstractEffect {
         super.buildConfig(builder);
         INSTANCE.DAMAGE_MULTIPLIER = (builder.comment("Multiplies damage done per 1 unit every 5 ticks (default is 10% max health)").defineInRange("Damage_Multiplier", 6F, 0, Integer.MAX_VALUE));
         INSTANCE.HEAL_MULTIPLIER = (builder.comment("Multiplies heals done while standing (default is 5% health)").defineInRange("Health_Multiplier", 2F, 0, Integer.MAX_VALUE));
-        INSTANCE.CAN_KILL_PLAYER = (builder.comment("Can this spell kill players").define("Can_Kill_Player", false));
-        INSTANCE.CAN_KILL_MOBS = (builder.comment("Can this spell kill mobs").define("Can_Kill_Mobs", true));
+        INSTANCE.DAMAGE_MAX = (builder.comment("The max percentage of health that may be taken").defineInRange("Damage_Max", 0.75F, 0, 1));
 //        LOGGER.debug("THIS IS WHAT THE MULTIPLIER VALUE IS: " + INSTANCE.MULTIPLIER.get());
     }
 

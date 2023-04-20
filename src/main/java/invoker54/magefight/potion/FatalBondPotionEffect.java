@@ -47,7 +47,7 @@ public class FatalBondPotionEffect extends Effect {
 
     public static void startBinding(int mobCount, boolean isSensitive, LivingEntity hitEntity, LivingEntity caster){
         if (hitEntity.level.isClientSide){
-            LOGGER.warn("FATAL BOND ENTITY IS ON CLIENT SIDE, WHY??");
+            // LOGGER.warn("FATAL BOND ENTITY IS ON CLIENT SIDE, WHY??");
             return;
         }
 
@@ -66,7 +66,7 @@ public class FatalBondPotionEffect extends Effect {
 
                 //Refresh their effect while here
                 mainMaster.addEffect(new EffectInstance(EffectInit.FATAL_BOND_EFFECT, 30 * 20, 0));
-                LOGGER.warn("OUTMASTERTICK");
+                // LOGGER.warn("OUTMASTERTICK");
             }
 
             //Now for the slaves
@@ -76,7 +76,7 @@ public class FatalBondPotionEffect extends Effect {
 
                 //Refresh their effect while here
                 newMaster.addEffect(new EffectInstance(EffectInit.FATAL_BOND_EFFECT, 30 * 20, 0));
-                LOGGER.warn("OUTSLAVETICK");
+                // LOGGER.warn("OUTSLAVETICK");
             }
         }
 
@@ -107,7 +107,7 @@ public class FatalBondPotionEffect extends Effect {
 
                     //Refresh their effect while here
                     oldMaster.addEffect(new EffectInstance(EffectInit.FATAL_BOND_EFFECT, 30 * 20, 0));
-                    LOGGER.error("INMASTERTICK");
+                    // LOGGER.error("INMASTERTICK");
                 }
 
                 //On the last master, I have to assign the newMaster as the master
@@ -125,7 +125,7 @@ public class FatalBondPotionEffect extends Effect {
                     //Refresh their effect while here
                     newMaster.addEffect(new EffectInstance(EffectInit.FATAL_BOND_EFFECT, 30 * 20, 0));
 
-                    LOGGER.error("INSLAVETICK");
+                    // LOGGER.error("INSLAVETICK");
                 }
             }
             else {
@@ -231,8 +231,8 @@ public class FatalBondPotionEffect extends Effect {
             if (getMaster(hurtEntity) != null) getMaster(hurtEntity).hurt(event.getSource(), event.getAmount());
             if (getSlave(hurtEntity) != null) getSlave(hurtEntity).hurt(event.getSource(), event.getAmount());
 
-            LOGGER.warn("THIS IS THE DAMAGE YOU WILL TAKE: " + (event.getAmount() * 0.5F));
-            LOGGER.warn("THIS IS HOW MUCH HEALTH YOU WILL HAVE: " + (event.getEntityLiving().getHealth() - (event.getAmount() * 0.5F)));
+            // LOGGER.warn("THIS IS THE DAMAGE YOU WILL TAKE: " + (event.getAmount() * 0.5F));
+            // LOGGER.warn("THIS IS HOW MUCH HEALTH YOU WILL HAVE: " + (event.getEntityLiving().getHealth() - (event.getAmount() * 0.5F)));
             event.setAmount(event.getAmount() * 0.5F);
         }
         @SubscribeEvent

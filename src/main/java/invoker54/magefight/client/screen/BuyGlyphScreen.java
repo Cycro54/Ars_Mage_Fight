@@ -1,10 +1,8 @@
 package invoker54.magefight.client.screen;
 
 import com.hollingsworth.arsnouveau.ArsNouveau;
-import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
 import com.hollingsworth.arsnouveau.api.mana.IMana;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
-import com.hollingsworth.arsnouveau.common.capability.Mana;
 import com.hollingsworth.arsnouveau.common.capability.ManaCapability;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import invoker54.magefight.ArsMageFight;
@@ -22,8 +20,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BuyGlyphScreen extends BaseCombatScreen{
@@ -53,10 +50,10 @@ public class BuyGlyphScreen extends BaseCombatScreen{
     protected ClientUtil.Image obsidianCardBack = new ClientUtil.Image(new ResourceLocation(ArsMageFight.MOD_ID,"textures/gui/combat_block_cards.png"),
             102, 34, 66, 66, 256);
 
-    private int selectedDesign;
+    private final int selectedDesign;
     private List<Button> glyphButtons;
     private AbstractSpellPart selectedChoice;
-    private MagicDataCap playerCap;
+    private final MagicDataCap playerCap;
 
     public BuyGlyphScreen(){
         //First select a design
@@ -96,8 +93,8 @@ public class BuyGlyphScreen extends BaseCombatScreen{
 //                LOGGER.debug("BUTTON BEGINNING HEIGHT IS: " + this.buttons.get(a).getHeight());
 
                 boolean showFront = playerCap.checkSeenSpell(poolSpells.get(a)) && MageFightConfig.showSeenGlyphs;
-                LOGGER.debug("WHAT's THE GLYPH? " + poolSpells.get(a).getName());
-                LOGGER.debug("DID I UNLOCK IT ALREADY? " + playerCap.checkSeenSpell(poolSpells.get(a)));
+                // LOGGER.debug("WHAT's THE GLYPH? " + poolSpells.get(a).getName());
+                // LOGGER.debug("DID I UNLOCK IT ALREADY? " + playerCap.checkSeenSpell(poolSpells.get(a)));
                 if (showFront){
                     //Then render the glyph
                     ClientUtil.Image choiceIMG = new ClientUtil.Image(new ResourceLocation(ArsNouveau.MODID, "textures/items/" + poolSpells.get(a).getIcon()), 0, 16, 0, 16, 16);
@@ -259,7 +256,7 @@ public class BuyGlyphScreen extends BaseCombatScreen{
             img.setActualSize(img.getWidth() * 2, img.getHeight() * 2);
             ClientUtil.SimpleButton choiceButton =
                     new ClientUtil.SimpleButton(0,0, img.getWidth(), img.getHeight(), ITextComponent.nullToEmpty(""), (button) ->{
-                        LOGGER.debug("YOU HAVE SELECTED: " + spellPart.getName());
+                        // LOGGER.debug("YOU HAVE SELECTED: " + spellPart.getName());
                         glyphSelected(spellPart);
                     });
 

@@ -40,7 +40,7 @@ public class FatalBondEffect extends AbstractEffect {
 
     @Override
     public void onResolveEntity(EntityRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
-        LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
+        // LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
         while (rayTraceResult.getEntity() instanceof PartEntity) {
             rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
         }
@@ -56,7 +56,7 @@ public class FatalBondEffect extends AbstractEffect {
     //Make sure to change the mana cost
     @Override
     public int getManaCost() {
-        return 80;
+        return 60;
     }
 
     //Change the tier

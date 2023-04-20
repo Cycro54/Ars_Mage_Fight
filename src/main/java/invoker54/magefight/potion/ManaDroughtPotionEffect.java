@@ -3,13 +3,11 @@ package invoker54.magefight.potion;
 import com.hollingsworth.arsnouveau.api.event.ManaRegenCalcEvent;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.init.EffectInit;
-import net.minecraft.client.renderer.VideoMode;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
-import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 

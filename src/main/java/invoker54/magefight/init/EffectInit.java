@@ -40,13 +40,17 @@ public class EffectInit {
     public static final Effect LIFE_TAP_EFFECT = addEffect(new LifeTapPotionEffect(EffectType.NEUTRAL), "life_tap_effect");
     public static final Effect ENRAGED_EFFECT = addEffect(new EnragedPotionEffect(EffectType.HARMFUL), "enraged_effect");
     public static final Effect MANA_DROUGHT_EFFECT = addEffect(new ManaDroughtPotionEffect(EffectType.HARMFUL), "mana_drought_effect");
+    public static final Effect BATTLE_HUNGER_EFFECT = addEffect(new BattleHungerPotionEffect(EffectType.HARMFUL), "battle_hunger_effect");
+    public static final Effect DEATHS_BANE_EFFECT = addEffect(new DeathsBanePotionEffect(EffectType.NEUTRAL), "deaths_bane_effect");
+    public static final Effect LIFE_LEECH_EFFECT = addEffect(new LifeLeechPotionEffect(EffectType.HARMFUL), "life_leech_effect");
+    public static final Effect EXPLOSIVE_BLOOD_EFFECT = addEffect(new ExplosiveBloodPotionEffect(EffectType.HARMFUL), "explosive_blood_effect");
 
     @SubscribeEvent
     public static void registerEffects(final RegistryEvent.Register<Effect> event) {
         IForgeRegistry<Effect> registry = event.getRegistry();
         for (Effect effect: effects){
             registry.register(effect);
-            LOGGER.debug("EFFECT REGISTERED: " + effect.getRegistryName().toString());
+            // LOGGER.debug("EFFECT REGISTERED: " + effect.getRegistryName().toString());
         }
     }
 }

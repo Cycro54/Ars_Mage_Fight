@@ -6,13 +6,9 @@ import com.hollingsworth.arsnouveau.api.spell.AbstractEffect;
 import com.hollingsworth.arsnouveau.api.spell.SpellContext;
 import com.hollingsworth.arsnouveau.api.spell.SpellStats;
 import com.hollingsworth.arsnouveau.common.spell.augment.AugmentAmplify;
-import com.hollingsworth.arsnouveau.common.spell.augment.AugmentExtendTime;
 import com.hollingsworth.arsnouveau.common.spell.method.MethodProjectile;
-import invoker54.magefight.entity.BloodSlimeEntity;
 import invoker54.magefight.entity.ManaSlimeEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -79,7 +75,7 @@ public class ManaSlimeEffect extends AbstractEffect {
     //Make sure to change the mana cost
     @Override
     public int getManaCost() {
-        return 120;
+        return 105;
     }
 
     //Change the tier

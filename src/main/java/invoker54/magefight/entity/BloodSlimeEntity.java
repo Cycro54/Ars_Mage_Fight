@@ -3,47 +3,31 @@ package invoker54.magefight.entity;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.capability.player.MagicDataCap;
 import invoker54.magefight.client.ClientUtil;
-import invoker54.magefight.client.render.BloodSlimeRenderer;
 import invoker54.magefight.init.EntityInit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.network.play.client.CPlayerTryUseItemOnBlockPacket;
-import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openzen.zenscript.codemodel.expression.StaticGetterExpression;
 
-import java.lang.reflect.Field;
-import java.nio.channels.NonWritableChannelException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 public class BloodSlimeEntity extends SlimeEntity {
@@ -259,7 +243,6 @@ public class BloodSlimeEntity extends SlimeEntity {
         if (this.tickCount >= maxLife){
             POGGER.debug("YOUR TOO OLD");
             this.kill();
-            return;
         }
     }
 

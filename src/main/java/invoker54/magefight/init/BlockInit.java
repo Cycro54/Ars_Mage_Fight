@@ -2,13 +2,10 @@ package invoker54.magefight.init;
 
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.blocks.CombatBlock;
-import invoker54.magefight.items.CombatBlockItem;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -39,7 +36,7 @@ public class BlockInit {
     public static void registerBlocks(final RegistryEvent.Register<Block> blockRegistryEvent){
         IForgeRegistry<Block> registry = blockRegistryEvent.getRegistry();
         for (Block block: blocks){
-            LOGGER.debug("REGISTERING: " + block.getRegistryName());
+            // LOGGER.debug("REGISTERING: " + block.getRegistryName());
             registry.register(block);
         }
     }

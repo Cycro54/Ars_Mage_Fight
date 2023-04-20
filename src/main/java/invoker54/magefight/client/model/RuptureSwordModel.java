@@ -2,7 +2,6 @@ package invoker54.magefight.client.model;
 
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.entity.RuptureSwordEntity;
-import invoker54.magefight.entity.RuptureSwordEntity;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

@@ -14,13 +14,11 @@ import com.hollingsworth.arsnouveau.common.spell.method.MethodProjectile;
 import invoker54.magefight.init.EffectInit;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.entity.PartEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,7 +48,7 @@ public class MetabolicRushEffect extends AbstractEffect {
     @Override
     public void onResolveEntity(EntityRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
         if (shooter == null) return;
-        LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
+        // LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
         if (rayTraceResult.getEntity().getId() != shooter.getId()) return;
 
         //Then do the spell thing here

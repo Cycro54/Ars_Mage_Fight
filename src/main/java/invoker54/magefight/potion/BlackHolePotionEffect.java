@@ -122,7 +122,7 @@ public class BlackHolePotionEffect extends Effect {
     public static void startAttract(LivingEntity entityIn, SpellStats stats, LivingEntity caster, LivingEntity hitEntity){
         int time = (8 + (4 * stats.getBuffCount(AugmentExtendTime.INSTANCE))) * 20;
         int amp = stats.getBuffCount(AugmentAOE.INSTANCE);
-        LOGGER.debug("WHATS THE AMP ON THE ATTRACT EFFECT? " + amp);
+        // LOGGER.debug("WHATS THE AMP ON THE ATTRACT EFFECT? " + amp);
 
         CompoundNBT attractTag = MagicDataCap.getCap(entityIn).getTag(ATTRACT_STRING);
         attractTag.putBoolean(SENSITIVE, stats.hasBuff(AugmentSensitive.INSTANCE));

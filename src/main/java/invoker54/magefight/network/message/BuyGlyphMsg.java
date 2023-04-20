@@ -2,7 +2,6 @@ package invoker54.magefight.network.message;
 
 import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
-import com.hollingsworth.arsnouveau.common.items.SpellBook;
 import invoker54.magefight.capability.player.MagicDataCap;
 import invoker54.magefight.config.MageFightConfig;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -45,7 +44,7 @@ public class BuyGlyphMsg {
             MagicDataCap cap = MagicDataCap.getCap(player);
             //Make sure the glyph exists first
             if (!ArsNouveauAPI.getInstance().getSpell_map().containsKey(msg.glyphTag)){
-                LOGGER.warn("THIS GLYPH DOESNT EXIST, CAN'T BUY IT!");
+                // LOGGER.warn("THIS GLYPH DOESNT EXIST, CAN'T BUY IT!");
                 return;
             }
 
@@ -64,7 +63,7 @@ public class BuyGlyphMsg {
             cap.addSpell(ArsNouveauAPI.getInstance().getSpell_map().get(msg.glyphTag));
             if (MageFightConfig.autoUnlockGlyph){
                 ItemStack stack = new ItemStack(ArsNouveauAPI.getInstance().getGlyphItem(msg.glyphTag));
-                LOGGER.debug("ITEM I AM ABOUT TO ADD: " + stack.getDisplayName().getString());
+                // LOGGER.debug("ITEM I AM ABOUT TO ADD: " + stack.getDisplayName().getString());
                 player.addItem(stack);
             }
 

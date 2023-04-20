@@ -3,16 +3,13 @@ package invoker54.magefight.potion;
 import com.hollingsworth.arsnouveau.api.event.EventQueue;
 import com.hollingsworth.arsnouveau.api.event.ITimedEvent;
 import com.hollingsworth.arsnouveau.api.event.ManaRegenCalcEvent;
-import com.hollingsworth.arsnouveau.api.spell.*;
 import com.hollingsworth.arsnouveau.common.capability.Mana;
 import com.hollingsworth.arsnouveau.common.capability.ManaCapability;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.capability.player.MagicDataCap;
-import invoker54.magefight.client.ClientUtil;
 import invoker54.magefight.entity.ComboEntity;
 import invoker54.magefight.init.EffectInit;
 import invoker54.magefight.spell.effect.ComboEffect;
-import jdk.nashorn.internal.runtime.ECMAErrors;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -20,7 +17,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
@@ -32,13 +28,12 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ComboPotionEffect extends Effect {
@@ -58,7 +53,7 @@ public class ComboPotionEffect extends Effect {
     public void removeAttributeModifiers(LivingEntity entityIn, AttributeModifierManager manager, int amp) {
         ModifiableAttributeInstance moveSpeedInstance = manager.getInstance(Attributes.MOVEMENT_SPEED);
         ModifiableAttributeInstance attackSpeedInstance = manager.getInstance(Attributes.ATTACK_SPEED);
-        LOGGER.debug("ADDING THE COMBO MODIFIER");
+//        LOGGER.debug("ADDING THE COMBO MODIFIER");
 
         AttributeModifier modifier = new AttributeModifier(comboUUID, "Combo", 0, AttributeModifier.Operation.MULTIPLY_TOTAL);
 
@@ -77,7 +72,7 @@ public class ComboPotionEffect extends Effect {
     public void addAttributeModifiers(LivingEntity entityIn, AttributeModifierManager manager, int amp) {
         ModifiableAttributeInstance moveSpeedInstance = manager.getInstance(Attributes.MOVEMENT_SPEED);
         ModifiableAttributeInstance attackSpeedInstance = manager.getInstance(Attributes.ATTACK_SPEED);
-        LOGGER.debug("ADDING THE COMBO MODIFIER");
+//        LOGGER.debug("ADDING THE COMBO MODIFIER");
         MagicDataCap cap = MagicDataCap.getCap(entityIn);
         float currAmount = cap.getTag(comboString).getIntArray(hitListString).length;
 
@@ -99,7 +94,7 @@ public class ComboPotionEffect extends Effect {
         cap.removeTag(comboString);
         cap.getTag(comboString);
         MagicDataCap.syncToClient(hitEntity);
-        LOGGER.debug("WHOS THE ENTITY " + hitEntity.getName().getString());
+//        LOGGER.debug("WHOS THE ENTITY " + hitEntity.getName().getString());
 
         //Now give them the combo effect
         hitEntity.addEffect(new EffectInstance(EffectInit.COMBO_EFFECT, 6 * 20, 0));
@@ -115,15 +110,15 @@ public class ComboPotionEffect extends Effect {
 
     //This will cast the combo spell and remove the effect
     public static void castCombo(LivingEntity attacker, boolean shiftClicked) {
-        LOGGER.debug("GRABBING CAP");
+//        LOGGER.debug("GRABBING CAP");
         MagicDataCap cap = MagicDataCap.getCap(attacker);
 
         if (!cap.hasTag(comboString)) return;
         CompoundNBT tag = cap.getTag(comboString);
 
-        LOGGER.debug("GETTING STORED DAMAGE");
+//        LOGGER.debug("GETTING STORED DAMAGE");
         float storedDmg = tag.getFloat(storedDamageString);
-        LOGGER.debug("ENTITY HAS COMBO RIGHT? " + attacker.hasEffect(EffectInit.COMBO_EFFECT));
+//        LOGGER.debug("ENTITY HAS COMBO RIGHT? " + attacker.hasEffect(EffectInit.COMBO_EFFECT));
         if (!attacker.hasEffect(EffectInit.COMBO_EFFECT)) return;
 
         //Only if the sneak click the last enemy may it end correctly
@@ -131,7 +126,7 @@ public class ComboPotionEffect extends Effect {
             //Entities attacked
             List<Integer> hitList = Arrays.stream(tag.getIntArray(hitListString)).boxed().collect(Collectors.toList());
 
-            LOGGER.debug("GRABBING POTENTIAL VICTIMS");
+//            LOGGER.debug("GRABBING POTENTIAL VICTIMS");
             ArrayList<LivingEntity> victims = new ArrayList<>();
 
             for (int mobID : hitList) {
@@ -141,19 +136,19 @@ public class ComboPotionEffect extends Effect {
             }
 
 
-            LOGGER.debug("CREATING COMBO EVENT");
-            LOGGER.debug("STORED DAMAGE: " + storedDmg);
-            LOGGER.debug("AMOUNT OF VICTIMS: " + victims.size());
+//            LOGGER.debug("CREATING COMBO EVENT");
+//            LOGGER.debug("STORED DAMAGE: " + storedDmg);
+//            LOGGER.debug("AMOUNT OF VICTIMS: " + victims.size());
 
             attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.FIREWORK_ROCKET_LAUNCH, attacker.getSoundSource(), 1.0F, 1.0F);
             attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, attacker.getSoundSource(), 1.0F, 1.0F);
             EventQueue.getServerInstance().addEvent(new ComboEvent(victims, attacker, storedDmg));
         }
 
-        LOGGER.debug("REMOVING COMBO TAG AND COMBO EFFECT");
+//        LOGGER.debug("REMOVING COMBO TAG AND COMBO EFFECT");
         //Remove the tag
         cap.removeTag(comboString);
-        LOGGER.debug("HAVE COMBO TAG? " + cap.hasTag(comboString));
+//        LOGGER.debug("HAVE COMBO TAG? " + cap.hasTag(comboString));
         MagicDataCap.syncToClient(attacker);
         //Then make sure to remove the Combo effect
         attacker.removeEffect(EffectInit.COMBO_EFFECT);
@@ -215,16 +210,16 @@ public class ComboPotionEffect extends Effect {
                 EffectInit.COMBO_EFFECT.addAttributeModifiers(attacker, attacker.getAttributes(), 0);
 
                 //Reduce the damage & store it for later
-                LOGGER.debug("DAMAGE BEFORE REDUCTION: " + event.getAmount());
+//                LOGGER.debug("DAMAGE BEFORE REDUCTION: " + event.getAmount());
                 event.setAmount(event.getAmount() * 0.5F);
-                LOGGER.debug("DAMAGE AFTER REDUCTION: " + event.getAmount());
+//                LOGGER.debug("DAMAGE AFTER REDUCTION: " + event.getAmount());
                 tag.putFloat(storedDamageString, tag.getFloat(storedDamageString) + event.getAmount());
 
                 if (manaCap != null) manaCap.removeMana(ComboEffect.INSTANCE.MANA_LOSS_PER_ENTITY.get());
 
                 //Increase effect duration
                 if (hitList.size() % 2 == 0) {
-                    LOGGER.debug("TALLYING");
+//                    LOGGER.debug("TALLYING");
                     //Increase the tally
                     addComboTime(attacker);
                 }
@@ -242,7 +237,7 @@ public class ComboPotionEffect extends Effect {
         @SubscribeEvent
         public static void onFinalDamage(LivingDamageEvent event){
             if (event.getSource() == null) return;
-            if (!Objects.equals(event.getSource().msgId, "spell.combo")) return;
+            if (!Objects.equals(event.getSource().msgId, "ars_mage_fight.spell.combo")) return;
             if (!(event.getSource().getEntity() instanceof PlayerEntity)) return;
 
             //If the damage isn't greater than health, pass.
@@ -281,9 +276,9 @@ public class ComboPotionEffect extends Effect {
 
         public ComboEvent(ArrayList<LivingEntity> victims, LivingEntity attacker, float damage){
             this.victims = victims;
-            this.damageSource = new EntityDamageSource("spell.combo",attacker);
+            this.damageSource = new EntityDamageSource("ars_mage_fight.spell.combo",attacker);
             this.damage = damage;
-            LOGGER.debug("HOW MUCH DAMAGE WILL BE DONE: " + damage);
+//            LOGGER.debug("HOW MUCH DAMAGE WILL BE DONE: " + damage);
         }
 
         @Override

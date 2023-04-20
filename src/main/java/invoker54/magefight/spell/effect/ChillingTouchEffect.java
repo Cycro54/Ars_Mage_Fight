@@ -38,7 +38,7 @@ public class ChillingTouchEffect extends AbstractEffect {
 
     @Override
     public void onResolveEntity(EntityRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
-        LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
+        // LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
         if (world.isClientSide) return;
         while (rayTraceResult.getEntity() instanceof PartEntity) {
             rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
@@ -51,8 +51,8 @@ public class ChillingTouchEffect extends AbstractEffect {
         //Then do the spell thing here
         int timeInTicks = (10 + (5 * spellStats.getBuffCount(AugmentExtendTime.INSTANCE))) * 20;
         int stacks = Math.min(7, spellStats.getBuffCount(AugmentAmplify.INSTANCE));
-        LOGGER.debug("How Long? " + (timeInTicks/20F));
-        LOGGER.debug("What's the value? " + (stacks * 0.25F));
+        // LOGGER.debug("How Long? " + (timeInTicks/20F));
+        // LOGGER.debug("What's the value? " + (stacks * 0.25F));
         hitEntity.addEffect(new EffectInstance(EffectInit.CHILL_EFFECT, timeInTicks, stacks));
 
         //Offset the entities health by a smidge if stacks is high enough to get effect working
@@ -64,7 +64,7 @@ public class ChillingTouchEffect extends AbstractEffect {
     //Make sure to change the mana cost
     @Override
     public int getManaCost() {
-        return 80;
+        return 90;
     }
 
     //Change the tier

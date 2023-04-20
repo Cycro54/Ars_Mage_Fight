@@ -36,7 +36,7 @@ public class MagicDataProvider implements ICapabilitySerializable<INBT> {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
         if (CAP_MAGIC_DATA == null){
-            LOGGER.debug("RETURNING EMPTY");
+            // LOGGER.debug("RETURNING EMPTY");
             return LazyOptional.empty();
         }
         return CAP_MAGIC_DATA.orEmpty(capability, LazyOptional.of(() -> magicDataCap).cast());

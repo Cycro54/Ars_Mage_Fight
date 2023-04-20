@@ -7,8 +7,6 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.monster.SlimeEntity;
-import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -73,7 +71,7 @@ public class EntityInit {
 
         for (EntityType<?> entityType : entityTypes){
             registry.register(entityType);
-            LOGGER.debug("JUST REGISTERED ENTITY: " + entityType.getRegistryName());
+            // LOGGER.debug("JUST REGISTERED ENTITY: " + entityType.getRegistryName());
         }
     }
 

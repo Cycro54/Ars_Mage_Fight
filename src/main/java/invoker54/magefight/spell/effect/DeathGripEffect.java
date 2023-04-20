@@ -2,20 +2,12 @@ package invoker54.magefight.spell.effect;
 
 import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
 import com.hollingsworth.arsnouveau.api.spell.*;
-import com.hollingsworth.arsnouveau.common.spell.augment.*;
 import com.hollingsworth.arsnouveau.common.spell.method.MethodProjectile;
-import com.ibm.icu.text.UFormat;
-import com.mojang.brigadier.arguments.FloatArgumentType;
 import invoker54.magefight.entity.DeathGripEntity;
-import invoker54.magefight.init.EntityInit;
-import jdk.jfr.Threshold;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonPartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -25,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -70,7 +61,7 @@ public class DeathGripEffect extends AbstractEffect{
 
     @Override
     public void onResolveEntity(EntityRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
-        LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
+        // LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
         while (rayTraceResult.getEntity() instanceof PartEntity){
             rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
         }
@@ -82,7 +73,7 @@ public class DeathGripEffect extends AbstractEffect{
 
     @Override
     public int getManaCost() {
-        return 240;
+        return 165;
     }
 
     @Override

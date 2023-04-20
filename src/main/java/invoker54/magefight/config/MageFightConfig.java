@@ -88,7 +88,7 @@ public final class MageFightConfig {
         isRandom = mainNBT.getBoolean("isRandom");
         //Glyph list
         blacklistGlyphPool = Arrays.asList(mainNBT.getString("blacklistGlyphPool").split(","));
-        LOGGER.debug("IN CONFIG, WHAT'S THE NEW SIZE: " + blacklistGlyphPool.size());
+//        LOGGER.debug("IN CONFIG, WHAT'S THE NEW SIZE: " + blacklistGlyphPool.size());
         //Price per Glyphs
         baseGlyphPrice = mainNBT.getInt("baseGlyphPrice");
         //Price per Tier

@@ -1,0 +1,20 @@
+{
+  "name": "Life Leech",
+  "icon": "ars_nouveau:glyph_life_leech",
+  "category": "mage_fight_glyphs_1",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "ars_nouveau.glyph_desc.life_leech"
+    },
+    {
+      "type": "glyph_recipe",
+      "recipe": "ars_nouveau:glyph_life_leech",
+      "tier": "ONE",
+      "mana_cost": "Medium",
+      "clay_type": "ars_nouveau:magic_clay",
+      "reagent": "minecraft:melon_slice"
+    }
+  ]
+}

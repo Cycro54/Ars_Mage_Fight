@@ -4,20 +4,13 @@ import invoker54.magefight.capability.player.MagicDataCap;
 import invoker54.magefight.client.ClientUtil;
 import invoker54.magefight.init.EffectInit;
 import invoker54.magefight.init.EntityInit;
-import invoker54.magefight.network.NetworkHandler;
-import invoker54.magefight.network.message.SyncRequestMsg;
 import net.minecraft.command.arguments.EntityAnchorArgument;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.ElderGuardianEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.network.FMLPlayMessages;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -26,7 +19,6 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static invoker54.magefight.potion.ComboPotionEffect.*;
@@ -134,11 +126,8 @@ public class ComboEntity extends FollowerEntity{
         CompoundNBT casterTag = MagicDataCap.getCap(caster).getTag(comboString);
         List<Integer> hitList = Arrays.stream(casterTag.getIntArray(hitListString)).boxed().collect(Collectors.toList());
 
-//        POGGER.debug("ENTITY IN LIST " + (hitList.contains(trackedEntity.getId())));
-//        POGGER.debug("DOES CASTER HAVE COMBO " + (caster.hasEffect(EffectInit.COMBO_EFFECT)));
-//        POGGER.debug(hitList);
-//        POGGER.debug(trackedEntity.getId());
-        if (trackedEntity == null) return false;
-        return hitList.contains(trackedEntity.getId()) && caster.hasEffect(EffectInit.COMBO_EFFECT);
+        return super.hasTrackEffect(trackedEntity) &&
+                hitList.contains(trackedEntity.getId()) &&
+                caster.hasEffect(EffectInit.COMBO_EFFECT);
     }
 }

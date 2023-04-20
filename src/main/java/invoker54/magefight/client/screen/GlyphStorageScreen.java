@@ -21,8 +21,10 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class GlyphStorageScreen extends BaseCombatScreen {
@@ -50,7 +52,7 @@ public class GlyphStorageScreen extends BaseCombatScreen {
             }
         }
         spellTiers.sort(Integer::compare);
-        LOGGER.debug("WHATS SPELL TIERS SIZE: " + spellTiers.size());
+        // LOGGER.debug("WHATS SPELL TIERS SIZE: " + spellTiers.size());
 
         //This will be the visual list
         myList = new GlyphList(glyph_container.x0 + 5, glyph_container.getWidth() - 10,
@@ -146,10 +148,10 @@ public class GlyphStorageScreen extends BaseCombatScreen {
             this.setRenderTopAndBottom(false);
             this.setRenderHeader(false, 0);
 
-            LOGGER.debug("WHATS MY X0: " + x0);
-            LOGGER.debug("WHATS MY WIDTH: " + width);
-            LOGGER.debug("WHATS MY Y0: " + y0);
-            LOGGER.debug("WHATS MY HEIGHT: " + height);
+            // LOGGER.debug("WHATS MY X0: " + x0);
+            // LOGGER.debug("WHATS MY WIDTH: " + width);
+            // LOGGER.debug("WHATS MY Y0: " + y0);
+            // LOGGER.debug("WHATS MY HEIGHT: " + height);
         }
 
         public void recalcWidth(){
@@ -227,7 +229,7 @@ public class GlyphStorageScreen extends BaseCombatScreen {
 //                    }
 
                 int j2 = this.getRowLeft();
-                e.render(stack, index, k, j2, k1, height, xMouse, yMouse, this.isMouseOver((double) xMouse, (double) yMouse) && Objects.equals(this.getEntryAtPosition((double) xMouse, (double) yMouse), e), p_238478_6_);
+                e.render(stack, index, k, j2, k1, height, xMouse, yMouse, this.isMouseOver(xMouse, yMouse) && Objects.equals(this.getEntryAtPosition(xMouse, yMouse), e), p_238478_6_);
                 currY0 += e.getHeight();
                 if (e.isMouseOver(xMouse, yMouse)){
                     hoverEntry = e;
@@ -308,7 +310,7 @@ public class GlyphStorageScreen extends BaseCombatScreen {
     //The spell tier name and what glyphs in the spell tier you have unlocked
     public class CategoryEntry extends ListEntry{
         protected String name;
-        private int blackColor = new Color(0,0,0,255).getRGB();
+        private final int blackColor = new Color(0,0,0,255).getRGB();
 
         public CategoryEntry(String name){
             super(null);
@@ -350,7 +352,7 @@ public class GlyphStorageScreen extends BaseCombatScreen {
 
         @Override
         public boolean mouseClicked(double xMouse, double yMouse, int button) {
-            LOGGER.debug("I AM CLICKING ON GLYPH ENTRY STUFF");
+            // LOGGER.debug("I AM CLICKING ON GLYPH ENTRY STUFF");
             if (!glyphImages.isEmpty()) {
                 for (int a = 0; a < glyphImages.size(); a++) {
                     //This is for the glyph tooltip
@@ -437,15 +439,15 @@ public class GlyphStorageScreen extends BaseCombatScreen {
 
             ITextComponent sellText = ITextComponent.nullToEmpty(" Sell ");
             sellButton = new ClientUtil.SimpleButton(0,0, font.width(sellText.getString()), 13, sellText, (button) -> {
-                LOGGER.debug("I AM CLICKING THIS BUTTON ");
+                // LOGGER.debug("I AM CLICKING THIS BUTTON ");
                 setSellMode();
                 if (isSellMode) {
-                    LOGGER.debug("SETTING TO SELL MODE ");
+                    // LOGGER.debug("SETTING TO SELL MODE ");
                     button.setMessage(ITextComponent.nullToEmpty(" Cancel "));
                     button.setWidth(font.width(button.getMessage()));
                 }
                 else{
-                    LOGGER.debug("Turning OFF MODE ");
+                    // LOGGER.debug("Turning OFF MODE ");
                     button.setMessage(sellText);
                     button.setWidth(font.width(button.getMessage()));
                 }
@@ -469,8 +471,8 @@ public class GlyphStorageScreen extends BaseCombatScreen {
 
             //Then finally check if they can afford it.
             if (ClientUtil.mC.player.totalExperience < cost){
-                txtList.add(new TranslationTextComponent("ars_mage_fight.buy_glyph.broke_1").append(("" + ClientUtil.mC.player.totalExperience))
-                                .append(new TranslationTextComponent("ars_mage_fight.buy_glyph.broke_2")).append("" + cost));
+                txtList.add(new TranslationTextComponent("ars_mage_fight.buy_glyph.broke_1").append((String.valueOf(ClientUtil.mC.player.totalExperience)))
+                                .append(new TranslationTextComponent("ars_mage_fight.buy_glyph.broke_2")).append(String.valueOf(cost)));
             }
 
             if (this.isMouseOver) this.parent.toolTip.addAll(txtList);

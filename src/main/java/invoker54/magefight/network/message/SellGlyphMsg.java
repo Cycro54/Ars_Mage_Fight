@@ -42,7 +42,7 @@ public class SellGlyphMsg {
             MagicDataCap cap = MagicDataCap.getCap(player);
             //Make sure the glyph exists first
             if (!ArsNouveauAPI.getInstance().getSpell_map().containsKey(msg.glyphTag)){
-                LOGGER.warn("THIS GLYPH DOESNT EXIST, CAN'T BUY IT!");
+                // LOGGER.warn("THIS GLYPH DOESNT EXIST, CAN'T BUY IT!");
                 return;
             }
 

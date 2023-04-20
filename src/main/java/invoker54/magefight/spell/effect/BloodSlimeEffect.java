@@ -5,22 +5,17 @@ import com.hollingsworth.arsnouveau.api.spell.AbstractAugment;
 import com.hollingsworth.arsnouveau.api.spell.AbstractEffect;
 import com.hollingsworth.arsnouveau.api.spell.SpellContext;
 import com.hollingsworth.arsnouveau.api.spell.SpellStats;
-import com.hollingsworth.arsnouveau.common.spell.augment.AugmentAmplify;
 import com.hollingsworth.arsnouveau.common.spell.method.MethodProjectile;
 import invoker54.magefight.capability.player.MagicDataCap;
 import invoker54.magefight.entity.BloodSlimeEntity;
-import invoker54.magefight.entity.ManaSlimeEntity;
-import net.minecraft.client.renderer.entity.SlimeRenderer;
-import net.minecraft.entity.CreatureEntity;
+import invoker54.magefight.spell.CalcUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.entity.PartEntity;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,7 +34,7 @@ public class BloodSlimeEffect extends AbstractEffect {
 
     @Override
     public void onResolveEntity(EntityRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
-        LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
+        // LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
         while (rayTraceResult.getEntity() instanceof PartEntity) {
             rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
         }
@@ -67,7 +62,7 @@ public class BloodSlimeEffect extends AbstractEffect {
         }
 
         //Calculate the carry health
-        float carryHealth = (6 + (2 * spellStats.getBuffCount(AugmentAmplify.INSTANCE)));
+        float carryHealth = new CalcUtil(6).healthMultiply(hitEntity.getMaxHealth(), 0.5F).compile();
 
         //Then do the spell thing here
         BloodSlimeEntity slimeEntity = new BloodSlimeEntity(shooter.getCommandSenderWorld(), hitEntity, shooter.getUUID(), true, carryHealth, rayTraceResult.getLocation());
@@ -104,6 +99,6 @@ public class BloodSlimeEffect extends AbstractEffect {
     @Nonnull
     @Override
     public Set<AbstractAugment> getCompatibleAugments() {
-        return augmentSetOf(AugmentAmplify.INSTANCE);
+        return augmentSetOf();
     }
 }

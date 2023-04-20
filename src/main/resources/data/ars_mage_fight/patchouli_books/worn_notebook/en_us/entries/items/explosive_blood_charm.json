@@ -1,0 +1,12 @@
+{
+  "name": "Explosive Blood Charm",
+  "icon": "ars_mage_fight:explosive_blood_charm",
+  "category": "mage_fight_items",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "item.ars_mage_fight.explosive_blood_charm.desc"
+    }
+  ]
+}

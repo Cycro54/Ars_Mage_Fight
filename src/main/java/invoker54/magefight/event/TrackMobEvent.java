@@ -1,8 +1,8 @@
 package invoker54.magefight.event;
 
 import invoker54.magefight.ArsMageFight;
-import invoker54.magefight.potion.FatalBondPotionEffect;
 import invoker54.magefight.init.EffectInit;
+import invoker54.magefight.potion.FatalBondPotionEffect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

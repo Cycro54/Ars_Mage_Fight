@@ -19,7 +19,7 @@ public class CapSaveDelayEvent {
     public static HashMap<LivingEntity, MagicDataCap> delayedCaps = new HashMap<>();
 
     public static MagicDataCap grabTempCap(LivingEntity entity){
-        LOGGER.debug("Grabbing a temporary cap");
+        // LOGGER.debug("Grabbing a temporary cap");
         if (!delayedCaps.containsKey(entity)){
             delayedCaps.put(entity, new MagicDataCap());
         }
@@ -44,10 +44,10 @@ public class CapSaveDelayEvent {
             if (cap == null) continue;
             //If it isn't null, make it so the cap data merges
             cap.deserializeNBT(cap.serializeNBT().merge(delayedCaps.get(entity).serializeNBT()));
-            LOGGER.debug("I SYNCED THE CAP DATA, REMOVING THIS TEMP CAP NOW");
-            LOGGER.debug("OLD SIZE: " + delayedCaps.keySet().size());
+            // LOGGER.debug("I SYNCED THE CAP DATA, REMOVING THIS TEMP CAP NOW");
+            // LOGGER.debug("OLD SIZE: " + delayedCaps.keySet().size());
             iterator.remove();
-            LOGGER.debug("NEW SIZE: " + delayedCaps.keySet().size());
+            // LOGGER.debug("NEW SIZE: " + delayedCaps.keySet().size());
         }
     }
 }

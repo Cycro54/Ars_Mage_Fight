@@ -5,7 +5,6 @@ import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.client.ClientUtil;
 import invoker54.magefight.client.screen.GlyphStorageScreen;
 import invoker54.magefight.init.BlockInit;
-import jdk.nashorn.internal.ir.Block;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -27,7 +26,7 @@ public class CombatBlockEvent {
         if (ClientUtil.mC.screen != null) return;
 
         ClientUtil.mC.setScreen(new GlyphStorageScreen());
-        LOGGER.debug("GOING TO GLYPH STORAGE");
+        // LOGGER.debug("GOING TO GLYPH STORAGE");
         ClientUtil.mC.player.playSound(SoundEvents.SOUL_SOIL_HIT, 0.75F, 0.5F);
     }
 }

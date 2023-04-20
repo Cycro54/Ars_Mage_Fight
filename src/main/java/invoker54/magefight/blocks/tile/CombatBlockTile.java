@@ -2,18 +2,12 @@ package invoker54.magefight.blocks.tile;
 
 import invoker54.magefight.client.ClientUtil;
 import invoker54.magefight.init.TileInit;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -43,7 +37,7 @@ public class CombatBlockTile extends TileEntity implements IAnimatable {
                 control.setAnimation(new AnimationBuilder().addAnimation("open"));
             }
             else if (Objects.equals(control.getCurrentAnimation().animationName, "open") && control.getAnimationState() == AnimationState.Stopped){
-                LOGGER.debug("IDLING");
+                // LOGGER.debug("IDLING");
                 control.setAnimation(new AnimationBuilder().addAnimation("idle_open"));
             }
         }

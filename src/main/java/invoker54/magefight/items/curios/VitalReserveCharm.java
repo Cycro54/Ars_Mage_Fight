@@ -1,56 +1,35 @@
 package invoker54.magefight.items.curios;
 
-import com.hollingsworth.arsnouveau.api.client.IDisplayMana;
 import com.hollingsworth.arsnouveau.api.event.SpellResolveEvent;
-import com.hollingsworth.arsnouveau.api.item.ICasterTool;
 import com.hollingsworth.arsnouveau.api.mana.IMana;
 import com.hollingsworth.arsnouveau.api.mana.IManaEquipment;
-import com.hollingsworth.arsnouveau.api.spell.Spell;
-import com.hollingsworth.arsnouveau.api.spell.SpellCaster;
-import com.hollingsworth.arsnouveau.api.spell.SpellContext;
 import com.hollingsworth.arsnouveau.api.spell.SpellResolver;
 import com.hollingsworth.arsnouveau.api.util.CuriosUtil;
-import com.hollingsworth.arsnouveau.api.util.ManaUtil;
-import com.hollingsworth.arsnouveau.common.capability.Mana;
 import com.hollingsworth.arsnouveau.common.capability.ManaCapability;
-import com.hollingsworth.arsnouveau.common.items.SpellBook;
-import com.hollingsworth.arsnouveau.common.util.PortUtil;
-import com.ibm.icu.text.UFormat;
 import invoker54.magefight.ArsMageFight;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.ToggleableNearestAttackableTargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.FoodStats;
 import net.minecraft.util.Hand;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.UUID;
-import java.util.function.DoubleBinaryOperator;
 
 public class VitalReserveCharm extends Item implements ICurioItem, IManaEquipment {
     private static final Logger LOGGER = LogManager.getLogger();
     public static final DamageSource VITAL_RESERVE = new DamageSource("spell.item.vital_reserve").setMagic();
 
-    public static final int extraMana = 400;
+    public static final int extraMana = 300;
 
     public VitalReserveCharm(Properties properties) {
         super(properties);
@@ -132,8 +111,8 @@ public class VitalReserveCharm extends Item implements ICurioItem, IManaEquipmen
             if (!nonHealers.containsKey(player.getUUID())) return;
 
             //Take their health
-            LOGGER.debug("HOW MUCH MANA DID YOU USE " + nonHealers.get(player.getUUID()));
-            LOGGER.debug("HOW MUCH HEALTH WILL YOU LOSE " + (nonHealers.get(player.getUUID())/(extraMana + 0F)) * (player.getMaxHealth() - 4));
+            // LOGGER.debug("HOW MUCH MANA DID YOU USE " + nonHealers.get(player.getUUID()));
+            // LOGGER.debug("HOW MUCH HEALTH WILL YOU LOSE " + (nonHealers.get(player.getUUID())/(extraMana + 0F)) * (player.getMaxHealth() - 4));
             float healthLoss = (nonHealers.get(player.getUUID())/(extraMana + 0F)) * (player.getMaxHealth() - 4);
             player.hurt(VITAL_RESERVE, healthLoss);
 

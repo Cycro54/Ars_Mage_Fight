@@ -1,20 +1,16 @@
 package invoker54.magefight.entity;
 
-import invoker54.magefight.client.ClientUtil;
 import invoker54.magefight.network.NetworkHandler;
 import invoker54.magefight.network.message.SyncRequestMsg;
-import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import org.apache.logging.log4j.LogManager;
@@ -72,7 +68,6 @@ public class BasicEntity extends LivingEntity implements IAnimatable {
         POGGER.debug("WHATS MY ID? " + this.getId());
         if (this.level.isClientSide){
             NetworkHandler.INSTANCE.sendToServer(new SyncRequestMsg(this.level.dimension().getRegistryName(), this.getId()));
-            return;
         }
 
         //This is for physics.

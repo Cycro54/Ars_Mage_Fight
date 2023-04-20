@@ -26,6 +26,8 @@ public class GlyphInit {
         register(MetabolicRushEffect.INSTANCE);
         register(LifeTapEffect.INSTANCE);
         register(EnrageEffect.INSTANCE);
+        register(BattleHungerEffect.INSTANCE);
+        register(LifeLeechEffect.INSTANCE);
     }
 
     public static void register(AbstractSpellPart spellPart) {

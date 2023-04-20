@@ -2,9 +2,7 @@ package invoker54.magefight.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import invoker54.magefight.client.model.BlackHoleModel;
 import invoker54.magefight.client.model.TimeAnchorModel;
-import invoker54.magefight.entity.BlackHoleEntity;
 import invoker54.magefight.entity.TimeAnchorEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;

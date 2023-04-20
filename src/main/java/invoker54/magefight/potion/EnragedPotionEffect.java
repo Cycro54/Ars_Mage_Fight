@@ -1,43 +1,27 @@
 package invoker54.magefight.potion;
 
-import com.hollingsworth.arsnouveau.api.event.EventQueue;
-import com.hollingsworth.arsnouveau.api.event.ITimedEvent;
-import com.mojang.realmsclient.client.RealmsError;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.capability.player.MagicDataCap;
-import invoker54.magefight.entity.ComboEntity;
 import invoker54.magefight.init.EffectInit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifierManager;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class EnragedPotionEffect extends Effect {
     public static final int effectColor = new Color(255, 40, 91,255).getRGB();
@@ -57,7 +41,7 @@ public class EnragedPotionEffect extends Effect {
         AxisAlignedBB bounds = entityIn.getBoundingBox().inflate(9);
         if (entityIn.hasEffect(EffectInit.ENRAGED_EFFECT)) return;
 
-        LOGGER.debug("DOES ENTITYIN HAVE A UUID? " + entityIn.getUUID());
+        // LOGGER.debug("DOES ENTITYIN HAVE A UUID? " + entityIn.getUUID());
 
         //Then do the spell thing here
         if (!entityIn.level.isClientSide) {
@@ -73,8 +57,8 @@ public class EnragedPotionEffect extends Effect {
                 tag.putUUID(casterString, caster.getUUID());
                 //Also place the target there as well.
                 tag.putUUID(targetString, entityIn.getUUID());
-                LOGGER.debug("DOES TAG HAVE CASTER ID? " + caster.getUUID());
-                LOGGER.debug("DOES TAG HAVE ENTITYIN ID? " + entityIn.getUUID());
+                // LOGGER.debug("DOES TAG HAVE CASTER ID? " + caster.getUUID());
+                // LOGGER.debug("DOES TAG HAVE ENTITYIN ID? " + entityIn.getUUID());
                 //Set their target
                 target.setTarget(entityIn);
 
@@ -113,7 +97,7 @@ public class EnragedPotionEffect extends Effect {
             LivingEntity caster = (LivingEntity) ((ServerWorld)hurtEntity.level).getEntity(casterID);
             
             //Then send that damage to the attacker
-            attacker.hurt(new EntityDamageSource("spell.enraged", caster), event.getAmount());
+            attacker.hurt(new EntityDamageSource("ars_mage_fight.spell.enraged", caster), event.getAmount());
         }
 
         @SubscribeEvent
@@ -143,7 +127,6 @@ public class EnragedPotionEffect extends Effect {
                     Entity casterEntity = ((ServerWorld) trackerEntity.level).getEntity(tag.getUUID(casterString));
                     if (casterEntity != null) {
                         ((MobEntity) trackerEntity).setTarget((LivingEntity) casterEntity);
-                        return;
                     }
                 }
             }

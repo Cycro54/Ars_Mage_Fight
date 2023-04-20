@@ -1,36 +1,11 @@
 package invoker54.magefight.potion;
 
-import com.hollingsworth.arsnouveau.api.spell.*;
-import com.hollingsworth.arsnouveau.client.particle.ParticleColor;
-import invoker54.magefight.ArsMageFight;
-import invoker54.magefight.capability.player.MagicDataCap;
-import invoker54.magefight.entity.ComboEntity;
-import invoker54.magefight.init.EffectInit;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifierManager;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Deprecated
 public class ComboPotionEffectBackup extends Effect {

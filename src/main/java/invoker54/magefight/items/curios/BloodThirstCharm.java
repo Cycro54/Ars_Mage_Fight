@@ -34,7 +34,7 @@ public class BloodThirstCharm extends Item implements ICurioItem {
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        LOGGER.debug("HEY, THIS BE WORKING!");
+        // LOGGER.debug("HEY, THIS BE WORKING!");
 
         //Take away their health, and their food.
         if (!(slotContext.getWearer() instanceof PlayerEntity)) return;

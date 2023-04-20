@@ -20,7 +20,7 @@ import java.util.UUID;
 
 public class ChillPotionEffect extends Effect {
     private static final Logger LOGGER = LogManager.getLogger();
-    public static final DamageSource CHILLED_DEATH = new DamageSource("spell.chilled").bypassArmor().setMagic();
+    public static final DamageSource CHILLED_DEATH = new DamageSource("ars_mage_fight.spell.chilled").bypassArmor().setMagic();
     public static final ArrayList<UUID> checkedEntities = new ArrayList<>();
     public static final int effectColor = new Color(70, 163, 217,255).getRGB();
 

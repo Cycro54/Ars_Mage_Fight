@@ -45,7 +45,7 @@ public class PermanenceRing extends Item implements ICurioItem {
                     //Find the Ring of Permanence
                     if (item instanceof PermanenceRing){
                         //if it's smaller or equal to 10%
-                        LOGGER.debug("I AM CHECKING YOUR CHANCE");
+                        // LOGGER.debug("I AM CHECKING YOUR CHANCE");
                         if (Math.random() <= 0.25F){
                             ArrayList<ItemStack> repairableItems = new ArrayList<>();
                             for (ItemStack stack: player.inventory.items){
@@ -64,12 +64,12 @@ public class PermanenceRing extends Item implements ICurioItem {
                                 }
                             }
 
-                            LOGGER.debug("YOU PASSED THE CHECK!!");
+                            // LOGGER.debug("YOU PASSED THE CHECK!!");
                             ItemStack repairedItem = repairableItems.get((int) (Math.random() * (repairableItems.size() - 1)));
-                            LOGGER.debug("THIS IS WHAT WILL BE REPAIRED: " + repairedItem.getDisplayName().getString());
-                            LOGGER.debug("ITS OLD DURABILITY WAS: " + (repairedItem.getMaxDamage() - repairedItem.getDamageValue()));
+                            // LOGGER.debug("THIS IS WHAT WILL BE REPAIRED: " + repairedItem.getDisplayName().getString());
+                            // LOGGER.debug("ITS OLD DURABILITY WAS: " + (repairedItem.getMaxDamage() - repairedItem.getDamageValue()));
                             repairedItem.setDamageValue((int) (repairedItem.getDamageValue() - (repairedItem.getMaxDamage() * 0.1f)));
-                            LOGGER.debug("ITS NEW DURABILITY IS: " + (repairedItem.getMaxDamage() - repairedItem.getDamageValue()));
+                            // LOGGER.debug("ITS NEW DURABILITY IS: " + (repairedItem.getMaxDamage() - repairedItem.getDamageValue()));
                             player.level.playSound(null, player.getX(), player.getY(), player.getZ(),
                                     SoundEvents.ANVIL_USE, SoundCategory.PLAYERS, 1.0F,
                                     random.nextFloat() * 0.1F + 0.9F);

@@ -1,0 +1,12 @@
+{
+  "name": "Deaths Bane Trinket",
+  "icon": "ars_mage_fight:deaths_bane_trinket",
+  "category": "mage_fight_items",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "item.ars_mage_fight.deaths_bane_trinket.desc"
+    }
+  ]
+}

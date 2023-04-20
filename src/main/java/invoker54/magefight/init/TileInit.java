@@ -1,9 +1,7 @@
 package invoker54.magefight.init;
 
 import invoker54.magefight.ArsMageFight;
-
 import invoker54.magefight.blocks.tile.CombatBlockTile;
-import net.minecraft.entity.EntityType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
@@ -37,7 +35,7 @@ public class TileInit {
 
         for (TileEntityType<?> tileEntityType : tileEntityTypes){
             registry.register(tileEntityType);
-            LOGGER.debug("JUST REGISTERED TILE ENTITY: " + tileEntityType.getRegistryName());
+            // LOGGER.debug("JUST REGISTERED TILE ENTITY: " + tileEntityType.getRegistryName());
         }
     }
 }

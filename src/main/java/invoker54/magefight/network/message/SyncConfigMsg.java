@@ -2,7 +2,6 @@ package invoker54.magefight.network.message;
 
 import invoker54.magefight.config.MageFightConfig;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 

@@ -8,8 +8,6 @@ import invoker54.magefight.spell.effect.RewindEffect;
 import invoker54.magefight.spell.effect.RuptureEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
@@ -114,25 +112,25 @@ public class RupturePotionEffect extends Effect {
         @SubscribeEvent(priority = EventPriority.LOWEST)
         public static void onDamage(LivingDamageEvent event){
             if (event.getSource() != RUPTURE_DEATH) return;
-            if (RuptureEffect.INSTANCE.CAN_KILL_PLAYER.get() && (event.getEntityLiving() instanceof PlayerEntity)) return;
-            if (RuptureEffect.INSTANCE.CAN_KILL_MOBS.get() && (event.getEntityLiving() instanceof MobEntity)) return;
             if (event.isCanceled()) return;
+            if (RuptureEffect.INSTANCE.DAMAGE_MAX.get() == 1) return;
+
 
             LivingEntity hurtEntity = event.getEntityLiving();
             if (hurtEntity.getHealth() <= event.getAmount()){
                 event.setCanceled(true);
-                hurtEntity.setHealth(1);
+                hurtEntity.setHealth((float) (hurtEntity.getMaxHealth() * RuptureEffect.INSTANCE.DAMAGE_MAX.get()));
             }
         }
 
         @SubscribeEvent(priority = EventPriority.HIGHEST)
         public static void onDying(LivingDeathEvent event){
             if (event.getSource() != RUPTURE_DEATH) return;
-            if (RuptureEffect.INSTANCE.CAN_KILL_PLAYER.get() && (event.getEntityLiving() instanceof PlayerEntity)) return;
-            if (RuptureEffect.INSTANCE.CAN_KILL_MOBS.get() && (event.getEntityLiving() instanceof MobEntity)) return;
+            if (RuptureEffect.INSTANCE.DAMAGE_MAX.get() == 1) return;
             if (event.isCanceled()) return;
 
-            event.getEntityLiving().setHealth(1);
+            event.getEntityLiving().setHealth(
+                    (float) (event.getEntityLiving().getMaxHealth() * RuptureEffect.INSTANCE.DAMAGE_MAX.get()));
             event.setCanceled(true);
         }
     }

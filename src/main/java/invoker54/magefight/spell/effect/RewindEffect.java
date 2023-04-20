@@ -9,14 +9,12 @@ import com.hollingsworth.arsnouveau.common.spell.augment.AugmentExtendTime;
 import com.hollingsworth.arsnouveau.common.spell.method.MethodProjectile;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.capability.player.MagicDataCap;
-import invoker54.magefight.client.ClientUtil;
 import invoker54.magefight.init.EffectInit;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -58,7 +56,7 @@ public class RewindEffect extends AbstractEffect {
 
     @Override
     public void onResolveEntity(EntityRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
-        LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
+        // LOGGER.debug("WHAT I HIT? " + rayTraceResult.getEntity().getClass());
         while (rayTraceResult.getEntity() instanceof PartEntity) {
             rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
         }
@@ -108,10 +106,10 @@ public class RewindEffect extends AbstractEffect {
             CompoundNBT rewindTag = cap.getTag(rewindString);
 
             int oldestIndex = rewindTag.getInt(oldIndexString);
-            LOGGER.debug("OLDEST INDEX WAS: " + oldestIndex);
+            // LOGGER.debug("OLDEST INDEX WAS: " + oldestIndex);
 
             //Grab the rewind Pack
-            CompoundNBT rewindPack = rewindTag.getCompound("" + oldestIndex);
+            CompoundNBT rewindPack = rewindTag.getCompound(String.valueOf(oldestIndex));
 
             //First lets do position
             hitEntity.moveTo(unPackPosition(rewindPack));
@@ -124,13 +122,13 @@ public class RewindEffect extends AbstractEffect {
 
             //Remove the rest of the rewindpacks and set the currIndex to be in front of the oldestIndex
             int currIndex = oldestIndex;
-            LOGGER.debug("INDEX NOT TO DELETE IS " + currIndex);
+            // LOGGER.debug("INDEX NOT TO DELETE IS " + currIndex);
             rewindTag.putInt(currIndexString, oldestIndex);
             oldestIndex = (oldestIndex == 5) ? 1 : oldestIndex + 1;
             while (oldestIndex != currIndex) {
-                if (rewindTag.contains("" + oldestIndex)) {
-                    rewindTag.remove("" + oldestIndex);
-                    LOGGER.debug("DELETING INDEX " + oldestIndex);
+                if (rewindTag.contains(String.valueOf(oldestIndex))) {
+                    rewindTag.remove(String.valueOf(oldestIndex));
+                    // LOGGER.debug("DELETING INDEX " + oldestIndex);
                 }
 
                 oldestIndex = (oldestIndex == 5) ? 1 : oldestIndex + 1;
@@ -145,7 +143,7 @@ public class RewindEffect extends AbstractEffect {
 
     public static void packPosition(CompoundNBT rewindPack, Vector3d pos){
         if (rewindPack == null) {
-            LOGGER.debug("FOR REWIND EFFECT: YOU FORGOT THE COMPOUND!! packPosition" );
+            // LOGGER.debug("FOR REWIND EFFECT: YOU FORGOT THE COMPOUND!! packPosition" );
             return;
         }
 
@@ -183,7 +181,7 @@ public class RewindEffect extends AbstractEffect {
     //Make sure to change the mana cost
     @Override
     public int getManaCost() {
-        return 100;
+        return 60;
     }
 
     //Change the tier
@@ -226,7 +224,7 @@ public class RewindEffect extends AbstractEffect {
             CompoundNBT rewindTag = cap.getTag(rewindString);
             int currIndex = rewindTag.getInt(currIndexString);
             currIndex = (currIndex == 5) ? 1 : (currIndex + 1);
-            CompoundNBT rewindPack = rewindTag.contains("" + currIndex) ? rewindTag.getCompound("" + currIndex) :  new CompoundNBT();
+            CompoundNBT rewindPack = rewindTag.contains(String.valueOf(currIndex)) ? rewindTag.getCompound(String.valueOf(currIndex)) :  new CompoundNBT();
 
             //First position
             packPosition(rewindPack, player.position());
@@ -235,7 +233,7 @@ public class RewindEffect extends AbstractEffect {
             rewindPack.putFloat(healthString, player.getHealth());
 
             //Then place that pack into the main Compound NBT with the currIndex as its name
-            rewindTag.put("" + currIndex, rewindPack);
+            rewindTag.put(String.valueOf(currIndex), rewindPack);
 
             //Make sure to save the currIndex in main tag
             rewindTag.putInt(currIndexString, currIndex);
@@ -244,7 +242,7 @@ public class RewindEffect extends AbstractEffect {
             //AND find the oldest Index and save that
             int oldestIndex = (currIndex == 5) ? 1 : (currIndex + 1);
             while (oldestIndex != currIndex){
-                if (rewindTag.contains("" + oldestIndex)) break;
+                if (rewindTag.contains(String.valueOf(oldestIndex))) break;
 
                 oldestIndex = (oldestIndex == 5) ? 1 : (oldestIndex + 1);
             }

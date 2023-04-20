@@ -1,27 +1,18 @@
 package invoker54.magefight.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import invoker54.magefight.capability.player.MagicDataCap;
 import invoker54.magefight.client.model.SpellShieldModel;
-import invoker54.magefight.entity.BlackHoleEntity;
 import invoker54.magefight.entity.SpellShieldEntity;
-import invoker54.magefight.potion.StalwartPotionEffect;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.util.Color;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
-
-import static invoker54.magefight.potion.StalwartPotionEffect.stalwartString;
 
 public class SpellShieldRenderer extends GeoEntityRenderer<SpellShieldEntity> {
     private static final Logger LOGGER = LogManager.getLogger();

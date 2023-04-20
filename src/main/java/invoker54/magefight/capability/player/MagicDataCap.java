@@ -2,33 +2,19 @@ package invoker54.magefight.capability.player;
 
 import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
-import com.hollingsworth.arsnouveau.api.util.SpellRecipeUtil;
 import invoker54.magefight.ArsMageFight;
-import invoker54.magefight.client.ClientUtil;
 import invoker54.magefight.config.MageFightConfig;
 import invoker54.magefight.network.NetworkHandler;
-import invoker54.magefight.network.message.SyncConfigMsg;
 import invoker54.magefight.network.message.SyncMagicDataMsg;
-import invoker54.magefight.network.message.SyncRequestMsg;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,14 +22,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.w3c.dom.traversal.NodeIterator;
 
 import javax.annotation.Nullable;
-import java.security.acl.LastOwnerException;
-import java.time.OffsetDateTime;
 import java.util.*;
-
-import static invoker54.magefight.config.MageFightConfig.bakeCommonConfig;
 
 public class MagicDataCap implements IMagicCap {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -78,8 +59,9 @@ public class MagicDataCap implements IMagicCap {
                     return cap;
                 }
                 catch (Exception e){
-                    LOGGER.error(e);
-                    LOGGER.info("WHOS THE CULPRIT? " + entity.getName().getString());
+//                     LOGGER.error(e);
+//                     e.printStackTrace();
+                    // LOGGER.info("WHOS THE CULPRIT? " + entity.getName().getString());
                     return CapSaveDelayEvent.grabTempCap(entity);
                 }
             }
@@ -93,17 +75,17 @@ public class MagicDataCap implements IMagicCap {
     public static void syncToClient(LivingEntity entity){
 //        LOGGER.info("ATTEMPTING TO SYNC TO CLIENT!");
         if (entity.level.isClientSide){
-            LOGGER.warn("ERROR! TRYING TO SYNC TO CLIENT WHILST ON CLIENT!");
+            // LOGGER.warn("ERROR! TRYING TO SYNC TO CLIENT WHILST ON CLIENT!");
             return;
         }
         //If they are dying or dead and they are NOT a player, there is no reason to sync the data.
         if (!entity.isAlive() && !(entity instanceof PlayerEntity)){
-            LOGGER.debug("WERE THEY REMOVED? " + entity.removed);
-            LOGGER.debug("WERE THEY DEAD? " + (entity.getHealth() <= 0));
+            // LOGGER.debug("WERE THEY REMOVED? " + entity.removed);
+            // LOGGER.debug("WERE THEY DEAD? " + (entity.getHealth() <= 0));
             return;
         }
-        LOGGER.debug("ENTITY NAME: " + (entity.getName().getString()));
-        LOGGER.debug("ENTITY ID: " + (entity.getUUID()));
+        // LOGGER.debug("ENTITY NAME: " + (entity.getName().getString()));
+        // LOGGER.debug("ENTITY ID: " + (entity.getUUID()));
         NetworkHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
                 new SyncMagicDataMsg(getCap(entity).serializeNBT(), entity.getId()));
 //        if (entity instanceof PlayerEntity){
@@ -178,8 +160,8 @@ public class MagicDataCap implements IMagicCap {
 //                LOGGER.debug("NAME " + name);
 //                LOGGER.debug("WHATS BEING RETURNED " + magicTags.get(name));
                 if (!magicTags.containsKey(name) || getTag(name) == null) continue;
-                nameNBT.putString(("" + index), name);
-                compoundNBT.put(("" + index), magicTags.get(name));
+                nameNBT.putString((String.valueOf(index)), name);
+                compoundNBT.put((String.valueOf(index)), magicTags.get(name));
                 index++;
             }
             //+1 because I started at 0, not 1
@@ -220,8 +202,8 @@ public class MagicDataCap implements IMagicCap {
         CompoundNBT compoundNBT = mainNBT.getCompound(tagCompounds);
         int size = mainNBT.getInt(tagSize);
         for (int index = 0; index < size; index++) {
-            magicTags.put(nameNBT.getString(("" + index)),
-                    (CompoundNBT) compoundNBT.get(("" + index)));
+            magicTags.put(nameNBT.getString((String.valueOf(index))),
+                    (CompoundNBT) compoundNBT.get((String.valueOf(index))));
         }
 
         //This is for unlocked spells
@@ -290,9 +272,9 @@ public class MagicDataCap implements IMagicCap {
         public static void onClone(PlayerEvent.Clone event){
             if (!event.isWasDeath()) return;
             if (event.isCanceled()) return;
-            LOGGER.debug("IS THIS CLONE EVENT CLIENT SIDE? " + event.getEntityLiving().level.isClientSide);
-            LOGGER.debug("WHATS THE NEW ID: " + event.getPlayer().getId());
-            LOGGER.debug("WHATS THE OLD ID: " + event.getOriginal().getId());
+            // LOGGER.debug("IS THIS CLONE EVENT CLIENT SIDE? " + event.getEntityLiving().level.isClientSide);
+            // LOGGER.debug("WHATS THE NEW ID: " + event.getPlayer().getId());
+            // LOGGER.debug("WHATS THE OLD ID: " + event.getOriginal().getId());
 
             MagicDataCap newCap = MagicDataCap.getCap(event.getPlayer());
 
@@ -328,8 +310,8 @@ public class MagicDataCap implements IMagicCap {
 
             //Clear the cached caps
             caps.clear();
-            LOGGER.info("I AM CLEARING ALL OF THE SAVED CAP DATA!!");
-            LOGGER.info("WHATS THE CAP SIZE?: " + caps.size());
+            // LOGGER.info("I AM CLEARING ALL OF THE SAVED CAP DATA!!");
+            // LOGGER.info("WHATS THE CAP SIZE?: " + caps.size());
         }
 
         @SubscribeEvent

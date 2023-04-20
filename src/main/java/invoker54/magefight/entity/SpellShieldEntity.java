@@ -27,6 +27,6 @@ public class SpellShieldEntity extends FollowerEntity {
 
     @Override
     protected boolean hasTrackEffect(LivingEntity trackedEntity) {
-        return trackedEntity.hasEffect(EffectInit.STALWART_EFFECT);
+        return super.hasTrackEffect(trackedEntity) && trackedEntity.hasEffect(EffectInit.STALWART_EFFECT);
     }
 }

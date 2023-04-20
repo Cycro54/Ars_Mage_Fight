@@ -2,7 +2,8 @@ package invoker54.magefight.entity;
 
 import invoker54.magefight.client.ClientUtil;
 import invoker54.magefight.init.EntityInit;
-import net.minecraft.entity.*;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -19,7 +20,8 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class DeathGripEntity extends BasicEntity{
     public static final ArrayList<Integer> death_grips = new ArrayList<>();
@@ -103,7 +105,6 @@ public class DeathGripEntity extends BasicEntity{
 
         if (!level.isClientSide && (this.tickCount >= maxAge || owner.isDeadOrDying()) && !this.isDeadOrDying()){
             this.remove();
-            return;
         }
     }
 

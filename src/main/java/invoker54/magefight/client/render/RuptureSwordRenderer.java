@@ -1,25 +1,13 @@
 package invoker54.magefight.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import invoker54.magefight.capability.player.MagicDataCap;
-import invoker54.magefight.client.ClientUtil;
-import invoker54.magefight.client.model.BlackHoleModel;
 import invoker54.magefight.client.model.RuptureSwordModel;
-import invoker54.magefight.entity.BlackHoleEntity;
-import invoker54.magefight.entity.DeathGripEntity;
 import invoker54.magefight.entity.RuptureSwordEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.ParrotRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 public class RuptureSwordRenderer extends GeoEntityRenderer<RuptureSwordEntity> {

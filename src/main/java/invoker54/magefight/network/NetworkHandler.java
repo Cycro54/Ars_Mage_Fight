@@ -1,6 +1,5 @@
 package invoker54.magefight.network;
 
-import com.hollingsworth.arsnouveau.common.network.PacketUpdateMana;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.network.message.*;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,26 +1,23 @@
 package invoker54.magefight.event;
 
-import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
 import com.hollingsworth.arsnouveau.api.event.SpellResolveEvent;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
-import com.hollingsworth.arsnouveau.common.capability.Mana;
-import com.hollingsworth.arsnouveau.common.capability.ManaCapability;
-import com.hollingsworth.arsnouveau.common.network.Networking;
-import com.hollingsworth.arsnouveau.common.network.PacketUpdateMana;
 import com.hollingsworth.arsnouveau.common.util.PortUtil;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.capability.player.MagicDataCap;
 import invoker54.magefight.config.MageFightConfig;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.PacketDistributor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = ArsMageFight.MOD_ID)
 public class UseSpellEvent {
@@ -28,7 +25,8 @@ public class UseSpellEvent {
 
     @SubscribeEvent
     public static void useSpell(SpellResolveEvent.Pre event){
-        if (!(event.shooter instanceof PlayerEntity)) return;
+        if (!(event.shooter instanceof PlayerEntity) ||
+        event.shooter instanceof FakePlayer) return;
         if (((PlayerEntity) event.shooter).isCreative()) return;
         MagicDataCap cap = MagicDataCap.getCap(event.shooter);
 

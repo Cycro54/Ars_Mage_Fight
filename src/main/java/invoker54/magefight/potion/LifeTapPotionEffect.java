@@ -1,27 +1,22 @@
 package invoker54.magefight.potion;
 
 import com.hollingsworth.arsnouveau.api.event.MaxManaCalcEvent;
-import com.hollingsworth.arsnouveau.api.mana.IMana;
-import com.hollingsworth.arsnouveau.api.util.ManaUtil;
-import com.hollingsworth.arsnouveau.common.capability.ManaCapability;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.init.EffectInit;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.*;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.MerchantOffer;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.AttributeModifierManager;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
-import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
-import java.util.Map;
 import java.util.UUID;
 
 public class LifeTapPotionEffect extends Effect {
@@ -37,7 +32,7 @@ public class LifeTapPotionEffect extends Effect {
     @Override
     public void removeAttributeModifiers(LivingEntity entityIn, AttributeModifierManager manager, int amp) {
         ModifiableAttributeInstance instance = manager.getInstance(Attributes.MAX_HEALTH);
-        LOGGER.debug("REMOVING THE LIFE TAP MODIFIER");
+        // LOGGER.debug("REMOVING THE LIFE TAP MODIFIER");
 
         float convertPercent = 0.1F + (0.1F * (amp));
         convertPercent = 1 - convertPercent;
@@ -52,7 +47,7 @@ public class LifeTapPotionEffect extends Effect {
     @Override
     public void addAttributeModifiers(LivingEntity entityIn, AttributeModifierManager manager, int amp) {
         ModifiableAttributeInstance instance = manager.getInstance(Attributes.MAX_HEALTH);
-        LOGGER.debug("ADDING THE LIFE TAP MODIFIER");
+        // LOGGER.debug("ADDING THE LIFE TAP MODIFIER");
 
         float convertPercent = 0.1F + (0.1F * (amp));
         convertPercent = 1 - convertPercent;

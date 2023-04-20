@@ -1,7 +1,5 @@
 package invoker54.magefight.event;
 
-import com.hollingsworth.arsnouveau.client.gui.GuiManaHUD;
-import com.hollingsworth.arsnouveau.client.gui.GuiSpellHUD;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.capability.player.MagicDataCap;
 import invoker54.magefight.client.ClientUtil;
@@ -25,6 +23,7 @@ public class DrawGuiEvent {
         if (event.getType() != RenderGameOverlayEvent.ElementType.ALL) return;
 
         MagicDataCap cap = MagicDataCap.getCap(ClientUtil.mC.player);
+        if (cap == null) return;
 
         if (cap.hasTag(ComboPotionEffect.comboString)) manaHUD.drawHUD(event.getMatrixStack(), event.getPartialTicks());
         if (cap.hasTag(StalwartPotionEffect.stalwartString)) manaHUD.drawHUD(event.getMatrixStack(), event.getPartialTicks());

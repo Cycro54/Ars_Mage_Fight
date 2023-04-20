@@ -1,0 +1,20 @@
+{
+  "name": "Battle Hunger",
+  "icon": "ars_nouveau:glyph_battle_hunger",
+  "category": "mage_fight_glyphs_2",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "ars_nouveau.glyph_desc.battle_hunger"
+    },
+    {
+      "type": "glyph_recipe",
+      "recipe": "ars_nouveau:glyph_battle_hunger",
+      "tier": "TWO",
+      "mana_cost": "LOW",
+      "clay_type": "ars_nouveau:marvelous_clay",
+      "reagent": "minecraft:skeleton_skull"
+    }
+  ]
+}

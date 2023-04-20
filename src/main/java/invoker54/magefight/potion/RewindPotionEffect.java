@@ -2,7 +2,6 @@ package invoker54.magefight.potion;
 
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.capability.player.MagicDataCap;
-import invoker54.magefight.entity.DeathGripEntity;
 import invoker54.magefight.entity.TimeAnchorEntity;
 import invoker54.magefight.init.EffectInit;
 import invoker54.magefight.spell.effect.RewindEffect;
@@ -11,12 +10,8 @@ import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
@@ -50,10 +45,10 @@ public class RewindPotionEffect extends Effect {
 
             if (!(anchorEntity instanceof TimeAnchorEntity)){
 //                LOGGER.info("HERE IS THE ID: " + (anchor.getId()));
-                LOGGER.info("MAKING A NEW ANCHOR, HERE WILL BE THE COORDS: " + (RewindEffect.unPackPosition(anchorTag)));
+                // LOGGER.info("MAKING A NEW ANCHOR, HERE WILL BE THE COORDS: " + (RewindEffect.unPackPosition(anchorTag)));
                 TimeAnchorEntity anchor = new TimeAnchorEntity(entityIn.level, entityIn, RewindEffect.unPackPosition(anchorTag));
                 entityIn.level.addFreshEntity(anchor);
-                LOGGER.info("HERE IS THERE ID: " + (anchor.getId()));
+                // LOGGER.info("HERE IS THERE ID: " + (anchor.getId()));
                 anchorTag.putInt(RewindEffect.anchorIDString, anchor.getId());
                 MagicDataCap.syncToClient(entityIn);
             }
@@ -78,7 +73,8 @@ public class RewindPotionEffect extends Effect {
         @SubscribeEvent
         public static void onRemove(PotionEvent.PotionRemoveEvent event){
             if (event.isCanceled()) return;
-            if (event.getPotion() != EffectInit.FATAL_BOND_EFFECT) return;
+            if (event.getPotion() != EffectInit.FATAL_BOND_EFFECT) {
+            }
         }
 
         @SubscribeEvent
