@@ -25,6 +25,7 @@ public class FollowerEntity extends BasicEntity {
 
     @Override
     public double getMyRidingOffset() {
+        if (this.getVehicle() == null) return 0;
         return -this.getVehicle().getPassengersRidingOffset();
     }
 
@@ -70,6 +71,11 @@ public class FollowerEntity extends BasicEntity {
         super.tick();
 
         LivingEntity trackedEntity = (LivingEntity) this.getVehicle();
+        if (trackedEntity == null){
+            if (!this.level.isClientSide) this.remove();
+
+            return;
+        }
 //        POGGER.debug("IS NULL: " + (trackedEntity == null));
 //        POGGER.debug("IS ALIVE: " + (trackedEntity.isAlive()));
 //        POGGER.debug("IS CLIENTSIDE: " + (this.level.isClientSide));

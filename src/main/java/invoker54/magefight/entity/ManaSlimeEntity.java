@@ -138,9 +138,6 @@ public class ManaSlimeEntity extends SlimeEntity {
         this.setYBodyRot(owner.yBodyRot);
         this.setYHeadRot(owner.yHeadRot);
         //endregion
-
-        if (this.level.isClientSide) {
-        }
     }
 
     public void refreshNBT(){
@@ -186,6 +183,7 @@ public class ManaSlimeEntity extends SlimeEntity {
 
         //This is for mana calculation
         PlayerEntity player = (PlayerEntity) this.level.getEntity(slimeNBT.getInt(ownerString));
+        if (player == null) return;
 
         IMana mana = ManaCapability.getMana(player).resolve().get();
         mana.setMaxMana(ManaUtil.getMaxMana(player));
@@ -197,6 +195,7 @@ public class ManaSlimeEntity extends SlimeEntity {
         if (this.level.isClientSide) return;
 
         PlayerEntity player = (PlayerEntity) this.level.getEntity(slimeNBT.getInt(ownerString));
+        if (player == null) return;
 
         IMana mana = ManaCapability.getMana(player).resolve().get();
         mana.removeMana(mana.getMaxMana() * slimeNBT.getFloat(manaIncreaseString));

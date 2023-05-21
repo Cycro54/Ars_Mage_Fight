@@ -321,10 +321,12 @@ public class MagicDataCap implements IMagicCap {
 
         @SubscribeEvent
         public static void onEntityLeave(EntityLeaveWorldEvent event){
-            if (!caps.containsKey(event.getEntity().getId())) return;
+            if (!(event.getEntity() instanceof LivingEntity)) return;
+
+            if (!caps.containsKey(event.getEntity())) return;
 //            LOGGER.debug("ENTITY LEAVING: " + event.getEntity().getName().getString());
 
-            caps.remove(event.getEntity().getId());
+            caps.remove(event.getEntity());
         }
     }
 }

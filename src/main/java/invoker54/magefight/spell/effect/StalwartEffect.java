@@ -51,6 +51,7 @@ public class StalwartEffect extends AbstractEffect {
             rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
         }
         if (!(rayTraceResult.getEntity() instanceof LivingEntity)) return;
+        if (shooter == null) return;
 
         //This was the LivingEntity hit.
         LivingEntity hitEntity = (LivingEntity) rayTraceResult.getEntity();

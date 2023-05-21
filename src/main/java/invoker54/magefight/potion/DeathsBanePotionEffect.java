@@ -57,8 +57,7 @@ public class DeathsBanePotionEffect extends Effect {
             EffectInstance effect = event.getPotionEffect();
             if (effect == null) return;
             if (!(effect.getEffect() instanceof  DeathsBanePotionEffect)) return;
-            if (effect.getAmplifier() != 0) {
-            }
+            if (effect.getAmplifier() != 0) return;
 
             //This should kill the player if they run out of time.
             else{

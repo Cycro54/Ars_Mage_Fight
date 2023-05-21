@@ -39,6 +39,7 @@ public class BloodSlimeEffect extends AbstractEffect {
             rayTraceResult = new EntityRayTraceResult(((PartEntity<?>) rayTraceResult.getEntity()).getParent());
         }
         if (!(rayTraceResult.getEntity() instanceof MobEntity)) return;
+        if (shooter == null) return;
 
         //This was the LivingEntity hit.
         MobEntity hitEntity = (MobEntity) rayTraceResult.getEntity();

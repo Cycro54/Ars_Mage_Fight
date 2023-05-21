@@ -42,6 +42,7 @@ public class LifeSigilEffect extends AbstractEffect {
     public void onResolveBlock(BlockRayTraceResult rayTraceResult, World world, @org.jetbrains.annotations.Nullable LivingEntity shooter, SpellStats spellStats, SpellContext spellContext) {
         BlockRayTraceResult origRayTrace = rayTraceResult;
         Material hitMat = world.getBlockState(rayTraceResult.getBlockPos()).getMaterial();
+        if (shooter == null) return;
         //Count is the amount of blocks this will go down in search for the perfect spot.
         int count = 4;
         while (!hitMat.blocksMotion() && !hitMat.isLiquid() && count > 0){

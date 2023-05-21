@@ -59,7 +59,7 @@ public class ManaSlimeEffect extends AbstractEffect {
         Vector3d startPos = rayTraceResult.getLocation().add(0, hitEntity.getBoundingBox().getYsize(), 0);
 
 
-        ManaSlimeEntity manaSlime = new ManaSlimeEntity(shooter.getCommandSenderWorld(), hitEntity.getId(), size, manaIncrease, startPos);
+        ManaSlimeEntity manaSlime = new ManaSlimeEntity(hitEntity.getCommandSenderWorld(), hitEntity.getId(), size, manaIncrease, startPos);
         world.addFreshEntity(manaSlime);
 
         //Do a quick check for another slime

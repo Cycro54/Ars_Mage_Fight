@@ -130,7 +130,10 @@ public class BlackHolePotionEffect extends Effect {
         if (caster != null) {
             attractTag.putUUID(CASTER, caster.getUUID());
         }
-        attractTag.putString(HIT_ENTITY, hitEntity != null ? hitEntity.getEncodeId() : "");
+
+        String hitEntityString = hitEntity != null ? hitEntity.getEncodeId() : "";
+        if (hitEntityString == null) hitEntityString = "";
+        attractTag.putString(HIT_ENTITY, hitEntityString);
 
         MagicDataCap.syncToClient(entityIn);
 

@@ -183,6 +183,7 @@ public class ComboPotionEffect extends Effect {
             if (event.getEntityLiving().level.isClientSide) return;
             if (event.isCanceled()) return;
             if (event.getSource() == null) return;
+            if (!(event.getSource().getEntity() instanceof PlayerEntity)) return;
             LivingEntity attacker = (LivingEntity) event.getSource().getEntity();
             LivingEntity hitEntity = event.getEntityLiving();
             if (attacker == null) return;

@@ -69,14 +69,6 @@ public class RewindPotionEffect extends Effect {
             RewindEffect.moveToAnchor(event.getEntityLiving());
         }
 
-        /** If Dispelled, Don't do anything */
-        @SubscribeEvent
-        public static void onRemove(PotionEvent.PotionRemoveEvent event){
-            if (event.isCanceled()) return;
-            if (event.getPotion() != EffectInit.FATAL_BOND_EFFECT) {
-            }
-        }
-
         @SubscribeEvent
         public static void onDimensionChange(EntityTravelToDimensionEvent event){
             if (!(event.getEntity() instanceof LivingEntity)) return;

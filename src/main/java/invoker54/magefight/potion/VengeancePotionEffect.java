@@ -11,6 +11,7 @@ import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -106,6 +107,7 @@ public class VengeancePotionEffect extends Effect {
         public static void causeDamage(LivingEntity potionEntity, int amp){
             float damage = getDamage(potionEntity);
             UUID casterID = getCaster(potionEntity);
+            if (casterID == null) casterID = Util.NIL_UUID;
             LivingEntity caster = (LivingEntity) ((ServerWorld)potionEntity.level).getEntity(casterID);
 
             int range = 3 + (2 * amp);

@@ -65,7 +65,7 @@ public class MagicDataProvider implements ICapabilitySerializable<INBT> {
     public INBT serializeNBT() {
         CompoundNBT nbtData = new CompoundNBT();
         INBT MagicDataNBT = CAP_MAGIC_DATA.writeNBT(magicDataCap, null);
-        nbtData.put(CAP_MAGIC_DATA_NBT, MagicDataNBT);
+        if (MagicDataNBT != null) nbtData.put(CAP_MAGIC_DATA_NBT, MagicDataNBT);
         return  nbtData;
     }
 

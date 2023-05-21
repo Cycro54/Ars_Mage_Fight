@@ -36,7 +36,7 @@ public class LifeSigilEntity extends BasicEntity {
     public static final int growTime = 2 * 20;
     private int newDeathTime = 0;
 
-    public LifeSigilEntity(World world, BlockPos pos, SpellStats stats, LivingEntity caster) {
+    public LifeSigilEntity(World world, BlockPos pos, SpellStats stats,LivingEntity caster) {
         super(EntityInit.LIFE_SIGIL_ENTITY, world);
         this.setPos(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
         this.yBodyRot = 0;
