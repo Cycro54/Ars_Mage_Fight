@@ -2,6 +2,7 @@ package invoker54.magefight.event;
 
 import com.hollingsworth.arsnouveau.api.event.SpellResolveEvent;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
+import com.hollingsworth.arsnouveau.common.items.CasterTome;
 import com.hollingsworth.arsnouveau.common.util.PortUtil;
 import com.hollingsworth.arsnouveau.setup.ItemsRegistry;
 import invoker54.magefight.ArsMageFight;
@@ -31,6 +32,8 @@ public class UseSpellEvent {
         if (((PlayerEntity) event.shooter).isCreative()) return;
         if (event.shooter.getMainHandItem().getItem() == ItemsRegistry.creativeSpellBook) return;
         if (event.shooter.getOffhandItem().getItem() == ItemsRegistry.creativeSpellBook) return;
+        if (event.shooter.getMainHandItem().getItem() instanceof CasterTome) return;
+        if (event.shooter.getOffhandItem().getItem() instanceof CasterTome) return;
         MagicDataCap cap = MagicDataCap.getCap(event.shooter);
 
         //Get the pool list
