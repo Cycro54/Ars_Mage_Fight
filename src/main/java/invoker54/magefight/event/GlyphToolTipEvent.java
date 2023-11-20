@@ -25,9 +25,9 @@ public class GlyphToolTipEvent {
         MagicDataCap cap = MagicDataCap.getCap(ClientUtil.mC.player);
         if (!(event.getItemStack().getItem() instanceof Glyph)) return;
         Glyph glyph = (Glyph) event.getItemStack().getItem();
-        List<AbstractSpellPart> pool_list = MageFightConfig.getPoolList();
+        List<AbstractSpellPart> pool_list = MageFightConfig.getBatlePoolList();
 
-        if (cap.getUnlockedSpells().contains(glyph.spellPart) || !pool_list.contains(glyph.spellPart))
+        if (cap.getUnlockedBattleSpells().contains(glyph.spellPart) || !pool_list.contains(glyph.spellPart) || MageFightConfig.disableGlyphSystem)
             event.getToolTip().add(new TranslationTextComponent("ars_mage_fight.tooltip.unlocked")
                     .withStyle(TextFormatting.BOLD).withStyle(TextFormatting.GREEN));
         else {

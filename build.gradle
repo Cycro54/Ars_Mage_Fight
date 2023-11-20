@@ -17,7 +17,7 @@ apply plugin: 'org.spongepowered.mixin'
 //apply plugin: 'maven-publish'
 
 group = 'invoker54'
-version = '0.6.4'
+version = '0.7.0'
 
 java {
     archivesBaseName = 'ars_mage_fight-1.16.5'
@@ -190,11 +190,11 @@ dependencies {
     compileOnly fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.4:7.1.0.84")
 
     //  runtimeOnly fg.deobf("top.theillusivec4.caelus:caelus-forge:1.16.5-2.1.3.0")
-    compileOnly fg.deobf("top.theillusivec4.caelus:caelus-forge:1.16.5-2.1.3.0:api")
+//    compileOnly fg.deobf("top.theillusivec4.caelus:caelus-forge:1.16.5-2.1.3.0:api")
 
-    runtimeOnly fg.deobf("curse.maven:exp-575698:3899109")  // Ars Creo
-    runtimeOnly fg.deobf("curse.maven:exp-328085:3536025")  // Create
-    runtimeOnly fg.deobf("curse.maven:exp-486392:3535459")  // Flywheel
+//    runtimeOnly fg.deobf("curse.maven:exp-575698:3899109")  // Ars Creo
+//    runtimeOnly fg.deobf("curse.maven:exp-328085:3536025")  // Create
+//    runtimeOnly fg.deobf("curse.maven:exp-486392:3535459")  // Flywheel
 
 //    annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'

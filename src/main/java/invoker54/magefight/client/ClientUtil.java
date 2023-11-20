@@ -2,6 +2,7 @@ package invoker54.magefight.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import invoker54.magefight.client.screen.GlyphStorageScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.button.Button;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
@@ -331,6 +333,13 @@ public class ClientUtil {
         return formattedNumber.length()>4 ?  formattedNumber.replaceAll("\\.[0-9]+", "") : formattedNumber;
     }
 
+    public static void openCombatScreen(){
+        if (mC.screen != null) return;
+        mC.setScreen(new GlyphStorageScreen());
+        // LOGGER.debug("GOING TO GLYPH STORAGE");
+        mC.player.playSound(SoundEvents.SOUL_SOIL_HIT, 0.75F, 0.5F);
+    }
+
     public static class Image {
 
         protected ResourceLocation location;
@@ -411,4 +420,5 @@ public class ClientUtil {
             TEXTURE_MANAGER.release(this.location);
         }
     }
+
 }

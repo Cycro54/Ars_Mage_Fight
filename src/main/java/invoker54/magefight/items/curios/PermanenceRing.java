@@ -63,9 +63,12 @@ public class PermanenceRing extends Item implements ICurioItem {
                                     repairableItems.add(stack);
                                 }
                             }
+                            if (repairableItems.isEmpty()) return;
 
                             // LOGGER.debug("YOU PASSED THE CHECK!!");
-                            ItemStack repairedItem = repairableItems.get((int) (Math.random() * (repairableItems.size() - 1)));
+                            ItemStack repairedItem;
+                            if (repairableItems.size() > 1) repairedItem = repairableItems.get(player.getRandom().nextInt(repairableItems.size()));
+                            else repairedItem = repairableItems.get(0);
                             // LOGGER.debug("THIS IS WHAT WILL BE REPAIRED: " + repairedItem.getDisplayName().getString());
                             // LOGGER.debug("ITS OLD DURABILITY WAS: " + (repairedItem.getMaxDamage() - repairedItem.getDamageValue()));
                             repairedItem.setDamageValue((int) (repairedItem.getDamageValue() - (repairedItem.getMaxDamage() * 0.1f)));

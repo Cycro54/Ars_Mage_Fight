@@ -1,8 +1,6 @@
 package invoker54.magefight.client.screen;
 
-import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
-import com.hollingsworth.arsnouveau.api.util.SpellRecipeUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.capability.player.MagicDataCap;
@@ -14,7 +12,6 @@ import net.minecraft.util.text.ITextComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BaseCombatScreen extends Screen {
@@ -46,12 +43,12 @@ public class BaseCombatScreen extends Screen {
 
         //Now start to gather data
         //First grab all the glyphs from the glyph pool
-        poolSpells = new ArrayList<>(ArsNouveauAPI.getInstance().getSpell_map().values());
-        poolSpells.removeAll(SpellRecipeUtil.getSpellsFromString(MageFightConfig.serialize().getString("blacklistGlyphPool")));
+        poolSpells = MageFightConfig.getBatlePoolList();
         // LOGGER.debug("WHATS THE PLAYER ID: " + (ClientUtil.mC.player.getId()));
         // LOGGER.debug("WHATS THE POOL SIZE: " + poolSpells.size());
         //Now get all the spells the player has
-        unlockedSpells = MagicDataCap.getCap(ClientUtil.mC.player).getUnlockedSpells();
+        unlockedSpells = MagicDataCap.getCap(ClientUtil.mC.player).getUnlockedBattleSpells();
+        unlockedSpells.removeIf(spellPart -> !poolSpells.contains(spellPart));
         // LOGGER.debug("WHATS THE UNLOCKED GLYPH SIZE: " + unlockedSpells.size());
 
     }

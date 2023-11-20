@@ -13,7 +13,7 @@ public interface IMagicCap extends INBTSerializable<CompoundNBT> {
 
     void removeTag(String tag);
 
-    List<AbstractSpellPart> getUnlockedSpells();
+    List<AbstractSpellPart> getUnlockedBattleSpells();
 
     void addSpell(AbstractSpellPart spellPart);
 

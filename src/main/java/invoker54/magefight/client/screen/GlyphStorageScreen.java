@@ -15,6 +15,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.list.AbstractList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,74 +36,84 @@ public class GlyphStorageScreen extends BaseCombatScreen {
     @Override
     protected void init() {
         super.init();
+        if (MageFightConfig.disableGlyphSystem == false) {
 
-        //Center the glyph container image
-        glyph_container.centerImageX(0, width);
-        glyph_container.centerImageY(0, height);
+            //Center the glyph container image
+            glyph_container.centerImageX(0, width);
+            glyph_container.centerImageY(0, height);
 
-        //Then center the glyph slot and move it
-        glyph_slot.centerImageX(glyph_container.x0, glyph_container.getWidth());
-        glyph_slot.moveTo(glyph_slot.x0, glyph_container.y0 + 16);
+            //Then center the glyph slot and move it
+            glyph_slot.centerImageX(glyph_container.x0, glyph_container.getWidth());
+            glyph_slot.moveTo(glyph_slot.x0, glyph_container.y0 + 16);
 
-        //Get possible spell tiers and sort them
-        List<Integer> spellTiers = new ArrayList<>();
-        for (AbstractSpellPart spellPart : poolSpells){
-            if (!spellTiers.contains(spellPart.getTier().ordinal())){
-                spellTiers.add(spellPart.getTier().ordinal());
+            //Get possible spell tiers and sort them
+            List<Integer> spellTiers = new ArrayList<>();
+            for (AbstractSpellPart spellPart : poolSpells) {
+                if (!spellTiers.contains(spellPart.getTier().ordinal())) {
+                    spellTiers.add(spellPart.getTier().ordinal());
+                }
             }
-        }
-        spellTiers.sort(Integer::compare);
-        // LOGGER.debug("WHATS SPELL TIERS SIZE: " + spellTiers.size());
+            spellTiers.sort(Integer::compare);
+            // LOGGER.debug("WHATS SPELL TIERS SIZE: " + spellTiers.size());
 
-        //This will be the visual list
-        myList = new GlyphList(glyph_container.x0 + 5, glyph_container.getWidth() - 10,
-                glyph_container.y0 + 5, glyph_container.getHeight() - 10);
-        this.addWidget(myList);
+            //This will be the visual list
+            myList = new GlyphList(glyph_container.x0 + 5, glyph_container.getWidth() - 10,
+                    glyph_container.y0 + 5, glyph_container.getHeight() - 10);
+            this.addWidget(myList);
 
-        //This is for the Glyph slots, Spell Tier names, and buy/sell button
-        for (Integer spellTier: spellTiers){
-            //This is the Spell Tier text at the top of each tier
-            this.myList.addEntry(new CategoryEntry("Spell Tier " + (spellTier + 1)));
+            //This is for the Glyph slots, Spell Tier names, and buy/sell button
+            for (Integer spellTier : spellTiers) {
+                //This is the Spell Tier text at the top of each tier
+                this.myList.addEntry(new CategoryEntry("Spell Tier " + (spellTier + 1)));
 
-            //This is a sub list containing only the spells at this tier
-            List<AbstractSpellPart> tierSpellList = unlockedSpells.stream().filter(
-                    (spellPart) -> spellPart.getTier().ordinal() == spellTier).collect(Collectors.toList());
+                //This is a sub list containing only the spells at this tier
+                List<AbstractSpellPart> tierSpellList = unlockedSpells.stream().filter(
+                        (spellPart) -> spellPart.getTier().ordinal() == spellTier).collect(Collectors.toList());
 
-            //This will be the glyph slots
-            do {
-                List<AbstractSpellPart> sixPackList = tierSpellList.subList(0, (Math.min(6, tierSpellList.size())));
-                this.myList.addEntry(new GlyphEntry(sixPackList, this.myList));
-                tierSpellList.removeAll(sixPackList);
+                //This will be the glyph slots
+                do {
+                    List<AbstractSpellPart> sixPackList = tierSpellList.subList(0, (Math.min(6, tierSpellList.size())));
+                    this.myList.addEntry(new GlyphEntry(sixPackList, this.myList));
+                    tierSpellList.removeAll(sixPackList);
+                }
+                while (!tierSpellList.isEmpty());
             }
-            while (!tierSpellList.isEmpty());
-        }
 
-        //Then add the buy and sell button right below
-        this.myList.addEntry(new buttonEntry(this.myList));
+            //Then add the buy and sell button right below
+            this.myList.addEntry(new buttonEntry(this.myList));
+        }
     }
 
     @Override
     public void renderBackground(MatrixStack stack) {
         super.renderBackground(stack);
 
-        //Then render the glyph container
-        glyph_container.RenderImage(stack);
+        if (MageFightConfig.disableGlyphSystem == false) {
+            //Then render the glyph container
+            glyph_container.RenderImage(stack);
+        }
     }
 
     @Override
     public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         super.render(stack, mouseX, mouseY, partialTicks);
 
+        if (MageFightConfig.disableGlyphSystem == false) {
 //        //Then finally the glyph slot
 //        glyph_slot.RenderImage(stack);
-        ClientUtil.beginCrop(glyph_container.x0, glyph_container.getWidth(), glyph_container.y0 + 5, glyph_container.getHeight(), true);
-        if (!this.myList.children().isEmpty()) {
-            for (net.minecraft.client.gui.widget.Widget button : this.buttons) {
-                button.render(stack, mouseX, mouseY, partialTicks);
+            ClientUtil.beginCrop(glyph_container.x0, glyph_container.getWidth(), glyph_container.y0 + 5, glyph_container.getHeight(), true);
+            if (!this.myList.children().isEmpty()) {
+                for (net.minecraft.client.gui.widget.Widget button : this.buttons) {
+                    button.render(stack, mouseX, mouseY, partialTicks);
+                }
+                this.myList.render(stack, mouseX, mouseY, partialTicks);
             }
-            this.myList.render(stack, mouseX, mouseY, partialTicks);
+            ClientUtil.endCrop();
         }
-        ClientUtil.endCrop();
+        else {
+            drawCenteredString(stack, this.font, new TranslationTextComponent("ars_mage_fight.buy_glyph.disabled"),
+                    this.width / 2, this.height / 2, TextFormatting.RED.getColor());
+        }
     }
 
     public void setSellMode(){
@@ -460,7 +471,7 @@ public class GlyphStorageScreen extends BaseCombatScreen {
             List<ITextComponent> txtList = new ArrayList<>();
 
             //Check how many glyphs they have
-            if (unlockedSpells.size() >= MageFightConfig.maxAllowedGlyphs){
+            if (MageFightConfig.maxAllowedGlyphs != 0 && unlockedSpells.size() >= MageFightConfig.maxAllowedGlyphs){
                 txtList.add(new TranslationTextComponent("ars_mage_fight.buy_glyph.size", MageFightConfig.maxAllowedGlyphs));
             }
 

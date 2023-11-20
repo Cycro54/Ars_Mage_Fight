@@ -27,6 +27,7 @@ public class UseSpellEvent {
 
     @SubscribeEvent
     public static void useSpell(SpellResolveEvent.Pre event){
+        if (MageFightConfig.disableGlyphSystem) return;
         if (!(event.shooter instanceof PlayerEntity) ||
         event.shooter instanceof FakePlayer) return;
         if (((PlayerEntity) event.shooter).isCreative()) return;
@@ -37,7 +38,7 @@ public class UseSpellEvent {
         MagicDataCap cap = MagicDataCap.getCap(event.shooter);
 
         //Get the pool list
-        List<AbstractSpellPart> pool_list = MageFightConfig.getPoolList();
+        List<AbstractSpellPart> pool_list = MageFightConfig.getBatlePoolList();
 
         //Get the spell parts list
         Set<AbstractSpellPart> set = new LinkedHashSet<>(event.spell.recipe);
@@ -45,7 +46,7 @@ public class UseSpellEvent {
         //Remove all spell parts that aren't in the glyph pool
         spell_List.removeIf((spellPart -> !pool_list.contains(spellPart)));
         //Then remove all spell parts the players has.
-        spell_List.removeIf((spellPart -> cap.getUnlockedSpells().contains(spellPart)));
+        spell_List.removeIf((spellPart -> cap.getUnlockedBattleSpells().contains(spellPart)));
 
         //If the list ends up being empty, don't do anything
         if (spell_List.isEmpty()) return;
@@ -61,6 +62,8 @@ public class UseSpellEvent {
                 new TranslationTextComponent("ars_mage_fight.chat.missing_spell_part1")
                 .append(spellNames)
                 .append(new TranslationTextComponent("ars_mage_fight.chat.missing_spell_part2")));
+        PortUtil.sendMessage(event.shooter,
+                new TranslationTextComponent("ars_mage_fight.chat.sync_spells"));
 
         event.setCanceled(true);
     }

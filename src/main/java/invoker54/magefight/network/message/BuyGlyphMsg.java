@@ -5,7 +5,6 @@ import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
 import invoker54.magefight.capability.player.MagicDataCap;
 import invoker54.magefight.config.MageFightConfig;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 import org.apache.logging.log4j.LogManager;
@@ -50,7 +49,7 @@ public class BuyGlyphMsg {
 
             int cost = 0;
             //add up all the glyphs
-            for (AbstractSpellPart spellPart : cap.getUnlockedSpells()){
+            for (AbstractSpellPart spellPart : cap.getUnlockedBattleSpells()){
                 cost += ((spellPart.getTier().ordinal() + 1) * MageFightConfig.pricePerTier);
             }
             //Then add the base price at the end
@@ -61,11 +60,9 @@ public class BuyGlyphMsg {
 
             //Then unlock the glyph for them
             cap.addSpell(ArsNouveauAPI.getInstance().getSpell_map().get(msg.glyphTag));
-            if (MageFightConfig.autoUnlockGlyph){
-                ItemStack stack = new ItemStack(ArsNouveauAPI.getInstance().getGlyphItem(msg.glyphTag));
-                // LOGGER.debug("ITEM I AM ABOUT TO ADD: " + stack.getDisplayName().getString());
-                player.addItem(stack);
-            }
+
+            //Now sync the glyphs and player mana if
+//            CombatBlock.syncManaAndGlyphs(player);
 
             //Remove the temp spells
             cap.removeTempSpells();

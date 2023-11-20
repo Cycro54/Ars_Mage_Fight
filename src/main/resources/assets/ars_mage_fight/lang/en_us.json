@@ -44,6 +44,8 @@
   "ars_mage_fight.chat.blood_charm_message3": "Your hunger grows.",
   "ars_mage_fight.chat.missing_spell_part1": "You need to unlock ",
   "ars_mage_fight.chat.missing_spell_part2": " at the Combat Altar in order to cast this spell!",
+  "ars_mage_fight.chat.sync_spells": "Sneak right-click on a combat altar to sync what glyphs you have unlocked to your spell book/item",
+  "ars_mage_fight.chat.sync_successful": "Glyphs and mana have been synced.",
 
   "__comment": "This is for glyph names AND descriptions",
   "ars_nouveau.glyph_name.black_hole": "Black Hole",
@@ -119,6 +121,7 @@
   "effect.ars_mage_fight.explosive_blood_effect": "Explosive Blood",
 
   "__comment": "This is for glyph buying requirements",
+  "ars_mage_fight.buy_glyph.disabled": "§cCombat glyph system is disabled.",
   "ars_mage_fight.buy_glyph.size": "§c - You have the max amount of glyphs allowed ",
   "ars_mage_fight.buy_glyph.no_more": "§c - There are no glyphs available right now.",
   "ars_mage_fight.buy_glyph.broke_1": "§c - You don't have enough experience, you have: ",

@@ -46,7 +46,7 @@ public class SyncRequestMsg {
                 if (world.dimension().getRegistryName().equals(msg.level) && world.getEntity(msg.mobID) != null){
                     Entity targetEntity = world.getEntity(msg.mobID);
                     if (targetEntity == null){
-                         LOGGER.debug("WHAT IN THE WORLD, IT FAILED!! (THE MAGIC DATA REQUEST), Here's the ID: "
+                         LOGGER.debug("(Ars Mage Fight) WHAT IN THE WORLD, IT FAILED!! (THE MAGIC DATA REQUEST), Here's the ID: "
                                 + world.dimension().getRegistryName() + " , And here's the mob id: " + msg.mobID);
                         break;
                     }

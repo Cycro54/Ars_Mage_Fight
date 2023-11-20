@@ -53,7 +53,8 @@ public class DeathsBaneTrinket extends Item implements ICurioItem {
             LivingEntity hurtEntity = event.getEntityLiving();
             if (!(hurtEntity instanceof PlayerEntity)) return;
             if (hurtEntity.getHealth() > event.getAmount()) return;
-            //Now look for the Explosive Blood Charm
+            if (event.getSource().isBypassInvul()) return;
+            //Now look for the Deaths Bane Charm
             CuriosUtil.getAllWornItems(hurtEntity).ifPresent(e ->{
                 for(int i = 0; i < e.getSlots(); i++){
                     ItemStack curioStack = e.getStackInSlot(i);

@@ -2,6 +2,8 @@ package invoker54.magefight.capability.player;
 
 import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
+import com.hollingsworth.arsnouveau.common.capability.ManaCapability;
+import com.hollingsworth.arsnouveau.common.items.SpellBook;
 import invoker54.magefight.ArsMageFight;
 import invoker54.magefight.config.MageFightConfig;
 import invoker54.magefight.network.NetworkHandler;
@@ -32,8 +34,11 @@ public class MagicDataCap implements IMagicCap {
     private static final String tagCompounds = "TAG_COMPOUNDS";
     private static final String tagSize = "TAG_SIZE";
     protected static final HashMap<LivingEntity, MagicDataCap> caps = new HashMap<>();
-    private static final String spellString = "UNLOCKED_BATTLE_SPELLS_STRING";
-    private final ArrayList<AbstractSpellPart> unlockedSpells = new ArrayList<>();
+//    private static final String normalSpellString = "UNLOCKED_NORMAL_SPELLS_STRING";
+//    private final ArrayList<AbstractSpellPart> unlockedNormalSpells = new ArrayList<>();
+
+    private static final String battleSpellString = "UNLOCKED_BATTLE_SPELLS_STRING";
+    private final ArrayList<AbstractSpellPart> unlockedBattleSpells = new ArrayList<>();
     private static final String seenSpellString = "SEEN_SPELLS_STRING";
     private final ArrayList<AbstractSpellPart> seenSpells = new ArrayList<>();
     private static final String tempSpellString = "TEMP_SPELLS_STRING";
@@ -45,6 +50,10 @@ public class MagicDataCap implements IMagicCap {
 //        LOGGER.debug("THIS IS THE MOB ID I WILL BE REMOVING: " + mob.getId());
 //        caps.remove(mob.getId());
 //    }
+
+    public MagicDataCap(){
+        syncStarterSpells();
+    }
 
     public static MagicDataCap getCap(LivingEntity entity){
 //        return entity.getCapability(MagicDataProvider.CAP_MAGIC_DATA).orElseThrow(NullPointerException::new);
@@ -69,7 +78,7 @@ public class MagicDataCap implements IMagicCap {
     }
 
     public boolean isEmpty(){
-        return this.magicTags.isEmpty() && this.unlockedSpells.isEmpty();
+        return this.magicTags.isEmpty() && this.unlockedBattleSpells.isEmpty();
     }
 
     public static void syncToClient(LivingEntity entity){
@@ -94,8 +103,8 @@ public class MagicDataCap implements IMagicCap {
     }
 
     @Override
-    public List<AbstractSpellPart> getUnlockedSpells() {
-        return this.unlockedSpells;
+    public List<AbstractSpellPart> getUnlockedBattleSpells() {
+        return new ArrayList<>(this.unlockedBattleSpells);
     }
 
     public boolean checkSeenSpell(AbstractSpellPart spellPart){
@@ -114,12 +123,12 @@ public class MagicDataCap implements IMagicCap {
 
     @Override
     public void removeSpell(AbstractSpellPart spellPart){
-        this.unlockedSpells.remove(spellPart);
+        this.unlockedBattleSpells.remove(spellPart);
     }
 
     @Override
     public void addSpell(AbstractSpellPart spellPart){
-        this.unlockedSpells.add(spellPart);
+        this.unlockedBattleSpells.add(spellPart);
         if (!this.seenSpells.contains(spellPart)) this.seenSpells.add(spellPart);
     }
 
@@ -142,6 +151,38 @@ public class MagicDataCap implements IMagicCap {
     @Override
     public void removeTag(String tagName) {
         magicTags.remove(tagName);
+    }
+
+    public void syncStarterSpells(){
+        List<AbstractSpellPart> battlePoolList = (ArrayList<AbstractSpellPart>)MageFightConfig.getBatlePoolList();
+        for (AbstractSpellPart starterSpellPart : ArsNouveauAPI.getInstance().getDefaultStartingSpells()){
+            //Check if the starter spell glyph is a battle glyph, if it is, skip it.
+            if (battlePoolList.contains(starterSpellPart)) continue;
+            if (this.unlockedBattleSpells.contains(starterSpellPart)) continue;
+            this.unlockedBattleSpells.add(starterSpellPart);
+        }
+    }
+
+    public void syncItemTagSpells(CompoundNBT itemTag){
+        if (!itemTag.contains("spells")) return;
+
+        List<AbstractSpellPart> battlePoolList = MageFightConfig.getBatlePoolList();
+        List<AbstractSpellPart> spellParts = SpellBook.getUnlockedSpells(itemTag);
+        spellParts.removeIf(battlePoolList::contains);
+        //First let's add all the spell parts that are NOT battle glyphs to our unlocked glyph pool
+        for (AbstractSpellPart spellPart : spellParts){
+            if (this.unlockedBattleSpells.contains(spellPart)) continue;
+
+            this.unlockedBattleSpells.add(spellPart);
+        }
+        //now replace the current item spell string with the players saved spell string
+        itemTag.putString("spells", convertSpellListToString(this.unlockedBattleSpells));
+    }
+
+    public void syncPlayerMana(PlayerEntity player){
+        ManaCapability.getMana(player).ifPresent((mana) ->{
+            mana.setGlyphBonus(this.unlockedBattleSpells.size());
+        });
     }
 
     @Override
@@ -170,28 +211,29 @@ public class MagicDataCap implements IMagicCap {
             mainNBT.put(tagCompounds, compoundNBT);
         }
 
-        //All the spells you've unlocked
-        String unlockSpells = "";
-        for (AbstractSpellPart spellPart: this.unlockedSpells){
-            unlockSpells = unlockSpells.concat(spellPart.getTag() + ",");
-        }
-        mainNBT.putString(spellString, unlockSpells);
+        //All the battle spells you've unlocked
+        mainNBT.putString(battleSpellString, convertSpellListToString(this.unlockedBattleSpells));
+
+        //All the normal spells you've unlocked
+//        mainNBT.putString(normalSpellString, convertSpellListToString(this.unlockedNormalSpells));
 
         //All the spells you've seen
-        String seenSpells = "";
-        for (AbstractSpellPart spellPart: this.seenSpells){
-            seenSpells = seenSpells.concat(spellPart.getTag() + ",");
-        }
-        mainNBT.putString(seenSpellString, seenSpells);
+        mainNBT.putString(seenSpellString, convertSpellListToString(this.seenSpells));
 
         //Your spell choices
-        String tempSpells = "";
-        for (AbstractSpellPart spellPart: this.tempSpells){
-            tempSpells = tempSpells.concat(spellPart.getTag() + ",");
-        }
-        mainNBT.putString(tempSpellString, tempSpells);
+        mainNBT.putString(tempSpellString, convertSpellListToString(this.tempSpells));
 
         return mainNBT;
+    }
+
+    public String convertSpellListToString(List<AbstractSpellPart> spellList){
+        String spellListString = "";
+
+        for (AbstractSpellPart spellPart: spellList){
+            spellListString = spellListString.concat(spellPart.getTag() + ",");
+        }
+
+        return spellListString;
     }
 
     @Override
@@ -206,39 +248,28 @@ public class MagicDataCap implements IMagicCap {
                     (CompoundNBT) compoundNBT.get((String.valueOf(index))));
         }
 
-        //This is for unlocked spells
-        this.unlockedSpells.clear();
-        String[] stringSpells = mainNBT.getString(spellString).split(",");
-        if (stringSpells.length != 0 && !Objects.equals(stringSpells[0], "")) {
-            Map<String, AbstractSpellPart> spellMap = ArsNouveauAPI.getInstance().getSpell_map();
-            for (String spellPart : stringSpells){
-                if (spellMap.containsKey(spellPart)){
-                    this.unlockedSpells.add(spellMap.get(spellPart));
-                }
-            }
-        }
+        //This is for unlocked battle spells
+        populateSpellList(this.unlockedBattleSpells, mainNBT.getString(battleSpellString).split(","));
+        this.syncStarterSpells();
 
         //This is for all the spells you've seen
-        this.seenSpells.clear();
-        stringSpells = mainNBT.getString(seenSpellString).split(",");
-        if (stringSpells.length != 0 && !Objects.equals(stringSpells[0], "")) {
-            Map<String, AbstractSpellPart> spellMap = ArsNouveauAPI.getInstance().getSpell_map();
-            for (String spellPart : stringSpells){
-                if (spellMap.containsKey(spellPart)){
-                    this.seenSpells.add(spellMap.get(spellPart));
-                }
-            }
-        }
+        populateSpellList(this.seenSpells, mainNBT.getString(seenSpellString).split(","));
 
         //This is for all the spell choices you have
-        this.tempSpells.clear();
-        stringSpells = mainNBT.getString(tempSpellString).split(",");
-        if (stringSpells.length != 0 && !Objects.equals(stringSpells[0], "")) {
-            Map<String, AbstractSpellPart> spellMap = ArsNouveauAPI.getInstance().getSpell_map();
-            for (String spellPart : stringSpells){
-                if (spellMap.containsKey(spellPart)){
-                    this.tempSpells.add(spellMap.get(spellPart));
-                }
+        populateSpellList(this.tempSpells, mainNBT.getString(tempSpellString).split(","));
+    }
+
+    public void populateSpellList(List<AbstractSpellPart> listToPopulate, String[] stringArray){
+        listToPopulate.clear();
+
+        if (stringArray.length == 0 || Objects.equals(stringArray[0], "")) return;
+
+        //Make sure the spells still exist
+        Map<String, AbstractSpellPart> spellMap = ArsNouveauAPI.getInstance().getSpell_map();
+
+        for (String spellPart : stringArray) {
+            if (spellMap.containsKey(spellPart)) {
+                listToPopulate.add(spellMap.get(spellPart));
             }
         }
     }
@@ -280,7 +311,7 @@ public class MagicDataCap implements IMagicCap {
 
             //The new player id will be reverted to the old player id, so just mess with the old cap instead.
             MagicDataCap oldCap = MagicDataCap.getCap(event.getOriginal());
-            List<AbstractSpellPart> spellList = oldCap.getUnlockedSpells();
+            List<AbstractSpellPart> spellList = oldCap.getUnlockedBattleSpells();
             for (int a = 0; a < MageFightConfig.deathGlyphLoss; a++){
                 if (spellList.isEmpty()) break;
 
