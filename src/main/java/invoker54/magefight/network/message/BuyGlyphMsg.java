@@ -2,6 +2,7 @@ package invoker54.magefight.network.message;
 
 import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
+import invoker54.magefight.blocks.CombatBlock;
 import invoker54.magefight.capability.player.MagicDataCap;
 import invoker54.magefight.config.MageFightConfig;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -62,7 +63,7 @@ public class BuyGlyphMsg {
             cap.addSpell(ArsNouveauAPI.getInstance().getSpell_map().get(msg.glyphTag));
 
             //Now sync the glyphs and player mana if
-//            CombatBlock.syncManaAndGlyphs(player);
+            CombatBlock.syncManaAndGlyphs(player);
 
             //Remove the temp spells
             cap.removeTempSpells();
